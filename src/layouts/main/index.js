@@ -9,6 +9,7 @@ import Logo from '../../components/Logo';
 //
 import MainNavbar from './MainNavbar';
 import MainFooter from './MainFooter';
+import CategoryNav from './CategoryNav';
 
 // ----------------------------------------------------------------------
 
@@ -23,6 +24,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       <MainNavbar />
+  {/* <CategoryNav /> */}
       <div>{children}</div>
 
       <MainFooter />

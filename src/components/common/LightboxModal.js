@@ -95,8 +95,6 @@ LightboxModal.propTypes = {
 };
 
 export default function LightboxModal({ images, photoIndex, setPhotoIndex, isOpen, onClose, ...other }) {
-
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -125,7 +123,7 @@ export default function LightboxModal({ images, photoIndex, setPhotoIndex, isOpe
           nextSrc={images[(photoIndex + 1) % images?.length]}
           prevSrc={images[(photoIndex + images?.length - 1) % images?.length]}
           onCloseRequest={onClose}
-          onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images?.length)}
+          onMovePrevRequest={() => setPhotoIndex((photoIndex + images?.length - 1) % images?.length)}
           onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images?.length)}
           toolbarButtons={toolbarButtons}
           reactModalStyle={customStyles}

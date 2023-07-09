@@ -4,9 +4,11 @@ import MainLayout from 'src/layouts/main'
 import { styled } from '@mui/material/styles'
 // components
 import Page from 'src/components/Page'
-import { Toaster } from "react-hot-toast";
 import Banner from 'src/components/Home/Banner/Banner'
 import Products from 'src/components/Home/Products/Products'
+import CategoryNav from 'src/layouts/main/CategoryNav'
+import { useEffect, useState } from 'react'
+import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
 
 // ----------------------------------------------------------------------
 
@@ -23,19 +25,30 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LandingPage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <MainLayout>
-      <RootStyle
-        title="The starting point for your next project | Minimal-UI"
-        id="move_top"
-      >
-        <ContentStyle>
- 
-          <Banner />
-          <Products />
-        </ContentStyle>
-        <Toaster />
-      </RootStyle>
-    </MainLayout>
+    <>
+      {isLoading ? (
+        <CustomLoadingScreen />
+      ) : (
+        <MainLayout>
+          <RootStyle title="AYMi" id="move_top">
+            <ContentStyle>
+              <Banner />
+              <Products />
+            </ContentStyle>
+          </RootStyle>
+        </MainLayout>
+      )}
+    </>
   )
 }

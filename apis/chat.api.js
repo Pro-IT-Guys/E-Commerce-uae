@@ -1,9 +1,19 @@
 import axios from 'axios'
+import { BASE_URL } from './url'
 
 export const createChat = async data => {
   try {
-    const res = await axios.post('http://localhost:8000/api/v1/chat', data)
-    return res.data
+    const res = await axios.post(`${BASE_URL}/chat`, data)
+    return res?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getChats = async data => {
+  try {
+    const res = await axios.get(`${BASE_URL}/chat`, data)
+    return res?.data
   } catch (error) {
     console.log(error)
   }
@@ -11,10 +21,8 @@ export const createChat = async data => {
 
 export const getMessageOfChatId = async chatId => {
   try {
-    const res = await axios.get(
-      `http://localhost:8000/api/v1/message/${chatId}`
-    )
-    return res.data
+    const res = await axios.get(`${BASE_URL}/message/${chatId}`)
+    return res?.data
   } catch (error) {
     console.log(error)
   }
@@ -23,10 +31,17 @@ export const getMessageOfChatId = async chatId => {
 export const getChatOfSenderAndReceiver = async data => {
   try {
     const { senderId, receiverId } = data
-    const res = await axios.get(
-      `http://localhost:8000/api/v1/chat/${senderId}/${receiverId}`
-    )
-    return res.data
+    const res = await axios.get(`${BASE_URL}/chat/${senderId}/${receiverId}`)
+    return res?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const sendMessage = async data => {
+  try {
+    const res = await axios.post(`${BASE_URL}/message`, data)
+    return res?.data
   } catch (error) {
     console.log(error)
   }

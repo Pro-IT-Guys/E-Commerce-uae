@@ -3,7 +3,6 @@ import { formatDistanceToNowStrict } from 'date-fns'
 // material
 import { styled } from '@mui/material/styles'
 import { Avatar, Box, Typography } from '@mui/material'
-import { userId } from 'constant/constant'
 
 // ----------------------------------------------------------------------
 
@@ -47,12 +46,11 @@ MessageItem.propTypes = {
   chat: PropTypes.object.isRequired,
 }
 
-export default function MessageItem({ message, chat }) {
-  const sender = chat?.members?.find(member => member?._id === userId)
-  const receiver = chat?.members?.find(member => member?._id !== userId)
+export default function MessageItem({ message, chat, user }) {
+  const receiver = chat?.members?.find(member => member?._id !== user?._id)
 
   const senderDetails =
-    message.senderId === userId
+    message.senderId === user?._id
       ? { type: 'me' }
       : {
           avatar: receiver?.avatar,
@@ -61,9 +59,12 @@ export default function MessageItem({ message, chat }) {
 
   const isMe = senderDetails.type === 'me'
   const isImage = false
-  const firstName = sender?.name?.firstName
 
-  console.log(senderDetails)
+  const isValidURL = message => {
+    const urlPattern =
+      /^(https?:\/\/)?([\w.-]+\.[a-zA-Z]{2,}|localhost)(\/\S*)?$/
+    return urlPattern.test(message)
+  }
 
   return (
     <RootStyle>
@@ -103,7 +104,20 @@ export default function MessageItem({ message, chat }) {
             {isImage ? (
               <MessageImgStyle alt="attachment" src={message.body} />
             ) : (
-              <Typography variant="body2">{message.text}</Typography>
+              // <Typography variant="body2">{message.text}</Typography>
+              <>
+                {isValidURL(message.text) ? (
+                  <Typography
+                    onClick={() => window.open(message.text, '_blank')}
+                    variant="body2"
+                    sx={{ color: 'blue', cursor: 'pointer', fontWeight: 600 }}
+                  >
+                    {message.text}
+                  </Typography>
+                ) : (
+                  <Typography variant="body2">{message.text}</Typography>
+                )}
+              </>
             )}
           </ContentStyle>
         </div>

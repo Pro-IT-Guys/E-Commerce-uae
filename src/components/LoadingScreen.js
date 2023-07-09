@@ -6,7 +6,7 @@ import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 //
 import Logo from './Logo';
-import logoImg from '../assets/logo/Main Website Logo.jpg'
+import logoImg from '../assets/logo/MainWebsiteLogo.jpg'
 import Image from 'next/image'
 
 // ----------------------------------------------------------------------

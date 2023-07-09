@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Icon } from '@iconify/react';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
+import PropTypes from 'prop-types'
+import { useContext, useState } from 'react'
+import { Icon } from '@iconify/react'
+import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill'
+import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // material
-import { alpha, useTheme, styled } from '@mui/material/styles';
+import { alpha, useTheme, styled } from '@mui/material/styles'
 import {
   Box,
   List,
@@ -16,11 +16,12 @@ import {
   ListItemIcon,
   ListSubheader,
   ListItemButton,
-} from '@mui/material';
+} from '@mui/material'
+import { ContextData } from 'context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 
-const ListSubheaderStyle = styled((props) => (
+const ListSubheaderStyle = styled(props => (
   <ListSubheader disableSticky disableGutters {...props} />
 ))(({ theme }) => ({
   ...theme.typography.overline,
@@ -28,7 +29,7 @@ const ListSubheaderStyle = styled((props) => (
   marginBottom: theme.spacing(2),
   paddingLeft: theme.spacing(5),
   color: theme.palette.text.primary,
-}));
+}))
 
 const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   ...theme.typography.body2,
@@ -50,7 +51,7 @@ const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
     borderBottomLeftRadius: 4,
     backgroundColor: theme.palette.primary.main,
   },
-}));
+}))
 
 const ListItemIconStyle = styled(ListItemIcon)({
   width: 22,
@@ -58,26 +59,26 @@ const ListItemIconStyle = styled(ListItemIcon)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-});
+})
 
 // ----------------------------------------------------------------------
 
 NavItem.propTypes = {
   isShow: PropTypes.bool,
   item: PropTypes.object,
-};
+}
 
 function NavItem({ item, isShow }) {
-  const theme = useTheme();
-  const { pathname } = useRouter();
-  const { title, path, icon, info, children } = item;
-  const isActiveRoot = pathname.includes(path);
+  const theme = useTheme()
+  const { pathname } = useRouter()
+  const { title, path, icon, info, children } = item
+  const isActiveRoot = pathname.includes(path)
 
-  const [open, setOpen] = useState(isActiveRoot);
+  const [open, setOpen] = useState(isActiveRoot)
 
   const handleOpen = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const activeRootStyle = {
     color: 'primary.main',
@@ -87,12 +88,12 @@ function NavItem({ item, isShow }) {
       theme.palette.action.selectedOpacity
     ),
     '&:before': { display: 'block' },
-  };
+  }
 
   const activeSubStyle = {
     color: 'text.primary',
     fontWeight: 'fontWeightMedium',
-  };
+  }
 
   if (children) {
     return (
@@ -119,11 +120,11 @@ function NavItem({ item, isShow }) {
         </ListItemStyle>
 
         {isShow && (
-          <Collapse in={open} timeout='auto' unmountOnExit>
-            <List component='div' disablePadding>
-              {children.map((item) => {
-                const { title, path } = item;
-                const isActiveSub = pathname.includes(path);
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {children.map(item => {
+                const { title, path } = item
+                const isActiveSub = pathname.includes(path)
 
                 return (
                   <NextLink key={item.title} href={item.path}>
@@ -134,7 +135,7 @@ function NavItem({ item, isShow }) {
                     >
                       <ListItemIconStyle>
                         <Box
-                          component='span'
+                          component="span"
                           sx={{
                             width: 4,
                             height: 4,
@@ -143,7 +144,7 @@ function NavItem({ item, isShow }) {
                             alignItems: 'center',
                             justifyContent: 'center',
                             bgcolor: 'text.disabled',
-                            transition: (theme) =>
+                            transition: theme =>
                               theme.transitions.create('transform'),
                             ...(isActiveSub && {
                               transform: 'scale(2)',
@@ -155,13 +156,13 @@ function NavItem({ item, isShow }) {
                       <ListItemText disableTypography primary={title} />
                     </ListItemStyle>
                   </NextLink>
-                );
+                )
               })}
             </List>
           </Collapse>
         )}
       </>
-    );
+    )
   }
 
   return (
@@ -180,28 +181,40 @@ function NavItem({ item, isShow }) {
         )}
       </ListItemStyle>
     </NextLink>
-  );
+  )
 }
 
 NavSection.propTypes = {
   isShow: PropTypes.bool,
   navConfig: PropTypes.array,
-};
+}
 
 export default function NavSection({ navConfig, isShow = true, ...other }) {
+  const { currentlyLoggedIn } = useContext(ContextData)
+
+  const userRole = currentlyLoggedIn?.role
+
   return (
     <Box {...other}>
-      {navConfig.map((list) => {
-        const { subheader, items } = list;
+      {navConfig.map(list => {
+        const { subheader, items, role } = list
         return (
-          <List key={subheader} disablePadding>
-            {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
-            {items.map((item) => (
-              <NavItem key={item.title} item={item} isShow={isShow} />
-            ))}
-          </List>
-        );
+          <>
+            <List key={subheader} disablePadding>
+              {role === userRole && (
+                <>
+                  {isShow && (
+                    <ListSubheaderStyle>{subheader}</ListSubheaderStyle>
+                  )}
+                  {items.map(item => (
+                    <NavItem key={item.title} item={item} isShow={isShow} />
+                  ))}
+                </>
+              )}
+            </List>
+          </>
+        )
       })}
     </Box>
-  );
+  )
 }

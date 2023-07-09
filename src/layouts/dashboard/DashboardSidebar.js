@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import PropTypes from 'prop-types'
+import { useContext, useEffect } from 'react'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // material
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 import {
   Box,
   Stack,
@@ -13,23 +13,24 @@ import {
   Tooltip,
   Typography,
   CardActionArea,
-} from '@mui/material';
+} from '@mui/material'
 // hooks
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 // components
-import Logo from '../../components/Logo';
-import Scrollbar from '../../components/Scrollbar';
-import NavSection from '../../components/NavSection';
+import Logo from '../../components/Logo'
+import Scrollbar from '../../components/Scrollbar'
+import NavSection from '../../components/NavSection'
 //
 import { MHidden } from '../../components/@material-extend';
 import sidebarConfig from './SidebarConfig';
-import logoImg from '../../assets/logo/Main Website Logo.jpg'
+import logoImg from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
+import { ContextData } from 'context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 102;
+const DRAWER_WIDTH = 280
+const COLLAPSE_WIDTH = 102
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -38,7 +39,7 @@ const RootStyle = styled('div')(({ theme }) => ({
       duration: theme.transitions.duration.complex,
     }),
   },
-}));
+}))
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -46,18 +47,18 @@ const AccountStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(2, 2.5),
   borderRadius: theme.shape.borderRadiusSm,
   backgroundColor: theme.palette.grey[500_12],
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 IconCollapse.propTypes = {
   onToggleCollapse: PropTypes.func,
   collapseClick: PropTypes.bool,
-};
+}
 
 function IconCollapse({ onToggleCollapse, collapseClick }) {
   return (
-    <Tooltip title='Mini Menu'>
+    <Tooltip title="Mini Menu">
       <CardActionArea
         onClick={onToggleCollapse}
         sx={{
@@ -81,7 +82,7 @@ function IconCollapse({ onToggleCollapse, collapseClick }) {
             height: 8,
             borderRadius: '50%',
             bgcolor: 'currentColor',
-            transition: (theme) => theme.transitions.create('all'),
+            transition: theme => theme.transitions.create('all'),
             ...(collapseClick && {
               width: 0,
               height: 0,
@@ -90,16 +91,18 @@ function IconCollapse({ onToggleCollapse, collapseClick }) {
         />
       </CardActionArea>
     </Tooltip>
-  );
+  )
 }
 
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
-};
+}
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
-  const { pathname } = useRouter();
+  const { pathname } = useRouter()
+  const { currentlyLoggedIn } = useContext(ContextData)
+  const { role, name, image } = currentlyLoggedIn || {}
 
   const {
     isCollapse,
@@ -108,14 +111,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     onToggleCollapse,
     onHoverEnter,
     onHoverLeave,
-  } = useCollapseDrawer();
+  } = useCollapseDrawer()
 
   useEffect(() => {
     if (isOpenSidebar) {
-      onCloseSidebar();
+      onCloseSidebar()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const renderContent = (
     <Scrollbar
@@ -140,23 +143,23 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }}
       >
         <Stack
-          direction='row'
-          alignItems='center'
-          justifyContent='space-between'
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
         >
-          <NextLink href='/'>
+          <NextLink href="/">
             <Box sx={{ display: 'inline-flex' }}>
-            <Image
-              src={logoImg}
-              alt="Picture of the logo"
-              width={100}
-              height={40}
-              className="cursor-pointer"
-            />
+              <Image
+                src={logoImg}
+                alt="Picture of the logo"
+                width={130}
+                height={60}
+                className="cursor-pointer"
+              />
             </Box>
           </NextLink>
 
-          <MHidden width='lgDown'>
+          <MHidden width="lgDown">
             {!isCollapse && (
               <IconCollapse
                 onToggleCollapse={onToggleCollapse}
@@ -168,23 +171,23 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
         {isCollapse ? (
           <Avatar
-            alt='My Avatar'
-            src='/static/mock-images/avatars/avatar_default.jpg'
+            alt="My Avatar"
+            src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
             sx={{ mx: 'auto', mb: 2 }}
           />
         ) : (
-          <NextLink href='#'>
+          <NextLink href="#">
             <AccountStyle>
               <Avatar
-                alt='My Avatar'
-                src='/static/mock-images/avatars/avatar_default.jpg'
+                alt="My Avatar"
+                src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
               />
               <Box sx={{ ml: 2 }}>
-                <Typography variant='subtitle2' sx={{ color: 'text.primary' }}>
-                  displayName
+                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                  {name?.firstName} {name?.lastName}
                 </Typography>
-                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-                  role
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {role}
                 </Typography>
               </Box>
             </AccountStyle>
@@ -194,7 +197,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
     </Scrollbar>
-  );
+  )
 
   return (
     <RootStyle
@@ -207,7 +210,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }),
       }}
     >
-      <MHidden width='lgUp'>
+      <MHidden width="lgUp">
         <Drawer
           open={isOpenSidebar}
           onClose={onCloseSidebar}
@@ -219,10 +222,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Drawer>
       </MHidden>
 
-      <MHidden width='lgDown'>
+      <MHidden width="lgDown">
         <Drawer
           open
-          variant='persistent'
+          variant="persistent"
           onMouseEnter={onHoverEnter}
           onMouseLeave={onHoverLeave}
           PaperProps={{
@@ -236,9 +239,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 borderRight: 0,
                 backdropFilter: 'blur(6px)',
                 WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-                boxShadow: (theme) => theme.customShadows.z20,
-                bgcolor: (theme) =>
-                  alpha(theme.palette.background.default, 0.88),
+                boxShadow: theme => theme.customShadows.z20,
+                bgcolor: theme => alpha(theme.palette.background.default, 0.88),
               }),
             },
           }}
@@ -247,5 +249,5 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Drawer>
       </MHidden>
     </RootStyle>
-  );
+  )
 }

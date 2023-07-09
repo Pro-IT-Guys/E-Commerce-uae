@@ -3,40 +3,103 @@ import MenuPopover from '../MenuPopover'
 import { styled } from '@mui/material/styles'
 import InputEmoji from 'react-input-emoji'
 import MessageItem from './MessageItem'
-import { userId } from 'constant/constant'
-import { useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { CustomIcons } from 'public/static/mui-icons'
 import { ButtonAnimate } from '../animate'
-
-const InfoStyle = styled(Typography)(({ theme }) => ({
-  display: 'flex',
-  marginBottom: theme.spacing(0.75),
-  color: theme.palette.text.secondary,
-}))
-
-const MessageImgStyle = styled('img')(({ theme }) => ({
-  width: '100%',
-  cursor: 'pointer',
-  objectFit: 'cover',
-  borderRadius: theme.shape.borderRadius,
-  [theme.breakpoints.up('md')]: {
-    height: 200,
-    minWidth: 296,
-  },
-}))
+import { getMessageOfChatId, sendMessage } from 'apis/chat.api'
+import { ContextData } from 'context/dataProviderContext'
 
 export default function ChatPopup({
+  socket,
   openChat,
   setOpenChat,
   anchorRef,
-  message,
   chat,
+  setMessage,
+  message,
+  setSendMessageBase,
+  productUrl,
 }) {
+  const boxRef = useRef(null)
+  const { currentlyLoggedIn } = useContext(ContextData)
   const [inputMeassage, setInputMessage] = useState('')
-  const sender = chat?.members?.find(member => member?._id === userId)
 
+  const sender = chat?.members?.find(
+    member => member?._id === currentlyLoggedIn?._id
+  )
+
+  // Scroll to the last message when the message list updates
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.scrollTop = boxRef.current.scrollHeight
+    }
+  }, [message])
+
+  // Receive message from socket server and set message
+  useEffect(() => {
+    if (socket) {
+      socket.on('getMessage', data => {
+        setMessage(prev => [...prev, data])
+      })
+      setSendMessageBase(false)
+    }
+  }, [socket])
+
+  useEffect(() => {
+    const sendAutoMationMessage = async () => {
+      const chatId = chat?._id
+      const senderId = currentlyLoggedIn?._id
+
+      const newMessage = await sendMessage({
+        chatId,
+        senderId,
+        text: productUrl,
+      })
+
+      setMessage([...message, newMessage?.data])
+      const receiverId = chat?.members?.find(
+        member => member._id !== senderId
+      )?._id
+      socket.emit('sendMessage', {
+        senderId,
+        receiverId,
+        createdAt: newMessage?.data?.createdAt,
+        text: productUrl,
+      })
+    }
+    if (productUrl && openChat) {
+      sendAutoMationMessage()
+    }
+  }, [openChat])
+
+  // Main functions==========>
   const handleInputMessage = text => {
     setInputMessage(text)
+  }
+
+  const handleSendMessage = async () => {
+    const chatId = chat?._id
+    const senderId = currentlyLoggedIn?._id
+
+    const newMessage = await sendMessage({
+      chatId,
+      senderId,
+      text: inputMeassage,
+    })
+
+    setMessage([...message, newMessage?.data])
+    const receiverId = chat?.members?.find(
+      member => member._id !== senderId
+    )?._id
+    socket.emit('sendMessage', {
+      senderId,
+      receiverId,
+      createdAt: newMessage?.data?.createdAt,
+      text: inputMeassage,
+    })
+
+    setSendMessageBase(true)
+    setInputMessage('')
   }
 
   return (
@@ -70,20 +133,26 @@ export default function ChatPopup({
       <Divider />
 
       <Box
+        ref={boxRef}
         sx={{
           maxHeight: '250px',
           overflowY: 'auto',
         }}
       >
         {message?.map((item, index) => (
-          <MessageItem key={index} message={item} chat={chat} />
+          <MessageItem
+            key={index}
+            message={item}
+            chat={chat}
+            user={currentlyLoggedIn}
+          />
         ))}
       </Box>
 
       <Box sx={{ paddingBottom: 1.5, display: 'flex', px: 2.8 }}>
         <InputEmoji value={inputMeassage} onChange={handleInputMessage} />
         <ButtonAnimate mediumClick={true}>
-          <Button>
+          <Button onClick={handleSendMessage}>
             <CustomIcons.SendIcon />
           </Button>
         </ButtonAnimate>

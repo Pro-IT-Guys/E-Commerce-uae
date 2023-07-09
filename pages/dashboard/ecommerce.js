@@ -1,21 +1,26 @@
-import { Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material'
 // layouts
-import DashboardLayout from 'src/layouts/dashboard';
+import DashboardLayout from 'src/layouts/dashboard'
 // hooks
-import useSettings from 'src/hooks/useSettings';
+import useSettings from 'src/hooks/useSettings'
 // components
-import Page from 'src/components/Page';
+import Page from 'src/components/Page'
+import authMiddleware from 'src/utils/authMiddleware'
+import { useContext } from 'react'
+import { ContextData } from 'context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 
-export default function PageOne() {
-  const { themeStretch } = useSettings();
+const PageOne =()=> {
+  const { themeStretch } = useSettings()
+  const { currentlyLoggedIn, setUpdate } = useContext(ContextData)
+  const { role, email, name, image } = currentlyLoggedIn || {}
 
   return (
     <DashboardLayout>
-      <Page title='Page One | Minimal-UI'>
+      <Page title="Page One | Minimal-UI">
         <Container maxWidth={themeStretch ? false : 'xl'}>
-          <Typography variant='h3' component='h1' paragraph>
+          <Typography variant="h3" component="h1" paragraph>
             Page One
           </Typography>
           <Typography gutterBottom>
@@ -42,5 +47,7 @@ export default function PageOne() {
         </Container>
       </Page>
     </DashboardLayout>
-  );
+  )
 }
+
+export default authMiddleware(PageOne)

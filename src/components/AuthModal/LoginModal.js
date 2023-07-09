@@ -29,17 +29,7 @@ LoginFormModal.propTypes = {
 };
 
 export default function LoginFormModal({ open, onClose }) {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
-  };
+
   return (
     <DialogAnimate maxWidth="sm" open={open} onClose={onClose} >
       <DialogTitle className=" bg-[#f1fff4] text-center">Login Now</DialogTitle>
