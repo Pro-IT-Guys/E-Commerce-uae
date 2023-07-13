@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 // next
 import NextLink from 'next/link';
 // material
@@ -30,21 +30,21 @@ export default function PageNotFound() {
         <Container>
           <MotionContainer initial='initial' open>
             <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
-              <motion.div variants={varBounceIn}>
+              <div variants={varBounceIn}>
                 <Typography variant='h3' paragraph>
                   Sorry, page not found!
                 </Typography>
-              </motion.div>
+              </div>
               <Typography sx={{ color: 'text.secondary' }}>
                 Sorry, we couldn’t find the page you’re looking for. Perhaps
                 you’ve mistyped the URL? Be sure to check your spelling.
               </Typography>
 
-              <motion.div variants={varBounceIn}>
+              <div variants={varBounceIn}>
                 <PageNotFoundIllustration
                   sx={{ height: 260, my: { xs: 5, sm: 10 } }}
                 />
-              </motion.div>
+              </div>
 
               <NextLink href='/'>
                 <Button size='large' variant='contained'>

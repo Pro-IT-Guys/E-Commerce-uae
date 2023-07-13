@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 // material
 import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
@@ -47,7 +47,7 @@ export default function LoadingScreen({ ...other }) {
   if (loading) {
     return (
       <RootStyle {...other}>
-        <motion.div
+        <div
           initial={{ rotateY: 0 }}
           animate={{ rotateY: 360 }}
           transition={{
@@ -64,10 +64,10 @@ export default function LoadingScreen({ ...other }) {
             width={64}
             height={30}
           />
-        </motion.div>
+        </div>
 
         <Box
-          component={motion.div}
+          component={div}
           animate={{
             scale: [1.2, 1, 1, 1.2, 1.2],
             rotate: [270, 0, 0, 270, 270],
@@ -86,7 +86,7 @@ export default function LoadingScreen({ ...other }) {
         />
 
         <Box
-          component={motion.div}
+          component={div}
           animate={{
             scale: [1, 1.2, 1.2, 1, 1],
             rotate: [0, 270, 270, 0, 0],

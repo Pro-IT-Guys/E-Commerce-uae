@@ -1,6 +1,5 @@
-import * as Yup from "yup";
+
 import PropTypes from "prop-types";
-import { useFormik, Form, FormikProvider } from "formik";
 // material
 import {
   Stack,
@@ -15,8 +14,6 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { DialogAnimate } from "../animate";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 import LoginForm from "../Auth/LoginForm";
 
 // ----------------------------------------------------------------------

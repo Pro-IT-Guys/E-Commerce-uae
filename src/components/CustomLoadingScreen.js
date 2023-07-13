@@ -1,11 +1,7 @@
-import { motion } from 'framer-motion';
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles'
+import { CircularProgress } from '@mui/material'
 //
-import Logo from './Logo';
-import logoImg from '../assets/logo/aymi-logo.png'
-import Image from 'next/image'
 
 // ----------------------------------------------------------------------
 
@@ -18,17 +14,14 @@ const RootStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   zIndex: 9998,
   backgroundColor: theme.palette.background.default,
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function CustomLoadingScreen({ ...other }) {
-
-
-
-    return (
-      <RootStyle {...other}>
-        <motion.div
+  return (
+    <RootStyle {...other}>
+      {/* <motion.div
           initial={{ rotateY: 0 }}
           animate={{ rotateY: 360 }}
           transition={{
@@ -38,7 +31,6 @@ export default function CustomLoadingScreen({ ...other }) {
             repeat: Infinity,
           }}
         >
-          {/* <Logo sx={{ width: 64, height: 64 }} /> */}
           <Image
             src={logoImg}
             alt="logo"
@@ -87,7 +79,9 @@ export default function CustomLoadingScreen({ ...other }) {
             border: (theme) =>
               `solid 8px ${alpha(theme.palette.primary.dark, 0.24)}`,
           }}
-        />
-      </RootStyle>
-    );
-  }
+        /> */}
+
+      <CircularProgress size={24} />
+    </RootStyle>
+  )
+}

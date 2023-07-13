@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 // material
 import { Typography } from '@mui/material';
@@ -16,7 +16,7 @@ TextAnimate.propTypes = {
 export default function TextAnimate({ text, variants, sx, ...other }) {
   return (
     <Typography
-      component={motion.h1}
+      component={h1}
       sx={{
         typography: 'h1',
         overflow: 'hidden',
@@ -26,9 +26,9 @@ export default function TextAnimate({ text, variants, sx, ...other }) {
       {...other}
     >
       {text.split('').map((letter, index) => (
-        <motion.span key={index} variants={variants || varFadeInUp}>
+        <span key={index} variants={variants || varFadeInUp}>
           {letter}
-        </motion.span>
+        </span>
       ))}
     </Typography>
   );

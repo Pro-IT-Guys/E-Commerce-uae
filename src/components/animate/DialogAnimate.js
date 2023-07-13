@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 // material
 import { Dialog } from '@mui/material';
 //
@@ -22,14 +22,13 @@ export default function DialogAnimate({
   ...other
 }) {
   return (
-    <AnimatePresence>
+    <>
       {open && (
         <Dialog
           fullWidth
           maxWidth='xs'
           open={open}
           onClose={onClose}
-          PaperComponent={motion.div}
           PaperProps={{
             sx: {
               borderRadius: 2,
@@ -42,6 +41,6 @@ export default function DialogAnimate({
           {children}
         </Dialog>
       )}
-    </AnimatePresence>
+    </>
   );
 }

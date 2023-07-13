@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 // material
 import { Box } from '@mui/material';
 //
@@ -21,7 +21,7 @@ export default function ButtonAnimate({
 }) {
   return (
     <Box
-      component={motion.div}
+      // component={motion.div}
       whileTap='tap'
       whileHover='hover'
       variants={mediumClick ? varMediumClick : varSmallClick}
