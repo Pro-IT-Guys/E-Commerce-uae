@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 // material
 import { alpha, styled } from '@mui/material/styles';

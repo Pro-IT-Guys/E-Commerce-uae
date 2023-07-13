@@ -9,7 +9,7 @@ import { Container, FormControl, InputLabel, Select } from '@mui/material'
 import { ContextData } from 'context/dataProviderContext'
 
 export default function TopNavbar() {
-  const { toCurrency , setToCurrency } = useContext(ContextData)
+  const { toCurrency, setToCurrency } = useContext(ContextData)
 
   return (
     <div>
@@ -36,19 +36,19 @@ export default function TopNavbar() {
                 <span>
                   <MdEmail />
                 </span>
-                dhs@gmail.com
+                support@aymifashion.com
               </h1>
               <div className="sm:text-xs text-xs flex items-center gap-1 font-normal">
                 {' '}
                 <span>
                   <BsTelephoneOutboundFill />
                 </span>
-                01868-032281
+                +971507778764
               </div>
               <div className=" z-50">
-                <FormControl variant='standard'>
+                <FormControl variant="standard">
                   <Select
-                    value={toCurrency }
+                    value={toCurrency}
                     onChange={e => setToCurrency(e.target.value)}
                     label="Currency"
                     sx={{

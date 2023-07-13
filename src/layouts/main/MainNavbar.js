@@ -114,6 +114,7 @@ export default function MainNavbar() {
 
   const handleLogOut = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('role')
     router.push('/')
     setUpdate(Math.random())
   }

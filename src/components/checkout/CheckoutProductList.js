@@ -144,7 +144,7 @@ export default function ProductList({
     }
   }, [quantity, selectedProduct])
 
-  console.log(sellingPrice, quantity)
+  // console.log(sellingPrice, quantity)
 
   return (
     <TableRow>

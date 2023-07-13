@@ -30,6 +30,7 @@ import Loader from 'src/components/Loader/Loader'
 import ShippingAddressPopup from 'src/components/checkout/ShippingAddressPopup'
 import { getAllCountriesWithFees } from 'apis/fee.api'
 import Page from 'src/components/Page'
+import { BASE_URL } from 'apis/url'
 
 const stripePromise = loadStripe(
   'pk_test_51L3PqJCnJiLLpGIeL4Uixr7K4bJ183L3tSUyFg2ENBX5ovRQKSQhaYTR8kG7WbcfvkvyuLa5RfB9eZlBJfohfpYd00PM7gqopw'
@@ -107,23 +108,21 @@ const CheckoutPayment = () => {
 
   const handleStripePayment = async paymentMethodId => {
     setLoading(true)
-    const response = await fetch(
-      'http://localhost:8000/api/v1/payment/stripe',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderId,
-          paymentMethodId,
-          currency: toCurrency,
-        }),
-      }
-    )
+    const response = await fetch(`${BASE_URL}/payment/stripe`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId,
+        paymentMethodId,
+        currency: toCurrency,
+      }),
+    })
 
     if (response.ok) {
       toast.success('Payment successful')
+      router.push(`/dashboard/app/invoice/${orderId}`)
       setLoading(false)
     } else {
       toast.error('Payment failed')

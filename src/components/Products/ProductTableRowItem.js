@@ -19,7 +19,7 @@ export default function ProductTableRowItem({ row, setUpdate }) {
     category,
     fabric,
     color,
-    size
+    size,
   } = row
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
@@ -53,7 +53,7 @@ export default function ProductTableRowItem({ row, setUpdate }) {
   return (
     <TableRow
       hover
-      className='border'
+      className="border"
       key={_id}
       tabIndex={-1}
       role="checkbox"
@@ -77,41 +77,42 @@ export default function ProductTableRowItem({ row, setUpdate }) {
         </Stack>
       </TableCell>
       <TableCell align="left">
-        <h1 className='text-xs'>{category}</h1>
+        <h1 className="text-xs">{category}</h1>
       </TableCell>
       <TableCell align="left">
-        <h1 className='text-xs'>{style}</h1>
+        <h1 className="text-xs">{style}</h1>
       </TableCell>
       <TableCell align="left">
-        <h1 className='text-xs'>{fabric}</h1>
+        <h1 className="text-xs">{fabric}</h1>
       </TableCell>
       <TableCell align="left">
-       {
-          type?.map((item, index) => (
-            <h1 key={index} className='text-xs'>{++index}. {item}</h1>
-          ))
-
-       }
+        {type?.map((item, index) => (
+          <h1 key={index} className="text-xs w-16">
+            {++index}. {item}
+            
+          </h1>
+        ))}
       </TableCell>
       <TableCell align="left">
-       {
-          color?.map((item, index) => (
-            <h1 key={index} className='text-xs'>{++index}. {item}</h1>
-          ))
-
-       }
+        {color?.map((item, index) => (
+          <h1 key={index} className="text-xs w-14">
+            {++index}. {item}
+          </h1>
+        ))}
       </TableCell>
       <TableCell align="left">
-       {
-          size?.map((item, index) => (
-            <h1 key={index} className='text-xs'>{++index}. {item}</h1>
-          ))
-
-       }
+          {size?.map((item, index) => (
+            <h1 key={index} className="text-xs w-10">
+              {++index}. {item}
+            </h1>
+          ))}
       </TableCell>
-      <TableCell align="left"> <h1 className='text-xs'>{quantity}</h1></TableCell>
       <TableCell align="left">
-        <h1 className="text-xs"> Buying Price: {buyingPrice}</h1>
+        {' '}
+        <h1 className="text-xs">{quantity}</h1>
+      </TableCell>
+      <TableCell align="left">
+        <h1 className="text-xs w-32"> Buying Price: {buyingPrice}</h1>
         <h1 className="text-xs"> Selling Price: {sellingPrice}</h1>
       </TableCell>
       {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}

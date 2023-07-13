@@ -6,7 +6,7 @@ import editFill from '@iconify/icons-eva/edit-fill'
 import trash2Outline from '@iconify/icons-eva/trash-2-outline'
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import DeliveryDiningOutlinedIcon from '@mui/icons-material/DeliveryDiningOutlined'
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DirectionsRunOutlinedIcon from '@mui/icons-material/DirectionsRunOutlined'
 import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined'
 // material
@@ -18,6 +18,7 @@ import {
   ListItemText,
 } from '@mui/material'
 import DeleteModal from '../Modal/DeleteModal'
+import { useRouter } from 'next/router'
 // routes
 
 // ----------------------------------------------------------------------
@@ -30,6 +31,7 @@ ProductMoreMenu.propTypes = {
 export default function ProductMoreMenu({ id, onDelete, deleteModalOpen, setDeleteModalOpen, handleClickOpen, handleClose,}) {
   const ref = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
 
 
   return (
@@ -50,14 +52,11 @@ export default function ProductMoreMenu({ id, onDelete, deleteModalOpen, setDele
       >
 
         <MenuItem
-        //   onClick={() => {
-        //     handleUpdateOrder(id, 'Processing')
-        //     setIsOpen(false)
-        //   }}
+          onClick={() => router.push(`/dashboard/app/product/edit/${id}`)}
           sx={{ color: 'text.secondary' }}
         >
           <ListItemIcon>
-            <DirectionsRunOutlinedIcon />
+            <BorderColorIcon />
             {/* <Icon icon={editFill} width={24} height={24} /> */}
           </ListItemIcon>
           <ListItemText

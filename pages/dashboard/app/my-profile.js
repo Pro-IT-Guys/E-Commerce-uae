@@ -18,18 +18,21 @@ import Page from 'src/components/Page'
 import { UploadAvatar } from 'src/components/upload'
 import DashboardLayout from 'src/layouts/dashboard'
 import { fData } from 'src/utils/formatNumber'
+import Swal from 'sweetalert2'
 
 export default function MyProfile() {
   const [image, setImage] = useState([])
   const [imgPath, setImgPath] = useState()
-  const { currentlyLoggedIn } = useContext(ContextData)
-  const { _id, name, shippingAddress, zipCode, email } = currentlyLoggedIn || {}
+  const { currentlyLoggedIn, setUpdate } = useContext(ContextData)
+  const { _id, name, phone, shippingAddress, zipCode, email } =
+    currentlyLoggedIn || {}
   const [country, setCountry] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedState, setSelectedState] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
   const [state, setState] = useState(null)
   const [city, setCity] = useState(null)
+  const [imageUrl, setImageUrl] = useState('')
 
   useEffect(() => {
     const _retriveCountry = async () => {
@@ -38,6 +41,26 @@ export default function MyProfile() {
     }
     _retriveCountry()
   }, [])
+
+  const handleImageUpload = e => {
+    const image = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', image)
+
+    fetch(`${BASE_URL}/image/single-image-upload`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result)
+        setImageUrl(result?.url)
+      })
+      .catch(err => {
+        setLoading(false)
+        toast.error('Something went wrong! please try again later!')
+      })
+  }
 
   const handleCountryChange = e => {
     const countryId = e.target.value
@@ -50,7 +73,7 @@ export default function MyProfile() {
     const stateId = e.target.value
     setSelectedState(stateId)
   }
-
+  console.log(imageUrl, 'image url')
   const {
     register,
     handleSubmit,
@@ -75,18 +98,18 @@ export default function MyProfile() {
   const onSubmit = data => {
     const userData = {
       name: {
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstName: data.firstName || name?.firstName,
+        lastName: data.lastName || name?.lastName,
       },
-      image: image.preview,
-      phone: data.phoneNumber,
+      image: imageUrl || currentlyLoggedIn?.image,
+      phone: data.phoneNumber || phone,
       shippingAddress: {
-        country: selectedCountry,
-        state: selectedState,
-        city: data.city,
-        address_line: data.address,
+        country: selectedCountry || shippingAddress?.country,
+        state: selectedState || shippingAddress?.state,
+        city: selectedCity || shippingAddress?.city,
+        address_line: data.address || shippingAddress?.address_line,
       },
-      zipCode: data.zipCode,
+      zipCode: data.zipCode || zipCode,
     }
 
     fetch(`${BASE_URL}/users/${_id}`, {
@@ -99,8 +122,20 @@ export default function MyProfile() {
       .then(res => res.json())
       .then(data => {
         console.log(data)
+        if (data?.success) {
+          setUpdate(Math.random())
+          Swal.fire({
+            icon: 'success',
+            title: 'Profile Updated Successfully',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+          reset()
+        }
       })
   }
+
+  console.log(selectedCountry, 'selected country')
 
   return (
     <DashboardLayout>
@@ -112,18 +147,18 @@ export default function MyProfile() {
             <p>Profile - </p>
             <p>Update </p>
           </div>
-          <div className="flex justify-center bg-white rounded-xl shadow mt-5">
+          <div className="flex justify-center items-center bg-white rounded-xl shadow mt-5">
             <div className="w-full  sm:p-10 px-3 py-5">
               <div className=" rounded-lg w-full">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="flex gap-4">
-                    <div className="w-[30%]">
-                      <Box sx={{ mb: 5 }}>
+                  <div className="md:flex gap-10">
+                    <div className="md:w-[30%]">
+                      {/* <Box sx={{ mb: 5 }}>
                         <UploadAvatar
                           accept="image/*"
-                          file={image}
+                          file={imageUrl}
                           maxSize={3145728}
-                          onDrop={handleDrop}
+                          onChange={handleImageUpload}
                           caption={
                             <Typography
                               variant="caption"
@@ -140,9 +175,27 @@ export default function MyProfile() {
                             </Typography>
                           }
                         />
-                      </Box>
+                      </Box> */}
+                      <div>
+                        <h1 className="mb-2 font-semibold">Profile Image</h1>
+                        <input
+                          type="file"
+                          onChange={handleImageUpload}
+                          // accept="image/*"
+                          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none"
+                        />
+
+                        <div className="p-5 ">
+                          <img
+                            src={imageUrl || currentlyLoggedIn?.image}
+                            alt=""
+                            className="rounded"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className=" w-[70%]">
+                    <div className=" md:w-[70%]">
+                      <h1 className="mb-2 font-semibold"> Your Personal Details</h1>
                       <div className="grid grid-cols-2 sm:gap-5 gap-3 mb-5">
                         <div className="flex flex-col items-start">
                           <TextField

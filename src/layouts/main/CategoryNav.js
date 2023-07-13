@@ -14,7 +14,7 @@ import {
   MenuItem,
 } from '@mui/material'
 import useCategorySetTop from 'src/hooks/useCategorySetTop'
-import { CATEGORY_OPTION } from 'constant/product'
+import { CATEGORY_OPTION, CATEGORY_OPTION_ARRAY } from 'constant/product'
 import CategoryIcon from '@mui/icons-material/Category'
 import Searchbar from '../dashboard/Searchbar'
 import ProductFilterDrawer from 'src/components/Home/Products/ProductFilterDrawer'
@@ -51,18 +51,16 @@ export default function CategoryNav() {
                 <h1 className="uppercase font-semibold text-sm">Category</h1>
               </div> */}
               <div className="flex gap-4 justify-center text-[14px]">
-                {CATEGORY_OPTION.map((item, index) =>
-                  item?.classify.map((category, index) => (
-                    <NextLink key={index} href={`/category/${category}`}>
-                      <a
-                        onClick={() => setCategory(category)}
-                        className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold "
-                      >
-                        {category}
-                      </a>
-                    </NextLink>
-                  ))
-                )}
+                {CATEGORY_OPTION_ARRAY?.map((category, index) => (
+                  <NextLink key={index} href={`/category/${category}`}>
+                    <a
+                      // onClick={() => setCategory(category)}
+                      className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold "
+                    >
+                      {category}
+                    </a>
+                  </NextLink>
+                ))}
               </div>
             </div>
             {/* <Searchbar /> */}

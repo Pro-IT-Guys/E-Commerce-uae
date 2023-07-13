@@ -119,7 +119,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
             <Box
               component="img"
               alt="avatar"
-              src={isString(file) ? file : file.preview}
+              src={file}
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />
           )}

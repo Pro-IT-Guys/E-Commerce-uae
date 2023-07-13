@@ -42,10 +42,10 @@ export default function LandingPage() {
       ) : (
         <MainLayout>
           <RootStyle title="AYMi" id="move_top">
-            <ContentStyle>
+            {/* <ContentStyle> */}
               <Banner />
               <Products />
-            </ContentStyle>
+            {/* </ContentStyle> */}
           </RootStyle>
         </MainLayout>
       )}

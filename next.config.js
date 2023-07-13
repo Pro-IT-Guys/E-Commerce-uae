@@ -1,16 +1,9 @@
-// module.exports = {
-//   images: {
-//     remotePatterns: [
-//       {
-//         protocol: 'http',
-//         hostname: 'localhost',
-//         port: '8000',
-//         pathname: '/images/product/',
-//         domains: ['localhost'],
-//       },
-//     ],
-//   },
-// };
+
+
+const withTM = require('next-transpile-modules')(['react-apexcharts'])
+
+module.exports = withTM()
+
 module.exports = {
   images: {
     domains: ["localhost"],

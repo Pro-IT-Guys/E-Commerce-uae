@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ContextData } from 'context/dataProviderContext'
 import { useRouter } from 'next/router'
 import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
+import { getStorage } from 'apis/loadStorage'
 
 const useAuthAdmin = WrappedComponent => {
   return props => {
@@ -19,12 +20,12 @@ const useAuthAdmin = WrappedComponent => {
     }, [])
 
     useEffect(() => {
-      const userRole = localStorage.getItem('role')
+      const userRole = getStorage('role')
 
       // if (isLoading) return <CustomLoadingScreen />
 
       if (userRole !== 'admin') {
-        router.push('/unauthorized')
+        router.push('/404')
       }
     }, [])
 
@@ -37,5 +38,3 @@ const useAuthAdmin = WrappedComponent => {
 }
 
 export default useAuthAdmin
-
-

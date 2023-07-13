@@ -24,7 +24,9 @@ export default function DeleteModal({ open, onClose, onDelete, id }) {
         className="bg-red-500 hover:bg-red-700 text-sm text-white font-bold py-2 px-4 rounded-full">
           Delete
         </button>
-        <button className="bg-green-500 hover:bg-green-700 text-sm text-white font-bold py-2 px-4 rounded-full">
+        <button 
+        onClick={onClose}
+        className="bg-green-500 hover:bg-green-700 text-sm text-white font-bold py-2 px-4 rounded-full">
           Cancel
         </button>
       </div>

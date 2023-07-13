@@ -10,6 +10,15 @@ export const createProduct = async data => {
   }
 }
 
+export const getAllProduct = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/product`)
+    return res?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getProductBySku = async sku => {
   try {
     const res = await axios.get(`${BASE_URL}/product/sku/${sku}`)
@@ -20,31 +29,32 @@ export const getProductBySku = async sku => {
   }
 }
 
-export const multiFilterProduct = async (data) => {
-  const { searchTerm, category, maxPrice, minPrice, type, style, fabric } = data;
+export const multiFilterProduct = async data => {
+  const { searchTerm, category, maxPrice, minPrice, type, style, fabric } = data
 
   const queryParams = {
     searchTerm,
-    category,
     maxPrice,
     minPrice,
+    category: Array.isArray(category) ? category.join(',') : category,
     type: Array.isArray(type) ? type.join(',') : type,
     style: Array.isArray(style) ? style.join(',') : style,
     fabric: Array.isArray(fabric) ? fabric.join(',') : fabric,
-  };
+  }
 
   const filteredParams = Object.fromEntries(
-    Object.entries(queryParams).filter(([_, value]) => value !== undefined && value !== '')
-  );
+    Object.entries(queryParams).filter(
+      ([_, value]) => value !== undefined && value !== ''
+    )
+  )
 
   try {
-    const queryString = new URLSearchParams(filteredParams).toString();
-    const url = `${BASE_URL}/product/?${queryString}`;
-    const res = await axios.get(url);
+    const queryString = new URLSearchParams(filteredParams).toString()
+    const url = `${BASE_URL}/product/?${queryString}`
+    const res = await axios.get(url)
 
-    return res?.data;
+    return res?.data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
-
+}

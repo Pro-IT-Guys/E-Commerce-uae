@@ -24,6 +24,7 @@ import {
   getCartByCartId,
   getCartByUserId,
 } from 'apis/cart.api'
+import { verifyCupon } from 'apis/cupon.api'
 import { getAllCountriesWithFees, getFeeOfLocation } from 'apis/fee.api'
 import { placeOrder } from 'apis/order.api'
 import { getProductBySku } from 'apis/product.api'
@@ -72,6 +73,9 @@ export default function Checkout() {
     phoneNumber: '',
     address_line: '',
   })
+
+  const [cupon, setCupon] = useState('')
+  const [discountByCupon, setDiscountByCupon] = useState(0)
 
   const handleAdditionalInfo = e => {
     const { name, value } = e.target
@@ -249,7 +253,32 @@ export default function Checkout() {
     const res = await placeOrder(orderData)
     if (res?.statusCode === 200) {
       toast.success('Order placed successfully.')
+      setAddressPopup(false)
       router.push(`/checkout/payment/${res?.data?._id}`)
+    }
+  }
+
+  const handleApplyCupon = async () => {
+    if (!cupon) return toast.error('Please enter a cupon code.')
+    if (!currentlyLoggedIn) return toast.error('Please login to continue.')
+
+    const data = {
+      cuponCode: cupon,
+      userId: currentlyLoggedIn?._id,
+    }
+    const res = await verifyCupon(data)
+    if (res?.statusCode === 200) {
+      setCupon('')
+
+      // Calculate discount
+      const parcentage = res?.data?.discount
+      const discount = (Number(totalPrice) * Number(parcentage)) / 100
+      console.log(discount)
+      setDiscountByCupon(discount)
+      setTotalPrice(Number(totalPrice) - Number(discount))
+      toast.success(`You got ${parcentage}% discount.`)
+    } else {
+      toast.error('Invalid cupon code.')
     }
   }
 
@@ -333,10 +362,13 @@ export default function Checkout() {
                   <Card sx={{ mb: 3 }}>
                     <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
                       <TextField
+                        onChange={e => setCupon(e.target.value)}
                         sx={{ width: '70%' }}
                         label="Enter Coupon Code"
+                        value={cupon}
                       />
                       <Button
+                        onClick={handleApplyCupon}
                         sx={{ ml: 1, width: '30%', height: '54px' }}
                         variant="contained"
                       >
@@ -375,6 +407,26 @@ export default function Checkout() {
                           </Typography>
                           <Typography variant="subtitle2">0</Typography>
                         </Stack>
+
+                        {discountByCupon > 0 && (
+                          <Stack direction="row" justifyContent="space-between">
+                            <Typography
+                              variant="body2"
+                              sx={{ color: 'text.secondary' }}
+                            >
+                              Cupon Discount
+                            </Typography>
+                            <Typography variant="subtitle2">
+                              {toCurrency === 'USD' && '$ '}
+                              {convertCurrencyForCalculation(
+                                fromCurrency,
+                                toCurrency,
+                                discountByCupon
+                              )}
+                              {toCurrency === 'AED' && 'AED'}
+                            </Typography>
+                          </Stack>
+                        )}
 
                         <Stack direction="row" justifyContent="space-between">
                           <Typography

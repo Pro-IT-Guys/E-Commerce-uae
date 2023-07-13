@@ -42,12 +42,12 @@ export default function LoginForm({ onClose }) {
             window.location.reload()
           }, 1500)
         } else {
-          toast.error('Something Went Wrong!')
+          toast.error('Incorrect Email or Password!')
         }
       })
       .catch(err => {
         console.log(err)
-        toast.error('Something Went Wrong!')
+        toast.error('Incorrect Email or Password!')
       })
   }
 
@@ -126,14 +126,14 @@ export default function LoginForm({ onClose }) {
                   )} */}
                 </label>
               </div>
-              <div className="flex justify-end">
+              {/* <div className="flex justify-end">
                 <span
                   onClick={() => navigate('/forgot-password')}
                   className="text-sm text-end pr-2 pt-1 cursor-pointer font-semibold"
                 >
                   Forgot password?{' '}
                 </span>
-              </div>
+              </div> */}
 
               <div className="relative mt-2">
                 <button

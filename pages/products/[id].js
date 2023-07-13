@@ -16,6 +16,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CardContent,
 } from '@mui/material'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import React, { useContext, useEffect, useRef, useState } from 'react'
@@ -45,6 +46,10 @@ import { toast } from 'react-hot-toast'
 import Loader from 'src/components/Loader/Loader'
 import Swal from 'sweetalert2'
 import ProductDetailsTab from 'src/components/Products/ProductDetailsTab'
+import RelatedProducts from 'src/components/Products/RelatedProducts'
+import { ButtonAnimate, DialogAnimate } from 'src/components/animate'
+import ClearIcon from '@mui/icons-material/Clear'
+import { BASE_URL } from 'apis/url'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -87,6 +92,7 @@ export default function ProductDetails() {
   const [loader, setLoader] = useState(false)
   const [retriveCartState, setRetriveCartState] = useState(false)
   const [productUrl, setProductUrl] = useState('')
+  const [openSizeChartPopup, setOpenSizeChartPopup] = useState(false)
 
   useEffect(() => {
     setProductUrl(window.location.href)
@@ -136,7 +142,7 @@ export default function ProductDetails() {
   // Initialize socket..Make useEffect if only the currentlyLoggedIn exist
   useEffect(() => {
     if (currentlyLoggedIn) {
-      socket.current = io('http://localhost:8080')
+      socket.current = io('https://server.aymifashion.com')
       socket.current.emit('join', currentlyLoggedIn._id)
 
       socket.current.on('activeUsers', users => {
@@ -163,7 +169,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     setLoader(false)
-    fetch(`http://localhost:8000/api/v1/product/path/${params}`)
+    fetch(`${BASE_URL}/product/path/${params}`)
       .then(res => res.json())
       .then(data => setProductDetails(data?.data))
       .finally(() => setLoader(false))
@@ -247,6 +253,12 @@ export default function ProductDetails() {
                     </Label>
 
                     <h1 className="text-xl font-semibold mt-3">{name}</h1>
+                    <Typography variant="body2" sx={{ color: 'text.primary' }}>
+                      {productDetails?.metaDescription?.length > 50
+                        ? productDetails?.metaDescription?.slice(0, 50)
+                        : productDetails?.metaDescription}
+                      {productDetails?.metaDescription?.length > 50 && '...'}
+                    </Typography>
 
                     <Stack
                       spacing={0.5}
@@ -262,12 +274,25 @@ export default function ProductDetails() {
                         {rating} Ratings
                       </Typography>
                     </Stack>
-                    <p className="text-sm">
-                      Brand: {productDetails?.brand?.name}
-                    </p>
-                    <p className="text-xl font-semibold mt-3 text-secondary">
-                      {convertCurrency(fromCurrency, toCurrency, sellingPrice)}
-                    </p>
+                    <p className="text-sm">Fabric: {productDetails?.fabric}</p>
+
+                    <div className="flex items-center mt-3">
+                      <p className="text-xl font-semibold  text-secondary">
+                        {convertCurrency(
+                          fromCurrency,
+                          toCurrency,
+                          sellingPrice
+                        )}
+                      </p>
+                      <ButtonAnimate mediumClick>
+                        <small
+                          onClick={() => setOpenSizeChartPopup(true)}
+                          className="border-primary border px-2 py-1 rounded-md text-primary cursor-pointer ml-5"
+                        >
+                          Size Chart
+                        </small>
+                      </ButtonAnimate>
+                    </div>
                     {/* <strike className="text-[#7a7a7a] text-xs">
                     ৳ {sellingPrice}
                   </strike> */}
@@ -415,27 +440,55 @@ export default function ProductDetails() {
                       >
                         Buy Now
                       </Button>
-                      <Button
-                        onClick={() => {
-                          setOpenChat(!openChat)
-                        }}
-                        fullWidth
-                        size="medium"
-                        type="submit"
-                        variant="contained"
-                      >
-                        Message
-                      </Button>
+                      {currentlyLoggedIn?.role &&
+                        currentlyLoggedIn?.role !== 'admin' && (
+                          <Button
+                            onClick={() => {
+                              setOpenChat(!openChat)
+                            }}
+                            fullWidth
+                            size="medium"
+                            type="submit"
+                            variant="contained"
+                          >
+                            Message
+                          </Button>
+                        )}
                     </Stack>
                   </Grid>
                 </Grid>
               </Card>
 
               <ProductDetailsTab product={productDetails} />
+              {productDetails && Object.keys(productDetails).length > 0 && (
+                <RelatedProducts product={productDetails} />
+              )}
             </Container>
           </div>
         </Page>
       </MainLayout>
+      {openSizeChartPopup && (
+        <DialogAnimate
+          maxWidth="md"
+          open={openSizeChartPopup}
+          onClose={setOpenSizeChartPopup}
+        >
+          <Card sx={{ width: '100%' }}>
+            <ClearIcon
+              onClick={() => setOpenSizeChartPopup(false)}
+              color="#000"
+              className="cross_icon margin_bottom_16px cursor-pointer"
+            />
+            <CardContent sx={{ mt: 2 }}>
+              <img
+                className="w-full h-full"
+                src="/static/mock-images/sizeChart.png"
+                alt=""
+              />
+            </CardContent>
+          </Card>
+        </DialogAnimate>
+      )}
 
       {currentlyLoggedIn?.role && currentlyLoggedIn?.role !== 'admin' && (
         <>

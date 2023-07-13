@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast'
 
 // ----------------------------------------------------------------------
 
-export default function SignUpForm() {
+export default function SignUpForm({onClose}) {
   const [otpModal, setOtpModal] = useState(false)
   const [otpEmail, setOtpEmail] = useState('')
   const router = useRouter()
@@ -35,7 +35,6 @@ export default function SignUpForm() {
         if (res.status === 200) {
           setOtpModal(true)
           setOtpEmail(email)
-          // navigate(from, { replace: true })
           toast.success('Otp sent Successfully! Please Verify Your Email')
           localStorage.setItem('user', JSON.stringify(res.headers.authorization.split(' ')[1]))
         } else {
@@ -63,7 +62,7 @@ export default function SignUpForm() {
         console.log(res)
         if (res.status === 200) {
           setOtpModal(true)
-          // navigate(from, { replace: true })
+          onClose()
           toast.success('Email Verified Successfully! Please Login')
           setUpdate(Math.random())
           localStorage.setItem('token', (res.headers.authorization.split(' ')[1]))

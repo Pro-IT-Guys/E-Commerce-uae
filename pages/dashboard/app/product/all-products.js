@@ -121,7 +121,7 @@ export default function ProductList() {
   return (
     <DashboardLayout>
       <Page title="AYMi | All Products">
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           <h1 className="font-bold text-2xl">Product List</h1>
           <div className="flex gap-2 text-sm mt-3 text-[#636262]">
             <p>Home - </p>
@@ -140,6 +140,7 @@ export default function ProductList() {
               <TableContainer>
                 <Table>
                   <UserListHead
+           
                     // order={order}
                     // orderBy={orderBy}
                     headLabel={TABLE_HEAD}

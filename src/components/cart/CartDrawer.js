@@ -6,12 +6,19 @@ import { CustomIcons } from 'public/static/mui-icons'
 import { ContextData } from 'context/dataProviderContext'
 import { bulkUpdateCart } from 'apis/cart.api'
 import { useRouter } from 'next/router'
+import { convertCurrency } from 'helpers/currencyHandler'
 
 export default function CartDrawer() {
   const router = useRouter()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const { usersCart, cartSimplified, setCartSimplified, token } =
-    useContext(ContextData)
+  const {
+    usersCart,
+    cartSimplified,
+    setCartSimplified,
+    token,
+    fromCurrency,
+    toCurrency,
+  } = useContext(ContextData)
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true)
@@ -23,18 +30,21 @@ export default function CartDrawer() {
 
   const handleIncreaseQuantity = productId => {
     const updatedCart = [...cartSimplified]
-    const productIndex = updatedCart.findIndex(item => item._id === productId)
+    const productIndex = updatedCart.findIndex(
+      item => item.productId._id === productId
+    )
 
     if (productIndex !== -1) {
       updatedCart[productIndex].quantity += 1
-
       setCartSimplified(updatedCart)
     }
   }
 
   const handleDecreaseQuantity = productId => {
     const updatedCart = [...cartSimplified]
-    const productIndex = updatedCart.findIndex(item => item._id === productId)
+    const productIndex = updatedCart.findIndex(
+      item => item.productId._id === productId
+    )
 
     if (productIndex !== -1) {
       if (updatedCart[productIndex].quantity > 1) {
@@ -58,7 +68,13 @@ export default function CartDrawer() {
     router.push('/cart')
   }
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    const dataToUpdate = {
+      token,
+      cartId: usersCart?._id,
+      product: cartSimplified,
+    }
+    const updateCart = await bulkUpdateCart(dataToUpdate)
     router.push(`/checkout/product/cart=${usersCart?._id}`)
   }
 
@@ -139,13 +155,33 @@ export default function CartDrawer() {
                         : product?.productId?.name}
                     </Typography>
                     <Typography sx={{ fontSize: 13 }}>
-                      Price: ${product?.productId?.sellingPrice}
+                      Price:{' '}
+                      {product?.subtotal ? (
+                        <>
+                          {convertCurrency(
+                            fromCurrency,
+                            toCurrency,
+                            product?.subtotal
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {convertCurrency(
+                            fromCurrency,
+                            toCurrency,
+                            Number(product?.productId?.sellingPrice) *
+                              Number(product?.quantity)
+                          )}
+                        </>
+                      )}
                     </Typography>
                     <div className="mt-2">
                       <Button
                         variant="outlined"
                         size="small"
-                        onClick={() => handleDecreaseQuantity(product?._id)}
+                        onClick={() =>
+                          handleDecreaseQuantity(product?.productId?._id)
+                        }
                         style={{
                           fontSize: '10px',
                           padding: '0px',
@@ -163,7 +199,9 @@ export default function CartDrawer() {
                       <Button
                         variant="outlined"
                         size="small"
-                        onClick={() => handleIncreaseQuantity(product?._id)}
+                        onClick={() =>
+                          handleIncreaseQuantity(product?.productId?._id)
+                        }
                         style={{
                           fontSize: '10px',
                           padding: '0px',

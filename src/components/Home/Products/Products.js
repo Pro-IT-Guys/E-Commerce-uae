@@ -28,6 +28,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import {
   BRAND_OPTION,
   CATEGORY_OPTION,
+  CATEGORY_OPTION_ARRAY,
   COLOR_OPTION,
   FABRIC_OPTION,
   FABRIC_OPTION_ARRAY,
@@ -139,6 +140,8 @@ const Products = () => {
     return false
   }
 
+ 
+
   return (
     <div className="bg-[#f7f7ff9c] ">
       <Container maxWidth="lg" className="pb-20 ">
@@ -184,10 +187,10 @@ const Products = () => {
                 )} */}
                 </div>
               </div>
-              {(category.length ||
-                type.length ||
-                style.length ||
-                fabric.length ||
+              {(category?.length ||
+                type?.length ||
+                style?.length ||
+                fabric?.length ||
                 value[0] !== 0 ||
                 value[1] !== 1000) &&
                 !router.pathname.includes('category') && (
@@ -199,7 +202,7 @@ const Products = () => {
                   </div>
                 )}
             </div>
-            <div className="  w-[80%] hidden">
+            <div className="w-[80%] hidden">
               <div className="flex justify-between items-center">
                 <div className="input-group relative flex  items-stretch w-[80%]">
                   <input
@@ -251,8 +254,8 @@ const Products = () => {
           </div>
 
           <div className=" md:flex w-full gap-5">
-            <div className="md:w-[20%] md:block hidden">
-              <div className="space-y-4">
+            <div className="md:w-[20%] md:block hidden ">
+              <div className="space-y-4 filter-sticky sticky top-20">
                 <div className="bg-white shadow rounded">
                   <div className=" py-2 px-3 border-b">
                     <h1 className="font-semibold ">
@@ -260,9 +263,10 @@ const Products = () => {
                       Filter by Price ({toCurrency})
                     </h1>
                   </div>
-                  <div className=" py-3 pl-4 pr-3 bg-white ">
+                  <div className=" py-3 px-3 bg-white ">
                     <Box>
                       <Slider
+                        size="medium"
                         getAriaLabel={() => 'Price range'}
                         value={value}
                         onChange={handlePriceRange}
@@ -283,8 +287,8 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-                {router.pathname.includes('category') && (
-                  <div className="bg-white shadow rounded">
+                {/* {router.pathname.includes('category') && (
+                  <div className="bg-white shadow rounded hidden">
                     <div className="  py-2 px-3 border-b">
                       <h1 className="font-semibold "> Filter by Category</h1>
                     </div>
@@ -293,7 +297,7 @@ const Products = () => {
                         value={category}
                         onChange={e => handleSelectFilterOption(e, setCategory)}
                       >
-                        {CATEGORY_OPTION.map(item =>
+                        {CATEGORY_OPTION?.map(item =>
                           item?.classify?.map(item => (
                             <FormControlLabel
                               onClick={() => setCategory(item)}
@@ -307,7 +311,70 @@ const Products = () => {
                       </RadioGroup>
                     </div>
                   </div>
-                )}
+                )} */}
+                <div className="bg-white shadow rounded">
+                  <div className="  py-2 px-3 border-b">
+                    <h1 className="font-semibold "> Filter by Categories</h1>
+                  </div>
+                  <div className=" py-3 pl-4 pr-3">
+                    {/* <RadioGroup
+                      value={fabric}
+                      onChange={e => handleSelectFilterOption(e, setFabric)}
+                    >
+                      {FABRIC_OPTION.map(item =>
+                        item?.classify?.map(item => (
+                          <FormControlLabel
+                            key={item}
+                            value={item}
+                            control={<Radio />}
+                            label={item}
+                          />
+                        ))
+                      )}
+                    </RadioGroup> */}
+
+                    <FormControl fullWidth>
+                      <div>
+                        <Autocomplete
+                          size="small"
+                          className="w-full"
+                          multiple
+                          freeSolo
+                          value={category}
+                          onChange={(event, newValue) => {
+                            setCategory(newValue)
+                          }}
+                          options={CATEGORY_OPTION_ARRAY}
+                          getOptionLabel={option => option}
+                          renderTags={() => null}
+                          renderInput={params => (
+                            <TextField label="Category" {...params} />
+                          )}
+                        ></Autocomplete>
+
+                        <div style={{ marginTop: '8px' }}>
+                          {category?.map((option, index) => (
+                            <Chip
+                              key={option}
+                              size="small"
+                              label={option}
+                              onDelete={() => {
+                                setCategory(prevValue =>
+                                  prevValue?.filter(val => val !== option)
+                                )
+                              }}
+                              deleteIcon={<CloseIcon />}
+                              style={{
+                                marginRight: '8px',
+                                marginBottom: '8px',
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </FormControl>
+                  </div>
+                </div>
                 <div className="bg-white shadow rounded">
                   <div className="  py-2 px-3 border-b">
                     <h1 className="font-semibold "> Filter by Fabrics</h1>
@@ -516,7 +583,8 @@ const Products = () => {
                   </RadioGroup>
                 </div> */}
               </div>
-              <div className=" mt-4 shadow">
+
+              {/* <div className=" mt-4 shadow">
                 <div className="bg-[#f2f2f2] border py-2 px-3 rounded-t">
                   <h1 className="font-semibold text-xl">Best Selling</h1>
                 </div>
@@ -550,7 +618,7 @@ const Products = () => {
                     </>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className=" md:w-[80%]">

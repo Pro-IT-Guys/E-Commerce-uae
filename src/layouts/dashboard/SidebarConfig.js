@@ -84,16 +84,46 @@ const sidebarConfig = [
         icon: ICONS.user,
         role: 'admin',
       },
-      // {
-      //   title: "My Shop",
-      //   path: PATH_DASHBOARD.settings.root,
-      //   icon: ICONS.analytics,
-      // },
-      // {
-      //   title: "Banner Setting",
-      //   path: PATH_DASHBOARD.banner.root,
-      //   icon: ICONS.dashboard,
-      // },
+      {
+        title: 'my shop',
+        path: PATH_DASHBOARD.myShop.root,
+        icon: ICONS.ecommerce,
+        role: 'admin',
+        children: [
+          {
+            title: 'Add Campaign',
+            path: PATH_DASHBOARD.myShop.addCampaign,
+          },
+          {
+            title: 'Cupon & Discount',
+            path: PATH_DASHBOARD.myShop.cupon,
+          },
+          {
+            title: 'Terms & Conditions',
+            path: PATH_DASHBOARD.myShop.terms,
+          },
+          {
+            title: 'Privacy Policy',
+            path: PATH_DASHBOARD.myShop.privacy,
+          },
+          {
+            title: 'Return & Refund Policy',
+            path: PATH_DASHBOARD.myShop.return,
+          },
+        ],
+      },
+      {
+        title: 'currency ',
+        path: PATH_DASHBOARD.currency.root,
+        icon: ICONS.user,
+        role: 'admin',
+      },
+      {
+        title: 'Delivery Fee ',
+        path: PATH_DASHBOARD.delivery.root,
+        icon: ICONS.user,
+        role: 'admin',
+      },
       {
         title: 'tickets',
         path: PATH_DASHBOARD.ticket.root,
