@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast'
 // scroll bar
-import 'simplebar/src/simplebar.css'
+// import 'simplebar/src/simplebar.css'
 // editor
 import 'react-quill/dist/quill.snow.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -8,8 +8,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 // next
 import Head from 'next/head'
 import { CacheProvider } from '@emotion/react'
-// material
-import { NoSsr } from '@mui/material'
+
 // contexts
 import { SettingsProvider } from 'src/contexts/SettingsContext'
 import { CollapseDrawerProvider } from 'src/contexts/CollapseDrawerContext'
@@ -19,10 +18,8 @@ import GlobalStyles from 'src/theme/globalStyles'
 // utils
 import createEmotionCache from 'src/utils/createEmotionCache'
 // components
-import Settings from 'src/components/settings'
 import RtlLayout from 'src/components/RtlLayout'
 import ProgressBar from 'src/components/ProgressBar'
-import LoadingScreen from 'src/components/LoadingScreen'
 import ThemePrimaryColor from 'src/components/ThemePrimaryColor'
 import '../styles/global.css'
 import { ContextProvider } from 'context/dataProviderContext'
@@ -49,7 +46,7 @@ export default function MyApp(props) {
               <ThemeConfig>
                 <ThemePrimaryColor>
                   <RtlLayout>
-                    <NoSsr>{/* <Settings /> */}</NoSsr>
+                    {/* <NoSsr><Settings /></NoSsr> */}
                     <GlobalStyles />
                     <ProgressBar />
                     {/* <LoadingScreen /> */}

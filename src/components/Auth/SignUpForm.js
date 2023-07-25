@@ -28,7 +28,7 @@ export default function SignUpForm({onClose}) {
       password,
       role: 'user',
     }
-    console.log(body)
+    
     axios
       .post(FetchUrls('auth'), body)
       .then(res => {

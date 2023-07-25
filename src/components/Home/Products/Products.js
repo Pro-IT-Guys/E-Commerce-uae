@@ -43,13 +43,9 @@ import { ContextData } from 'context/dataProviderContext'
 import ProductLoader from './ProductLoader'
 import { useRouter } from 'next/router'
 import {
-  convertCurrency,
   convertCurrencyForCalculation,
 } from 'helpers/currencyHandler'
 
-function valuetext(value) {
-  return `${value}°C`
-}
 
 const Products = () => {
   const {

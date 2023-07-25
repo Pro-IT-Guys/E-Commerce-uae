@@ -1,18 +1,5 @@
-// next
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-// material
-import { styled } from '@mui/material/styles'
-import {
-  Box,
-  Button,
-  AppBar,
-  Toolbar,
-  Container,
-  FormControl,
-  Select,
-  MenuItem,
-} from '@mui/material'
+import Link from 'next/link'
+import { Container } from '@mui/material'
 import useCategorySetTop from 'src/hooks/useCategorySetTop'
 import { CATEGORY_OPTION, CATEGORY_OPTION_ARRAY } from 'constant/product'
 import CategoryIcon from '@mui/icons-material/Category'
@@ -52,14 +39,14 @@ export default function CategoryNav() {
               </div> */}
               <div className="flex gap-4 justify-center text-[14px]">
                 {CATEGORY_OPTION_ARRAY?.map((category, index) => (
-                  <NextLink key={index} href={`/category/${category}`}>
-                    <a
+                  <Link key={index} href={`/category/${category}`} passHref>
+                    <span
                       // onClick={() => setCategory(category)}
-                      className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold "
+                      className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold"
                     >
                       {category}
-                    </a>
-                  </NextLink>
+                    </span>
+                  </Link>
                 ))}
               </div>
             </div>
