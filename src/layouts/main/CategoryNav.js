@@ -3,7 +3,6 @@ import { Container } from '@mui/material'
 import { CATEGORY_OPTION_ARRAY } from '../../../constant/product'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { SpatialTrackingOutlined } from '@mui/icons-material'
 const ProductFilterDrawer = dynamic(() =>
   import('../../components/Home/Products/ProductFilterDrawer'),
 )
@@ -36,9 +35,9 @@ export default function CategoryNav() {
               <div className="flex gap-4 justify-center text-[14px]">
                 {CATEGORY_OPTION_ARRAY?.map((category, index) => (
                   <Link key={index} href={`/category/${category}`} passHref>
-                    <SpatialTrackingOutlined className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold">
+                    <span className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold">
                       {category}
-                    </SpatialTrackingOutlined>
+                    </span>
                   </Link>
                 ))}
               </div>

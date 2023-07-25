@@ -1,7 +1,4 @@
 import { Toaster } from 'react-hot-toast'
-// scroll bar
-// import 'simplebar/src/simplebar.css'
-// editor
 import 'react-quill/dist/quill.snow.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 

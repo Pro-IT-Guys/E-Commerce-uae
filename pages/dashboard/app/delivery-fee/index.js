@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ImCross } from 'react-icons/im'
-import { ContextData } from 'context/dataProviderContext'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
-  CircularProgress,
   Container,
   FormControl,
   Grid,
@@ -141,10 +138,7 @@ const DeliveryFee = ({}) => {
                     variant="contained"
                     color="primary"
                     sx={{ mt: 2, width: '130px' }}
-                    // onClick={handleConfirmAddress}
-                    // disabled={loading}
                   >
-                    {/* {loading ? <CircularProgress size={24} /> : 'Confirm'} */}
                     Confirm
                   </Button>
                 </ButtonAnimate>

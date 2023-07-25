@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ImCross } from 'react-icons/im'
+import { Icon } from '@iconify/react'
 
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
@@ -11,10 +11,9 @@ const stripePromise = loadStripe(
 )
 
 const StripePopup = ({ setOpenPopup }) => {
-  const { currentlyLoggedIn, toCurrency } = useContext(ContextData)
+  const {  toCurrency } = useContext(ContextData)
 
   const handleStripePayment = async paymentMethodId => {
-    console.log(paymentMethodId, 'paymentMethodId')
     const response = await fetch(
       'http://localhost:8000/api/v1/payment/stripe',
       {
@@ -40,10 +39,12 @@ const StripePopup = ({ setOpenPopup }) => {
   return (
     <div className="popup_wrapper">
       <div className="popup_content relative">
-        <ImCross
+        <Icon
           onClick={() => setOpenPopup(false)}
           className="absolute right-0 top-0 mr-4 mt-4 h-4 w-4 cursor-pointer"
+          icon="maki:cross"
         />
+
         <div>
           <div className="w-1/2 mt-[-50px] mx-auto">
             <Elements stripe={stripePromise}>

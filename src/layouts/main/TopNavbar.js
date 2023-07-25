@@ -1,11 +1,7 @@
-import React, { useContext, useState } from 'react'
-import { FaFacebookF } from 'react-icons/fa'
-import { IoLogoYoutube } from 'react-icons/io'
-import { BsTwitter } from 'react-icons/bs'
-import { MdEmail } from 'react-icons/md'
-import { BsTelephoneOutboundFill } from 'react-icons/bs'
+import React, { useContext } from 'react'
+import { Icon } from '@iconify/react'
 import MenuItem from '@mui/material/MenuItem'
-import { Container, FormControl, InputLabel, Select } from '@mui/material'
+import { Container, FormControl, Select } from '@mui/material'
 import { ContextData } from '../../../context/dataProviderContext'
 
 export default function TopNavbar() {
@@ -20,13 +16,13 @@ export default function TopNavbar() {
               <h1 className="sm:text-xs text-xs  flex items-center gap-2">
                 Follow us
                 <span className="cursor-pointer hover:text-accent duration-300">
-                  <FaFacebookF />
+                  <Icon icon="gg:facebook" />
                 </span>
                 <span className="cursor-pointer hover:text-accent duration-300">
-                  <IoLogoYoutube />
+                  <Icon icon="ri:youtube-fill" />
                 </span>
                 <span className="cursor-pointer hover:text-accent duration-300">
-                  <BsTwitter />
+                  <Icon icon="mdi:twitter" />
                 </span>
               </h1>
             </div>
@@ -34,14 +30,14 @@ export default function TopNavbar() {
               <h1 className="sm:text-xs text-xs flex items-center gap-1 font-normal">
                 {' '}
                 <span>
-                  <MdEmail />
+                  <Icon icon="ic:baseline-email" />
                 </span>
                 support@aymifashion.com
               </h1>
               <div className="sm:text-xs text-xs flex items-center gap-1 font-normal">
                 {' '}
                 <span>
-                  <BsTelephoneOutboundFill />
+                  <Icon icon="solar:phone-bold" />
                 </span>
                 +971507778764
               </div>

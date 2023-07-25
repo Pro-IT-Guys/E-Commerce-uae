@@ -1,15 +1,15 @@
-
 import { styled } from '@mui/material/styles'
 // components
 import { useState } from 'react'
 import CustomLoadingScreen from '../src/components/CustomLoadingScreen'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
-
-const Page = dynamic(() => import('../src/components/Page'))
-const MainLayout = dynamic(() => import('../src/layouts/main'))
+import MainLayout from '../src/layouts/main'
+import Page from '../src/components/Page'
 const Banner = dynamic(() => import('../src/components/Home/Banner/Banner'))
-const Products = dynamic(() => import('../src/components/Home/Products/Products'))
+const Products = dynamic(() =>
+  import('../src/components/Home/Products/Products'),
+)
 
 // ----------------------------------------------------------------------
 
