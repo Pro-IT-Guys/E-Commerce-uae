@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react'
-import { useTheme } from '@mui/material/styles'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+import { Autoplay} from 'swiper/modules'
 
 import Image from 'next/image'
 import { useContext } from 'react'
-import { BASE_URL } from 'apis/url'
-import { ContextData } from 'context/dataProviderContext'
+import { BASE_URL } from '../../../../apis/url'
+import { ContextData } from '../../../../context/dataProviderContext'
 import dynamic from 'next/dynamic'
 const Container = dynamic(() => import('@mui/material/Container'), {
   ssr: false,
@@ -23,7 +22,6 @@ const Banner = () => {
   const { currentlyLoggedIn } = useContext(ContextData)
   const [offer, setOffer] = useState(null)
   const { image, isVisible } = offer || {}
-  const theme = useTheme()
 
   useEffect(() => {
     fetch(`${BASE_URL}/Offer`)

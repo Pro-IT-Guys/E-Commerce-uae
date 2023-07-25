@@ -1,22 +1,14 @@
-import PropTypes from 'prop-types'
 import { Icon } from '@iconify/react'
 import closeFill from '@iconify/icons-eva/close-fill'
-import roundClearAll from '@iconify/icons-ic/round-clear-all'
 import roundFilterList from '@iconify/icons-ic/round-filter-list'
 // material
 import {
   Box,
-  Radio,
   Stack,
   Button,
   Drawer,
-  Rating,
   Divider,
-  Checkbox,
-  FormGroup,
   Typography,
-  RadioGroup,
-  FormControlLabel,
   Slider,
   FormControl,
   Autocomplete,
@@ -24,42 +16,25 @@ import {
   Chip,
 } from '@mui/material'
 import {
-  BRAND_OPTION,
-  CATEGORY_OPTION,
   CATEGORY_OPTION_ARRAY,
-  COLOR_OPTION,
-  FABRIC_OPTION,
   FABRIC_OPTION_ARRAY,
-  SIZE_OPTION,
-  STYLE_OPTION,
   STYLE_OPTION_ARRAY,
   TYPE_OPTION,
-} from 'constant/product'
-import { MIconButton } from 'src/components/@material-extend'
-import { useContext, useState } from 'react'
-import ColorManyPicker from '../common/ColorManyPicker'
+} from '../../../../constant/product'
+import { MIconButton } from '../../@material-extend'
+import { useContext } from 'react'
 import Scrollbar from '../common/Scrollbar'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../../context/dataProviderContext'
 import CloseIcon from '@mui/icons-material/Close'
 
 // ----------------------------------------------------------------------
 
-// ProductFilterDrawer.propTypes = {
-//   isOpenFilter: PropTypes.bool,
-//   onResetFilter: PropTypes.func,
-//   onOpenFilter: PropTypes.func,
-//   onCloseFilter: PropTypes.func,
-// };
-
 export default function ProductFilterDrawer({
   isOpenFilter,
-  onResetFilter,
   onOpenFilter,
   onCloseFilter,
 }) {
-  const [color, setColor] = useState([])
   const {
-    searchTerm,
     category,
     type,
     style,
@@ -70,28 +45,11 @@ export default function ProductFilterDrawer({
     value,
     setValue,
     setCategory,
-    fromCurrency,
     toCurrency,
   } = useContext(ContextData)
 
-  const handleSelectFilterOption = (e, callback) => {
-    const { value } = e.target
-    callback(value)
-  }
-
   const handlePriceRange = (event, newValue) => {
     setValue(newValue)
-  }
-
-  const handleChange = selectedColor => {
-    setColor(selectedColor)
-  }
-
-  const handleChecked = selectedColor => {
-    if (Array.isArray(color)) {
-      return color.indexOf(selectedColor) !== -1
-    }
-    return false
   }
 
   return (
@@ -131,7 +89,6 @@ export default function ProductFilterDrawer({
 
         <Scrollbar>
           <div className="pt-5 space-y-3 shadow py-5 px-2 bg-white ">
-        
             <div className="bg-white shadow rounded">
               <div className=" py-2 px-3 border-b">
                 <h1 className="font-semibold ">
@@ -142,14 +99,13 @@ export default function ProductFilterDrawer({
               <div className=" py-3 pl-4 pr-3 bg-white ">
                 <Box>
                   <Slider
-                  size='medium'
+                    size="medium"
                     getAriaLabel={() => 'Price range'}
                     value={value}
                     onChange={handlePriceRange}
                     min={0}
                     max={2000}
                     valueLabelDisplay="auto"
-                    // getAriaValueText={valuetext}
                   />
                 </Box>
 
@@ -169,7 +125,6 @@ export default function ProductFilterDrawer({
                 <h1 className="font-semibold "> Filter by Categories</h1>
               </div>
               <div className=" py-3 px-2">
-
                 <FormControl fullWidth>
                   <div>
                     <Autocomplete
@@ -197,7 +152,7 @@ export default function ProductFilterDrawer({
                           label={option}
                           onDelete={() => {
                             setCategory(prevValue =>
-                              prevValue?.filter(val => val !== option)
+                              prevValue?.filter(val => val !== option),
                             )
                           }}
                           deleteIcon={<CloseIcon />}
@@ -218,7 +173,6 @@ export default function ProductFilterDrawer({
                 <h1 className="font-semibold "> Filter by Fabrics</h1>
               </div>
               <div className=" py-3 px-2">
-
                 <FormControl fullWidth>
                   <div>
                     <Autocomplete
@@ -246,7 +200,7 @@ export default function ProductFilterDrawer({
                           label={option}
                           onDelete={() => {
                             setFabric(prevValue =>
-                              prevValue.filter(val => val !== option)
+                              prevValue.filter(val => val !== option),
                             )
                           }}
                           deleteIcon={<CloseIcon />}
@@ -293,7 +247,7 @@ export default function ProductFilterDrawer({
                           label={option}
                           onDelete={() => {
                             setStyle(prevValue =>
-                              prevValue.filter(val => val !== option)
+                              prevValue.filter(val => val !== option),
                             )
                           }}
                           deleteIcon={<CloseIcon />}
@@ -341,7 +295,7 @@ export default function ProductFilterDrawer({
                           label={option}
                           onDelete={() => {
                             setType(prevValue =>
-                              prevValue.filter(val => val !== option)
+                              prevValue.filter(val => val !== option),
                             )
                           }}
                           deleteIcon={<CloseIcon />}

@@ -6,7 +6,7 @@ import { MdEmail } from 'react-icons/md'
 import { BsTelephoneOutboundFill } from 'react-icons/bs'
 import MenuItem from '@mui/material/MenuItem'
 import { Container, FormControl, InputLabel, Select } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 
 export default function TopNavbar() {
   const { toCurrency, setToCurrency } = useContext(ContextData)

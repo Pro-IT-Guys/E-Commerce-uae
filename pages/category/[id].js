@@ -1,9 +1,13 @@
 import { Container } from '@mui/material'
 import { useRouter } from 'next/router'
 import React from 'react'
-import Products from 'src/components/Home/Products/Products'
-import MainLayout from 'src/layouts/main'
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'
+import dynamic from 'next/dynamic'
+
+const Products = dynamic(() =>
+  import('../../src/components/Home/Products/Products'),
+)
+const MainLayout = dynamic(() => import('../../src/layouts/main'))
 
 export default function CategoryFilter() {
   const router = useRouter()

@@ -1,22 +1,10 @@
-import { Label } from '@mui/icons-material'
-import { Box, Card, Stack, Typography } from '@mui/material'
+
 import React, { useContext, useState } from 'react'
-import Link from 'next/link'
-import styled from '@emotion/styled'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import img1 from '../../../assets/product/Borka-2-Part-07-fc-01.jpg'
 import { useRouter } from 'next/router'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
-
-const ProductImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-})
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 
 // ----------------------------------------------------------------------
 

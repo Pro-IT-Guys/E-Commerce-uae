@@ -10,6 +10,6 @@ module.exports = withTM({
     return config
   },
   images: {
-    domains: ['localhost', 'aymifashion.com', 'i.ibb.co'],
+    domains: ['localhost', 'server.aymifashion.com', 'i.ibb.co'],
   },
 })

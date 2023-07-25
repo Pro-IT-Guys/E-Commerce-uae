@@ -3,9 +3,9 @@ import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import FetchUrls from 'src/utils/FetchUrls'
+import FetchUrls from '../../utils/FetchUrls'
 import { toast } from 'react-hot-toast'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 

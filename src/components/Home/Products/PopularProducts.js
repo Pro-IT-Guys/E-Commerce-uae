@@ -1,9 +1,9 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/autoplay";
-import { Autoplay } from "swiper";
-import ProductCard from "./ProductCard";
+import React from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import dynamic from 'next/dynamic'
+const ProductCard = dynamic(() => import('./ProductCard'))
 
 const PopularProducts = ({ products }) => {
   return (
@@ -12,10 +12,7 @@ const PopularProducts = ({ products }) => {
         <div className="mb-10">
           <Swiper
             autoplay={true}
-            // modules={[Autoplay]}
             className="mySwiper pb-3 h-full"
-            // spaceBetween={50}
-            // slidesPerView={6}
             loop={true}
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
@@ -43,7 +40,7 @@ const PopularProducts = ({ products }) => {
               },
             }}
           >
-            {products?.map((product) => (
+            {products?.map(product => (
               <SwiperSlide key={product?.id} className="h-full mb-1">
                 <ProductCard product={product} />
               </SwiperSlide>
@@ -52,7 +49,7 @@ const PopularProducts = ({ products }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PopularProducts;
+export default PopularProducts

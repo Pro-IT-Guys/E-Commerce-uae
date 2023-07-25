@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 // components
 import { MIconButton } from '../../components/@material-extend'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 

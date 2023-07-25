@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import { Container } from '@mui/material'
-import useCategorySetTop from 'src/hooks/useCategorySetTop'
-import { CATEGORY_OPTION, CATEGORY_OPTION_ARRAY } from 'constant/product'
-import CategoryIcon from '@mui/icons-material/Category'
-import Searchbar from '../dashboard/Searchbar'
-import ProductFilterDrawer from 'src/components/Home/Products/ProductFilterDrawer'
-import { useContext, useState } from 'react'
-import { ContextData } from 'context/dataProviderContext'
+import { CATEGORY_OPTION_ARRAY } from '../../../constant/product'
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
+import { SpatialTrackingOutlined } from '@mui/icons-material'
+const ProductFilterDrawer = dynamic(() =>
+  import('../../components/Home/Products/ProductFilterDrawer'),
+)
+const Searchbar = dynamic(() => import('../dashboard/Searchbar'))
 
 // ----------------------------------------------------------------------
 
 export default function CategoryNav() {
   const [openFilter, setOpenFilter] = useState(false)
-  const { setCategory } = useContext(ContextData)
 
   const handleOpenFilter = () => {
     setOpenFilter(true)
@@ -33,24 +33,16 @@ export default function CategoryNav() {
         <Container maxWidth="lg" className="text-black">
           <div className="flex justify-center items-center">
             <div className="flex justify-center items-center gap-10">
-              {/* <div className="flex gap-1 items-center">
-                <CategoryIcon />
-                <h1 className="uppercase font-semibold text-sm">Category</h1>
-              </div> */}
               <div className="flex gap-4 justify-center text-[14px]">
                 {CATEGORY_OPTION_ARRAY?.map((category, index) => (
                   <Link key={index} href={`/category/${category}`} passHref>
-                    <span
-                      // onClick={() => setCategory(category)}
-                      className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold"
-                    >
+                    <SpatialTrackingOutlined className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold">
                       {category}
-                    </span>
+                    </SpatialTrackingOutlined>
                   </Link>
                 ))}
               </div>
             </div>
-            {/* <Searchbar /> */}
           </div>
         </Container>
       </div>

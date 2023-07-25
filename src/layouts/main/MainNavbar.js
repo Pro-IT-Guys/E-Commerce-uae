@@ -18,18 +18,16 @@ import {
 } from '@mui/material'
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop'
-import { MHidden } from '../../components/@material-extend'
 
 import logo from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
-import LoginFormModal from 'src/components/AuthModal/LoginModal'
+import LoginFormModal from '../../components/AuthModal/LoginModal'
 import { useContext, useState } from 'react'
 import { HiOutlineUser } from 'react-icons/hi'
-import SignUpModal from 'src/components/AuthModal/SignUpModal'
+import SignUpModal from '../../components/AuthModal/SignUpModal'
 import CartDrawer from '../../components/cart/CartDrawer'
 import TopNavbar from './TopNavbar'
-import { ContextData } from 'context/dataProviderContext'
-import AccountPopover from '../dashboard/AccountPopover'
+import { ContextData } from '../../../context/dataProviderContext'
 import CategoryNav from './CategoryNav'
 
 // ----------------------------------------------------------------------

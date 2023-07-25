@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
-import FetchUrls from 'src/utils/FetchUrls'
+import FetchUrls from '../../utils/FetchUrls'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 
 // ----------------------------------------------------------------------
 
-export default function SignUpForm({onClose}) {
+export default function SignUpForm({ onClose }) {
   const [otpModal, setOtpModal] = useState(false)
   const [otpEmail, setOtpEmail] = useState('')
   const router = useRouter()
@@ -28,7 +28,7 @@ export default function SignUpForm({onClose}) {
       password,
       role: 'user',
     }
-    
+
     axios
       .post(FetchUrls('auth'), body)
       .then(res => {
@@ -36,7 +36,10 @@ export default function SignUpForm({onClose}) {
           setOtpModal(true)
           setOtpEmail(email)
           toast.success('Otp sent Successfully! Please Verify Your Email')
-          localStorage.setItem('user', JSON.stringify(res.headers.authorization.split(' ')[1]))
+          localStorage.setItem(
+            'user',
+            JSON.stringify(res.headers.authorization.split(' ')[1]),
+          )
         } else {
           toast.error('User Already Exist!')
         }
@@ -47,13 +50,12 @@ export default function SignUpForm({onClose}) {
       })
   }
 
-
   const submitOtp = async data => {
     const { otp } = data
 
     const body = {
       email: otpEmail,
-      verificationCode: otp
+      verificationCode: otp,
     }
     console.log(body)
     axios
@@ -65,7 +67,7 @@ export default function SignUpForm({onClose}) {
           onClose()
           toast.success('Email Verified Successfully! Please Login')
           setUpdate(Math.random())
-          localStorage.setItem('token', (res.headers.authorization.split(' ')[1]))
+          localStorage.setItem('token', res.headers.authorization.split(' ')[1])
         } else {
           toast.error('User Already Exist!')
         }

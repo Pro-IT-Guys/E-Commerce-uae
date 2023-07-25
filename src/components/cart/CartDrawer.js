@@ -2,11 +2,11 @@ import { useContext, useState } from 'react'
 import Button from '@mui/material/Button'
 import { Badge, Box, Drawer, Typography } from '@mui/material'
 import Scrollbar from '../Scrollbar'
-import { CustomIcons } from 'public/static/mui-icons'
-import { ContextData } from 'context/dataProviderContext'
-import { bulkUpdateCart } from 'apis/cart.api'
+import { CustomIcons } from '../../../public/static/mui-icons'
+import { ContextData } from '../../../context/dataProviderContext'
+import { bulkUpdateCart } from '../../../apis/cart.api'
 import { useRouter } from 'next/router'
-import { convertCurrency } from 'helpers/currencyHandler'
+import { convertCurrency } from '../../../helpers/currencyHandler'
 
 export default function CartDrawer() {
   const router = useRouter()

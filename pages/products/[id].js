@@ -6,12 +6,9 @@ import {
   Divider,
   Grid,
   Fab,
-  Icon,
   Rating,
   Stack,
   Typography,
-  alpha,
-  Box,
   FormControl,
   InputLabel,
   Select,
@@ -20,17 +17,12 @@ import {
 } from '@mui/material'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import Banner from 'src/components/Home/Banner/Banner'
 import Page from 'src/components/Page'
 import ProductDetailsCarousel from 'src/components/Products/ProductDetailsCarousel'
 import MainLayout from 'src/layouts/main'
 import { useRouter } from 'next/router'
 import Label from 'src/components/Label'
-import { useField } from 'formik'
-import roundAddShoppingCart from '@iconify/icons-ic/round-add-shopping-cart'
 import ChatPopup from 'src/components/chat/ChatPopup'
-import { MIconButton } from 'src/components/@material-extend'
-import MenuPopover from 'src/components/MenuPopover'
 import {
   createChat,
   getChatOfSenderAndReceiver,
@@ -44,7 +36,6 @@ import { addToCart, updateCart } from 'apis/cart.api'
 import { convertCurrency } from 'helpers/currencyHandler'
 import { toast } from 'react-hot-toast'
 import Loader from 'src/components/Loader/Loader'
-import Swal from 'sweetalert2'
 import ProductDetailsTab from 'src/components/Products/ProductDetailsTab'
 import RelatedProducts from 'src/components/Products/RelatedProducts'
 import { ButtonAnimate, DialogAnimate } from 'src/components/animate'
@@ -64,12 +55,6 @@ export default function ProductDetails() {
   const [chat, setChat] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
 
-  // Base states
-  const /* The code `socket.on('getMessage', data => { ... })` is setting up a listener for the
-  'getMessage' event on the socket object. When the 'getMessage' event is emitted from the
-  server, the callback function will be executed. */
-    [sendMessageBase, setSendMessageBase] = useState(false)
-
   const [openChat, setOpenChat] = useState(false)
   const anchorRef = useRef(null)
   const {
@@ -78,7 +63,6 @@ export default function ProductDetails() {
     setUsersCart,
     setCartSimplified,
     update,
-    cartUpdate,
     setCartUpdate,
     fromCurrency,
     toCurrency,
@@ -245,7 +229,6 @@ export default function ProductDetails() {
                   </Grid>
                   <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
-                      // variant={theme.palette.mode === "light" ? "ghost" : "filled"}
                       color={quantity > 0 ? 'success' : 'error'}
                       sx={{ textTransform: 'uppercase' }}
                     >
@@ -293,25 +276,6 @@ export default function ProductDetails() {
                         </small>
                       </ButtonAnimate>
                     </div>
-                    {/* <strike className="text-[#7a7a7a] text-xs">
-                    ৳ {sellingPrice}
-                  </strike> */}
-
-                    {/* <div className="mt-4">
-                    <div className="flex items-center gap-5">
-                      <p className="text-sm">Size</p>
-                      <div className="flex items-center ">
-                        {productDetails?.size?.map(size => (
-                          <div
-                            onClick={() => setProductSize(size)}
-                            className="border border-[#7a7a7a] px-3 py-1 mx-1 cursor-pointer text-xs rounded"
-                          >
-                            {size}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
 
                     <Grid container spacing={2} sx={{ mt: 1 }}>
                       <Grid item xs={6}>
@@ -354,23 +318,6 @@ export default function ProductDetails() {
                         </FormControl>
                       </Grid>
                     </Grid>
-
-                    {/* <div className="mt-4">
-                    <div className="flex items-center gap-5">
-                      <p className="text-sm">Color</p>
-                      <div className="flex items-center ">
-                        {productDetails?.size?.map(size => (
-                          <div
-                            onClick={() => setProductSize(size)}
-                            className="border border-[#7a7a7a] px-3 py-1 mx-1 cursor-pointer text-xs rounded"
-                          >
-                            {size}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
-
                     <div className="mt-10 md:pb-20 pb-10 gap-4 relative items-center flex">
                       <p className="text-sm">Quantity :</p>
 
@@ -407,7 +354,6 @@ export default function ProductDetails() {
                     <Stack spacing={2} direction={'row'} sx={{ m: 5 }}>
                       <Button
                         fullWidth
-                        // disabled={isMaxQuantity}
                         size="medium"
                         type="button"
                         color="warning"
@@ -510,7 +456,6 @@ export default function ProductDetails() {
             anchorRef={anchorRef.current}
             message={message}
             setMessage={setMessage}
-            setSendMessageBase={setSendMessageBase}
           />
         </>
       )}
