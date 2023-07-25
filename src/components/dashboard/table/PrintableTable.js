@@ -9,8 +9,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 import React, { useContext, useEffect, useState } from 'react'
 
 const PrintableTable = ({ orderData }) => {

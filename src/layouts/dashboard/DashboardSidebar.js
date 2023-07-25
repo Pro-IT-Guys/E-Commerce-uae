@@ -17,7 +17,6 @@ import {
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 // components
-import Logo from '../../components/Logo'
 import Scrollbar from '../../components/Scrollbar'
 import NavSection from '../../components/NavSection'
 //
@@ -25,7 +24,7 @@ import { MHidden } from '../../components/@material-extend';
 import sidebarConfig from './SidebarConfig';
 import logoImg from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 

@@ -7,20 +7,16 @@ import trash2Fill from '@iconify/icons-eva/trash-2-fill'
 import { styled } from '@mui/material/styles'
 import {
   Box,
-  Table,
   Stack,
   Divider,
   TableRow,
-  TableBody,
   TableCell,
-  TableHead,
   Typography,
-  TableContainer,
 } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { MIconButton } from '../@material-extend'
-import { convertCurrencyForCalculation } from 'helpers/currencyHandler'
-import { ContextData } from 'context/dataProviderContext'
+import { convertCurrencyForCalculation } from '../../../helpers/currencyHandler'
+import { ContextData } from '../../../context/dataProviderContext'
 //
 
 // ----------------------------------------------------------------------

@@ -1,42 +1,27 @@
 import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
 import { useState, useEffect, useContext } from 'react'
-import plusFill from '@iconify/icons-eva/plus-fill'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 // material
-import { useTheme } from '@mui/material/styles'
 import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
   TableContainer,
-  TablePagination,
 } from '@mui/material'
 // redux
-import useSettings from 'src/hooks/useSettings'
-import Page from 'src/components/Page'
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
+import Page from '../../../../src/components/Page'
+import { UserListHead } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 import { useRouter } from 'next/router'
-import OrderMoreMenu from 'src/components/list/OrderMoreMenu'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../../apis/url'
 
 // ----------------------------------------------------------------------
 

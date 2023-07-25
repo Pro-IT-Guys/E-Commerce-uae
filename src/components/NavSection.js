@@ -17,7 +17,7 @@ import {
   ListSubheader,
   ListItemButton,
 } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 

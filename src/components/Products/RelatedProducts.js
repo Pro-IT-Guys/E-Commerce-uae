@@ -1,11 +1,10 @@
-import { multiFilterProduct } from 'apis/product.api'
+import { multiFilterProduct } from '../../../apis/product.api'
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../Home/Products/ProductCard'
 
 export default function RelatedProducts({ product }) {
   const [productList, setProductList] = useState([])
   const [loading, setLoading] = useState(true)
-  console.log(product, 'product')
 
   const { style, fabric, type, category, value } = product
 

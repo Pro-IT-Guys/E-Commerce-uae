@@ -8,16 +8,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { getAllCountriesWithFees } from 'apis/fee.api'
-import { BASE_URL } from 'apis/url'
-import countries from 'constant/countries'
-import { ContextData } from 'context/dataProviderContext'
+import { getAllCountriesWithFees } from '../../../apis/fee.api'
+import { BASE_URL } from '../../../apis/url'
+import { ContextData } from '../../../context/dataProviderContext'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Page from 'src/components/Page'
-import { UploadAvatar } from 'src/components/upload'
-import DashboardLayout from 'src/layouts/dashboard'
-import { fData } from 'src/utils/formatNumber'
+import Page from '../../../src/components/Page'
+import DashboardLayout from '../../../src/layouts/dashboard'
 import Swal from 'sweetalert2'
 
 export default function MyProfile() {

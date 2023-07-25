@@ -3,11 +3,11 @@ import StarIcon from '@mui/icons-material/Star'
 import { Box, Divider, Rating, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import dynamic from 'next/dynamic'
-import { getReviews, leaveReview } from 'apis/review.api'
+import { getReviews, leaveReview } from '../../../apis/review.api'
 import { toast } from 'react-hot-toast'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 import CustomLoadingScreen from '../CustomLoadingScreen'
-import { reviewCount } from 'helpers/reviewCount'
+import { reviewCount } from '../../../helpers/reviewCount'
 const DynamicRating = dynamic(() => import('@mui/material/Rating'), {
   ssr: false,
 })

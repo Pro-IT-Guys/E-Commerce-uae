@@ -7,30 +7,31 @@ import {
   CardHeader,
   CircularProgress,
   Container,
-  Divider,
   Grid,
-  Icon,
   Stack,
   TextField,
   Typography,
 } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 import React, { useContext, useEffect, useState } from 'react'
-import MainLayout from 'src/layouts/main'
+import MainLayout from '../../../src/layouts/main'
 
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
-import StripeForm from 'src/components/checkout/StripeForm'
-import { paypalPaymentApi, paypalPaymentVerifyWebhook } from 'apis/payment.api'
-import { getOrderById, updateOrder } from 'apis/order.api'
+import StripeForm from '../../../src/components/checkout/StripeForm'
+import {
+  paypalPaymentApi,
+  paypalPaymentVerifyWebhook,
+} from '../../../apis/payment.api'
+import { getOrderById, updateOrder } from '../../../apis/order.api'
 import { useRouter } from 'next/router'
 import { toast } from 'react-hot-toast'
-import { ButtonAnimate } from 'src/components/animate'
-import Loader from 'src/components/Loader/Loader'
-import ShippingAddressPopup from 'src/components/checkout/ShippingAddressPopup'
-import { getAllCountriesWithFees } from 'apis/fee.api'
-import Page from 'src/components/Page'
-import { BASE_URL } from 'apis/url'
+import { ButtonAnimate } from '../../../src/components/animate'
+import Loader from '../../../src/components/Loader/Loader'
+import ShippingAddressPopup from '../../../src/components/checkout/ShippingAddressPopup'
+import { getAllCountriesWithFees } from '../../../apis/fee.api'
+import Page from '../../../src/components/Page'
+import { BASE_URL } from '../../../apis/url'
 
 const stripePromise = loadStripe(
   'pk_test_51L3PqJCnJiLLpGIeL4Uixr7K4bJ183L3tSUyFg2ENBX5ovRQKSQhaYTR8kG7WbcfvkvyuLa5RfB9eZlBJfohfpYd00PM7gqopw'

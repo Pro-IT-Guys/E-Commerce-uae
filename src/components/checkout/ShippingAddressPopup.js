@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { ImCross } from 'react-icons/im'
-import { ContextData } from 'context/dataProviderContext'
 import {
   Button,
   CircularProgress,

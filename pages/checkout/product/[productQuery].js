@@ -8,7 +8,6 @@ import {
   Container,
   Divider,
   Grid,
-  Icon,
   Stack,
   Table,
   TableBody,
@@ -19,26 +18,25 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { deleteAProductFromCart, getCartByCartId } from '../../../apis/cart.api'
+import { verifyCupon } from '../../../apis/cupon.api'
 import {
-  deleteAProductFromCart,
-  getCartByCartId,
-  getCartByUserId,
-} from 'apis/cart.api'
-import { verifyCupon } from 'apis/cupon.api'
-import { getAllCountriesWithFees, getFeeOfLocation } from 'apis/fee.api'
-import { placeOrder } from 'apis/order.api'
-import { getProductBySku } from 'apis/product.api'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrencyForCalculation } from 'helpers/currencyHandler'
+  getAllCountriesWithFees,
+  getFeeOfLocation,
+} from '../../../apis/fee.api'
+import { placeOrder } from '../../../apis/order.api'
+import { getProductBySku } from '../../../apis/product.api'
+import { ContextData } from '../../../context/dataProviderContext'
+import { convertCurrencyForCalculation } from '../../../helpers/currencyHandler'
 import { useRouter } from 'next/router'
 import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import Loader from 'src/components/Loader/Loader'
-import Page from 'src/components/Page'
-import Scrollbar from 'src/components/Scrollbar'
-import ProductList from 'src/components/checkout/CheckoutProductList'
-import ShippingAddressPopup from 'src/components/checkout/ShippingAddressPopup'
-import MainLayout from 'src/layouts/main'
+import Loader from '../../../src/components/Loader/Loader'
+import Page from '../../../src/components/Page'
+import Scrollbar from '../../../src/components/Scrollbar'
+import ProductList from '../../../src/components/checkout/CheckoutProductList'
+import ShippingAddressPopup from '../../../src/components/checkout/ShippingAddressPopup'
+import MainLayout from '../../../src/layouts/main'
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(20),
