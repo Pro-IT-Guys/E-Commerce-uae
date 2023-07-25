@@ -1,28 +1,29 @@
+import { useEffect, useState } from 'react'
+import { useTheme } from '@mui/material/styles'
 
-import { styled } from '@mui/material/styles'
-// components
-import Page from 'src/components/Page'
 import { Swiper, SwiperSlide } from 'swiper/react'
+// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/pagination'
-import 'swiper/css/autoplay'
-import SwiperCore, { Pagination, Autoplay } from 'swiper'
+import 'swiper/css/navigation'
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+
 import Image from 'next/image'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { BASE_URL } from 'apis/url'
 import { ContextData } from 'context/dataProviderContext'
-import { Container } from '@mui/material'
+import dynamic from 'next/dynamic'
+const Container = dynamic(() => import('@mui/material/Container'), {
+  ssr: false,
+})
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Page)({
-  paddingTop: theme => theme.spacing(17),
-})
-
 const Banner = () => {
   const { currentlyLoggedIn } = useContext(ContextData)
-  const [offer, setOffer] = useState([])
+  const [offer, setOffer] = useState(null)
   const { image, isVisible } = offer || {}
+  const theme = useTheme()
 
   useEffect(() => {
     fetch(`${BASE_URL}/Offer`)
@@ -37,10 +38,7 @@ const Banner = () => {
   const bannerImages = [
     'https://i.ibb.co/k6bPwrY/Delivery-within-48-Hours-Banner-AYMI-Fashion-1200x600.png',
     'https://i.ibb.co/p3H86Hs/Free-Delivery-Banner-AYMI-Fashion-1200x600.png',
-    'https://i.ibb.co/k6bPwrY/Delivery-within-48-Hours-Banner-AYMI-Fashion-1200x600.png',
   ]
-
-  SwiperCore.use([Pagination, Autoplay])
 
   return (
     <div className="bg-[#f7f7ff9c] pt-5 pb-10">
@@ -54,10 +52,11 @@ const Banner = () => {
               <div>
                 <Swiper
                   spaceBetween={30}
-                  pagination={{
-                    clickable: true,
+                  centeredSlides={true}
+                  autoplay={{
+                    delay: 2300,
                   }}
-                  autoplay={true}
+                  modules={[Autoplay]}
                 >
                   {bannerImages.map((imageUrl, index) => (
                     <SwiperSlide key={index}>
