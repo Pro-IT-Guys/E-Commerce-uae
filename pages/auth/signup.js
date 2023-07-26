@@ -1,14 +1,10 @@
 import styled from "@emotion/styled";
 import { Container, Grid } from "@mui/material";
 import React from "react";
-import SignUp from "src/components/Auth/SignUp";
-import Page from "src/components/Page";
-import MainLayout from "src/layouts/main";
+import SignUpForm from "../../src/components/Auth/SignUpForm";
+import MainLayout from "../../src/layouts/main";
 
 const signUp = () => {
-  const RootStyle = styled(Page)({
-    height: "100%",
-  });
 
   const ContentStyle = styled("div")(({ theme }) => ({
     overflow: "hidden",
@@ -17,14 +13,15 @@ const signUp = () => {
   }));
 
   return (
-    <RootStyle
-      title="The starting point for your next project | Minimal-UI"
-      id="move_top"
-    >
-      <ContentStyle>
-        <SignUp />
-      </ContentStyle>
-    </RootStyle>
+
+    <MainLayout>
+      <Container maxWidth='md'>
+        <div className="pt-40 mb-10">
+          <SignUpForm />
+        </div>
+      </Container>
+
+    </MainLayout>
   );
 };
 

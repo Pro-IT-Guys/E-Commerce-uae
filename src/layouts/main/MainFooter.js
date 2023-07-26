@@ -3,6 +3,9 @@ import googleFill from '@iconify/icons-eva/google-fill'
 import twitterFill from '@iconify/icons-eva/twitter-fill'
 import facebookFill from '@iconify/icons-eva/facebook-fill'
 import linkedinFill from '@iconify/icons-eva/linkedin-fill'
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import { Link as ScrollLink } from 'react-scroll'
 import logo from '../../assets/logo/aymi-logo.png'
 // next
@@ -25,10 +28,13 @@ import Image from 'next/image'
 // ----------------------------------------------------------------------
 
 const SOCIALS = [
-  { name: 'FaceBook', icon: facebookFill },
-  { name: 'Google', icon: googleFill },
-  { name: 'Linkedin', icon: linkedinFill },
-  { name: 'Twitter', icon: twitterFill },
+  // { name: 'FaceBook', icon: facebookFill, url: 'https://www.facebook.com/aymifashionofficial/' },
+  // { name: 'Google', icon: googleFill, url: 'https://www.facebook.com/aymifashionofficial/' },
+  // { name: 'Linkedin', icon: linkedinFill, url: 'https://www.instagram.com/aymi_fashions/' },
+  // { name: 'Twitter', icon: twitterFill, url: 'https://www.facebook.com/aymifashionofficial/' },
+  { name: 'Facebook', icon: <FacebookIcon/>, url: 'https://www.facebook.com/aymifashionofficial/' },
+  { name: 'Instagram', icon: <InstagramIcon/>, url: 'https://www.instagram.com/aymi_fashions/' },
+  { name: 'Twitter', icon: <TwitterIcon/>, url: 'https://twitter.com/AymiFashion' },
 ]
 
 const LINKS = [
@@ -52,7 +58,7 @@ const LINKS = [
     headline: 'Contact',
     children: [
       { name: 'support@minimals.cc', href: '#' },
-      { name: 'Los Angeles, 359  Hidden Valley Road', href: '#' },
+      { name: 'Al Rawda-2, Ajman, UAE', href: '#' },
     ],
   },
 ]
@@ -83,20 +89,21 @@ export default function MainFooter() {
               </ScrollLink> */}
               <NextLink href="/">
                 {/* <Logo /> */}
-                <Image
-                  src={logo}
-                  alt="Picture of the logo"
-                  width={150}
-                  height={50}
-                  className="cursor-pointer object-cover w-full rounded-md"
-                />
+                <div className='w-36 h-16'>
+                  <Image
+                    src={logo}
+                    alt="Picture of the logo"
+                    width={150}
+                    height={10}
+                    className="cursor-pointer object-cover w-full h-full rounded-md"
+                  />
+                </div>
               </NextLink>
             </Grid>
             <Grid item xs={8} md={3}>
               <Typography variant="body2" sx={{ pr: { md: 5 } }}>
-                The starting point for your next project with Minimal UI Kit,
-                built on the newest version of Material-UI ©, ready to be
-                customized to your style.
+                Buy Luxurious Abaya Online and Discover the Wide Range of Design with AYMI Fashion
+
               </Typography>
 
               <Stack
@@ -106,14 +113,17 @@ export default function MainFooter() {
                 sx={{ mt: 2, color: 'whitespace', mb: { xs: 4, md: 0 } }}
               >
                 {SOCIALS.map(social => (
-                  <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
-                    <Icon
-                      className="text-white"
-                      icon={social.icon}
-                      width={16}
-                      height={16}
-                    />
-                  </IconButton>
+                  <Link href={social?.url} target='_blank'>
+                    <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
+                      {/* <Icon
+                        className="text-white"
+                        icon={social.icon}
+                        width={16}
+                        height={16}
+                      /> */}
+                      {social?.icon}
+                    </IconButton>
+                  </Link>
                 ))}
               </Stack>
             </Grid>

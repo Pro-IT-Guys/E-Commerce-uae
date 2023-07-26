@@ -14,7 +14,7 @@ import {
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop'
 
-import logo from '../../assets/logo/aymi-logo.png'
+import logo from '../../assets/logo/aymi-logo2.jpg'
 import Image from 'next/image'
 import { useContext, useState } from 'react'
 import TopNavbar from './TopNavbar'

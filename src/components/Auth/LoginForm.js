@@ -53,11 +53,14 @@ export default function LoginForm({ onClose }) {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full bg-[#f1fff4] p-10">
-        <div className=" rounded-lg w-full">
+      <div className="w-full px-10 pb-10 pt-10 shadow border rounded">
+      <h1 className="text-xl font-bold text-center">
+              Login Now
+            </h1>
+        <div className=" rounded-lg w-full mt-5">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-4">
-              <div className="flex flex-col items-start">
+            <div >
+              <div className="flex flex-col items-start mb-5">
                 <label htmlFor="email" className="ml-3 mb-1">
                   Email
                 </label>
@@ -135,10 +138,10 @@ export default function LoginForm({ onClose }) {
                 </span>
               </div> */}
 
-              <div className="relative mt-2">
+              <div className="relative mt-10">
                 <button
                   type="submit"
-                  className="font-bold  py-3 rounded-full bg-primary text-white w-full"
+                  className="font-bold  py-3 rounded bg-primary text-white w-full"
                 >
                   Login
                 </button>
