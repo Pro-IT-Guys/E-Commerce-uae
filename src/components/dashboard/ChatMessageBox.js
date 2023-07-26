@@ -1,12 +1,11 @@
 import { Box, Button, Divider, Typography } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import InputEmoji from 'react-input-emoji'
 import { ButtonAnimate } from '../animate'
-import { CustomIcons } from 'public/static/mui-icons'
-import MessageItem from '../chat/MessageItem'
+import { CustomIcons } from '../../../public/static/mui-icons'
 import ChatMessageBoxItem from './ChatMessageBoxItem'
-import { sendMessage } from 'apis/chat.api'
+import { sendMessage } from '../../../apis/chat.api'
 
 const ChatMessageBox = ({
   selectedChatMessage,

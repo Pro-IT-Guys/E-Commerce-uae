@@ -14,12 +14,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { getAllCupon } from 'apis/cupon.api'
+import { getAllCupon } from '../../../../apis/cupon.api'
 import { useEffect, useState } from 'react'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import Page from 'src/components/Page'
-import { ButtonAnimate } from 'src/components/animate'
-import DashboardLayout from 'src/layouts/dashboard'
+import CustomLoadingScreen from '../../../../src/components/CustomLoadingScreen'
+import Page from '../../../../src/components/Page'
+import { ButtonAnimate } from '../../../../src/components/animate'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 export default function Cupon() {
   const [discountParcentage, setDiscountParcentage] = useState(0)

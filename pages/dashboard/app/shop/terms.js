@@ -1,9 +1,9 @@
 import { Card, Container } from '@mui/material'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../../apis/url'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { QuillEditor } from 'src/components/editor'
-import DashboardLayout from 'src/layouts/dashboard'
+import { QuillEditor } from '../../../../src/components/editor'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 import Swal from 'sweetalert2'
 
 export default function Terms() {

@@ -20,8 +20,8 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 import Scrollbar from '../../components/Scrollbar'
 import NavSection from '../../components/NavSection'
 //
-import { MHidden } from '../../components/@material-extend';
-import sidebarConfig from './SidebarConfig';
+import { MHidden } from '../../components/@material-extend'
+import sidebarConfig from './SidebarConfig'
 import logoImg from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
 import { ContextData } from '../../../context/dataProviderContext'
@@ -171,7 +171,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         {isCollapse ? (
           <Avatar
             alt="My Avatar"
-            src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
+            src={
+              image ? image : '/static/mock-images/avatars/avatar_default.jpg'
+            }
             sx={{ mx: 'auto', mb: 2 }}
           />
         ) : (
@@ -179,7 +181,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <AccountStyle>
               <Avatar
                 alt="My Avatar"
-                src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
+                src={
+                  image
+                    ? image
+                    : '/static/mock-images/avatars/avatar_default.jpg'
+                }
               />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

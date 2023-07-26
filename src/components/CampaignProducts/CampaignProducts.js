@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../apis/url'
 import React, { useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 import { InputBase, alpha } from '@mui/material'

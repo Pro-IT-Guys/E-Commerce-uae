@@ -1,24 +1,20 @@
-import { filter } from 'lodash'
+
 import { useState, useEffect } from 'react'
 // material
-import { useTheme } from '@mui/material/styles'
 import {
   Card,
   Table,
   TableBody,
-  TableCell,
   Container,
-  Typography,
   TableContainer,
   TablePagination,
 } from '@mui/material'
-import Page from 'src/components/Page'
-import { UserListHead, UserListToolbar } from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
-import { BASE_URL } from 'apis/url'
-import ProductTableRowItem from 'src/components/Products/ProductTableRowItem'
+import Page from '../../../../src/components/Page'
+import { UserListHead, UserListToolbar } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { BASE_URL } from '../../../../apis/url'
+import ProductTableRowItem from '../../../../src/components/Products/ProductTableRowItem'
 
 // ----------------------------------------------------------------------
 
@@ -47,33 +43,9 @@ function descendingComparator(a, b, orderBy) {
   return 0
 }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  if (query) {
-    return filter(
-      array,
-      _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    )
-  }
-  return stabilizedThis.map(el => el[0])
-}
-
 export default function ProductList() {
-  const theme = useTheme()
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
-  const [orderBy, setOrderBy] = useState('name')
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [productList, setProductList] = useState([])
@@ -87,14 +59,6 @@ export default function ProductList() {
       .then(data => setProductList(data?.data))
   }, [page, rowsPerPage, filterName, update])
 
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      const newSelecteds = productList?.map(n => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)

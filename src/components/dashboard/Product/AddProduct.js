@@ -1,18 +1,14 @@
-import styled from '@emotion/styled'
+
 import {
   Autocomplete,
-  Card,
   Chip,
   FormControl,
   InputAdornment,
   InputLabel,
   Select,
-  Stack,
   TextField,
-  TextareaAutosize,
-  Typography,
 } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   BRAND_OPTION,
@@ -24,9 +20,9 @@ import {
   COLOR_OPTION,
   SIZE_OPTION,
 } from '../../../../constant/product'
-import { QuillEditor } from 'src/components/editor'
-import { UploadMultiFile } from 'src/components/upload'
-import { BASE_URL } from 'apis/url'
+import { QuillEditor } from '../../../../src/components/editor'
+import { UploadMultiFile } from '../../../../src/components/upload'
+import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -36,34 +32,23 @@ export default function AddProductForm() {
   const [colorValue, setColorValue] = useState([])
   const [sizeValue, setSizeValue] = useState([])
   const [description, setDescription] = useState('')
-  const [imagesArray, setImagesArray] = useState([])
   const [values, setFieldValue] = useState([])
   const router = useRouter()
   const [imagesUrl, setImagesUrl] = useState([])
 
-  console.log(imagesUrl, 'imagesUrl')
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm()
-
-  const handleAdd = files => {
-    setImagesArray([...imagesArray, ...files])
-    setFieldValue('images', [...values?.images, ...files])
-  }
-
   const handleDrop = useCallback(async acceptedFiles => {
-    // console.log(acceptedFiles, 'acceptedFiles')
 
     const formData = new FormData()
     acceptedFiles.forEach(file => {
-      console.log(file, 'files')
       formData.append('image', file)
     })
 
-    // console.log(img, 'img')
     try {
       const response = await fetch(`${BASE_URL}/image/multi-image-upload`, {
         method: 'POST',
@@ -84,18 +69,6 @@ export default function AddProductForm() {
     }
   }, [])
 
-  console.log(imagesUrl, 'imagesUrl');
-  //     setImagesArray([...imagesArray, ...acceptedFiles])
-  //     setFieldValue(
-  //       acceptedFiles.map(file =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file),
-  //         })
-  //       )
-  //     )
-  //   },
-  //   [setFieldValue]
-  // )
 
   const handleRemoveAll = () => {
     setFieldValue('images', [])
@@ -109,30 +82,6 @@ export default function AddProductForm() {
   }
 
   const onSubmit = data => {
-
-    const updatedRestImage = imagesArray.map(file => {
-      const { name, lastModified, lastModifiedDate, size, type } = file
-      return {
-        name,
-        lastModified,
-        lastModifiedDate,
-        size,
-        type,
-        webkitRelativePath: '',
-      }
-    })
-
-    const convertedRestImages = updatedRestImage.map(image => {
-      const { name, type, lastModified, size } = image
-      const blob = image instanceof Blob ? image : new Blob([image], { type })
-      const file = new File([blob], name, {
-        type,
-        lastModified,
-        lastModifiedDate: new Date(lastModified),
-        size,
-      })
-      return file
-    })
 
     const formData = new FormData()
     // const boundary = formData.getBoundary();

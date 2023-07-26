@@ -1,5 +1,4 @@
 import {
-  Box,
   Container,
   FormControl,
   InputLabel,
@@ -11,15 +10,13 @@ import {
 import { getAllCountriesWithFees } from '../../../apis/fee.api'
 import { BASE_URL } from '../../../apis/url'
 import { ContextData } from '../../../context/dataProviderContext'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Page from '../../../src/components/Page'
 import DashboardLayout from '../../../src/layouts/dashboard'
 import Swal from 'sweetalert2'
 
 export default function MyProfile() {
-  const [image, setImage] = useState([])
-  const [imgPath, setImgPath] = useState()
   const { currentlyLoggedIn, setUpdate } = useContext(ContextData)
   const { _id, name, phone, shippingAddress, zipCode, email } =
     currentlyLoggedIn || {}
@@ -70,27 +67,13 @@ export default function MyProfile() {
     const stateId = e.target.value
     setSelectedState(stateId)
   }
-  console.log(imageUrl, 'image url')
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm()
-
-  const handleDrop = useCallback(
-    acceptedFiles => {
-      setImgPath(acceptedFiles[0])
-      const file = acceptedFiles[0]
-      if (file) {
-        setImage({
-          ...file,
-          preview: URL.createObjectURL(file),
-        })
-      }
-    },
-    [image]
-  )
 
   const onSubmit = data => {
     const userData = {
@@ -132,8 +115,6 @@ export default function MyProfile() {
       })
   }
 
-  console.log(selectedCountry, 'selected country')
-
   return (
     <DashboardLayout>
       <Page title="AYMi | My Profile">
@@ -150,29 +131,6 @@ export default function MyProfile() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="md:flex gap-10">
                     <div className="md:w-[30%]">
-                      {/* <Box sx={{ mb: 5 }}>
-                        <UploadAvatar
-                          accept="image/*"
-                          file={imageUrl}
-                          maxSize={3145728}
-                          onChange={handleImageUpload}
-                          caption={
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                mt: 2,
-                                mx: 'auto',
-                                display: 'block',
-                                textAlign: 'center',
-                                color: 'text.secondary',
-                              }}
-                            >
-                              Allowed *.jpeg, *.jpg, *.png, *.gif
-                              <br /> max size of {fData(3145728)}
-                            </Typography>
-                          }
-                        />
-                      </Box> */}
                       <div>
                         <h1 className="mb-2 font-semibold">Profile Image</h1>
                         <input
@@ -192,7 +150,10 @@ export default function MyProfile() {
                       </div>
                     </div>
                     <div className=" md:w-[70%]">
-                      <h1 className="mb-2 font-semibold"> Your Personal Details</h1>
+                      <h1 className="mb-2 font-semibold">
+                        {' '}
+                        Your Personal Details
+                      </h1>
                       <div className="grid grid-cols-2 sm:gap-5 gap-3 mb-5">
                         <div className="flex flex-col items-start">
                           <TextField

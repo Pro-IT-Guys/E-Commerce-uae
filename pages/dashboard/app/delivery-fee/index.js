@@ -10,9 +10,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import DashboardLayout from 'src/layouts/dashboard'
-import { ButtonAnimate } from 'src/components/animate'
-import { getAllCountriesWithFees } from 'apis/fee.api'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { ButtonAnimate } from '../../../../src/components/animate'
+import { getAllCountriesWithFees } from '../../../../apis/fee.api'
 
 const DeliveryFee = ({}) => {
   const [country, setCountry] = useState(null)

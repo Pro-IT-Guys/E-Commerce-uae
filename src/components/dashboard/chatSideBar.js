@@ -1,10 +1,9 @@
-import { getChats, getMessageOfChatId } from 'apis/chat.api'
+import { getChats, getMessageOfChatId } from '../../../apis/chat.api'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import ChatUserItem from './chatUserItem'
 import ChatMessageBox from './ChatMessageBox'
 import { io } from 'socket.io-client'
-import { ContextData } from 'context/dataProviderContext'
-import { getUserById } from 'apis/user.api'
+import { ContextData } from '../../../context/dataProviderContext'
 
 const ChatSideBar = () => {
   const socket = useRef()

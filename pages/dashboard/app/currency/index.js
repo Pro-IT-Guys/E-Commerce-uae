@@ -1,7 +1,7 @@
 import { Container, InputAdornment, TextField } from '@mui/material'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import DashboardLayout from 'src/layouts/dashboard'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 export default function CurrencyUpdate() {
   const {

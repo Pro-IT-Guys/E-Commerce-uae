@@ -1,16 +1,12 @@
-import styled from '@emotion/styled'
+
 import {
   Autocomplete,
-  Card,
   Chip,
   FormControl,
   InputAdornment,
   InputLabel,
   Select,
-  Stack,
   TextField,
-  TextareaAutosize,
-  Typography,
 } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,13 +20,11 @@ import {
   COLOR_OPTION,
   SIZE_OPTION,
 } from '../../../../constant/product'
-import { QuillEditor } from 'src/components/editor'
-import { UploadMultiFile } from 'src/components/upload'
-import { BASE_URL } from 'apis/url'
+import { QuillEditor } from '../../../../src/components/editor'
+import { UploadMultiFile } from '../../../../src/components/upload'
+import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import { async } from 'react-input-emoji'
 
 export default function EditProductForm({ productId }) {
   const [typeValue, setTypeValue] = useState([])

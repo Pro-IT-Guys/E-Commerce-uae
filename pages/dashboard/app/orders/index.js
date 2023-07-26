@@ -1,18 +1,10 @@
-import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
+
 import { useState, useEffect, useContext } from 'react'
-import plusFill from '@iconify/icons-eva/plus-fill'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
-// material
-import { useTheme } from '@mui/material/styles'
 import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -22,18 +14,13 @@ import {
   TablePagination,
 } from '@mui/material'
 import Page from '../../../../src/components/Page'
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
+import { UserListHead, UserListToolbar } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 import { useRouter } from 'next/router'
-import OrderMoreMenu from 'src/components/list/OrderMoreMenu'
+import OrderMoreMenu from '../../../../src/components/list/OrderMoreMenu'
 
 // ----------------------------------------------------------------------
 
@@ -51,43 +38,10 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  if (query) {
-    return filter(
-      array,
-      _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    )
-  }
-  return stabilizedThis.map(el => el[0])
-}
-
 export default function AllOrders() {
   const router = useRouter()
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
-  const [orderBy, setOrderBy] = useState('name')
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
@@ -96,24 +50,11 @@ export default function AllOrders() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/order?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`
+      `http://localhost:8000/api/v1/order?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
     )
       .then(res => res.json())
       .then(data => setUserList(data?.data))
   }, [filterName, page, rowsPerPage, update])
-
-  const handleDeleteUser = userId => {
-    console.log('Delete user')
-  }
-
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      const newSelecteds = userList?.map(n => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
 
   const handleFilterByName = event => {
     setFilterName(event.target.value)
@@ -225,7 +166,7 @@ export default function AllOrders() {
                             {convertCurrency(
                               fromCurrency,
                               toCurrency,
-                              subTotal
+                              subTotal,
                             )}
                           </TableCell>
                           <TableCell align="left"> {paymentMethod}</TableCell>
@@ -233,7 +174,7 @@ export default function AllOrders() {
                             <RemoveRedEyeOutlinedIcon
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/app/orders/details/${_id}`
+                                  `/dashboard/app/orders/details/${_id}`,
                                 )
                               }
                               className="cursor-pointer"

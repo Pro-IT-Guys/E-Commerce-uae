@@ -1,6 +1,4 @@
 import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
 import { useState, useEffect } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 // material
@@ -9,9 +7,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -21,16 +16,10 @@ import {
   TablePagination,
 } from '@mui/material'
 // redux
-import useSettings from 'src/hooks/useSettings'
-import Page from 'src/components/Page'
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
+import Page from '../../../../src/components/Page'
+import { UserListHead, UserListToolbar } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 // ----------------------------------------------------------------------
 
@@ -60,52 +49,37 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  if (query) {
-    return filter(
-      array,
-      _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    )
-  }
-  return stabilizedThis.map(el => el[0])
-}
+// function applySortFilter(array, comparator, query) {
+//   const stabilizedThis = array.map((el, index) => [el, index])
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0])
+//     if (order !== 0) return order
+//     return a[1] - b[1]
+//   })
+//   if (query) {
+//     return filter(
+//       array,
+//       _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1,
+//     )
+//   }
+//   return stabilizedThis.map(el => el[0])
+// }
 
 export default function UserList() {
-  const theme = useTheme()
   const [page, setPage] = useState(0)
-  const [order, setOrder] = useState('asc')
   const [selected, setSelected] = useState([])
-  const [orderBy, setOrderBy] = useState('name')
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [userList, setUserList] = useState([])
 
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`
+      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
     )
       .then(res => res.json())
       .then(data => setUserList(data?.data))
   }, [filterName, page, rowsPerPage])
 
-  const handleDeleteUser = userId => {
-    console.log('Delete user')
-  }
-
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      const newSelecteds = userList?.map(n => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
 
   const handleFilterByName = event => {
     setFilterName(event.target.value)

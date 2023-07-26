@@ -2,7 +2,7 @@ import { Stack, TableCell, TableRow } from '@mui/material'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import ProductMoreMenu from '../list/ProductMoreMenu'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../apis/url'
 import Swal from 'sweetalert2'
 
 export default function ProductTableRowItem({ row, setUpdate }) {
