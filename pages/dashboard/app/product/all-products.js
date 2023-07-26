@@ -1,9 +1,5 @@
 import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
 import { useState, useEffect } from 'react'
-import plusFill from '@iconify/icons-eva/plus-fill'
-import { Link as RouterLink } from 'react-router-dom'
 // material
 import { useTheme } from '@mui/material/styles'
 import {
@@ -16,8 +12,6 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material'
-// redux
-import useSettings from 'src/hooks/useSettings'
 import Page from 'src/components/Page'
 import { UserListHead, UserListToolbar } from 'src/components/list'
 import Scrollbar from 'src/components/Scrollbar'

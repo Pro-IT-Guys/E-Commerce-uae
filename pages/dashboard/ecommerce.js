@@ -1,26 +1,26 @@
 import { Card, CardContent, CardHeader, Container, Grid } from '@mui/material'
 // layouts
-import DashboardLayout from 'src/layouts/dashboard'
+import DashboardLayout from '../../src/layouts/dashboard'
 // hooks
-import useSettings from 'src/hooks/useSettings'
+import useSettings from '../../src/hooks/useSettings'
 // components
-import Page from 'src/components/Page'
-import AccountsCard from 'src/components/dashboard/AccountAnalytics'
-import useAuthAdmin from 'src/utils/authMiddleware'
+import Page from '../../src/components/Page'
+import AccountsCard from '../../src/components/dashboard/AccountAnalytics'
+import useAuthAdmin from '../../src/utils/authMiddleware'
 import dynamic from 'next/dynamic'
 import { useContext, useEffect, useState } from 'react'
-import { getALlOrders } from 'apis/order.api'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import { getALlUsers } from 'apis/user.api'
-import { ContextData } from 'context/dataProviderContext'
-import { getAllProduct } from 'apis/product.api'
-const ChartPie = dynamic(() => import('src/components/chart/ChartPie'), {
+import { getALlOrders } from '../../apis/order.api'
+import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
+import { getALlUsers } from '../../apis/user.api'
+import { ContextData } from '../../context/dataProviderContext'
+import { getAllProduct } from '../../apis/product.api'
+const ChartPie = dynamic(() => import('../../src/components/chart/ChartPie'), {
   ssr: false,
 })
-const ChartLine = dynamic(() => import('src/components/chart/ChartLine'), {
+const ChartLine = dynamic(() => import('../../src/components/chart/ChartLine'), {
   ssr: false,
 })
-const ChartArea = dynamic(() => import('src/components/chart/ChartArea'), {
+const ChartArea = dynamic(() => import('../../src/components/chart/ChartArea'), {
   ssr: false,
 })
 

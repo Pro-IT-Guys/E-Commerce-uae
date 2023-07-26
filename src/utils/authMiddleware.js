@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../context/dataProviderContext'
 import { useRouter } from 'next/router'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import { getStorage } from 'apis/loadStorage'
+import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
+import { getStorage } from '../../apis/loadStorage'
 
 const useAuthAdmin = WrappedComponent => {
   return props => {

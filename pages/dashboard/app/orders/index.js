@@ -21,9 +21,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material'
-// redux
-import useSettings from 'src/hooks/useSettings'
-import Page from 'src/components/Page'
+import Page from '../../../../src/components/Page'
 import {
   UserListHead,
   UserListToolbar,

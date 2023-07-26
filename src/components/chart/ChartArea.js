@@ -2,7 +2,7 @@ import { merge } from 'lodash'
 import ReactApexChart from 'react-apexcharts'
 //
 import BaseOptionChart from './BaseOptionChart'
-import { getOrderCountByStatus } from 'helpers/count'
+import { getOrderCountByStatus } from '../../../helpers/count'
 
 // ----------------------------------------------------------------------
 

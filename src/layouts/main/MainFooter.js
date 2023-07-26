@@ -57,7 +57,7 @@ const LINKS = [
   {
     headline: 'Contact',
     children: [
-      { name: 'support@minimals.cc', href: '#' },
+      { name: 'support@aymifashion.com', href: '#' },
       { name: 'Al Rawda-2, Ajman, UAE', href: '#' },
     ],
   },
