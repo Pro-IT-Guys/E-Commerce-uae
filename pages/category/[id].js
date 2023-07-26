@@ -3,11 +3,12 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'
 import dynamic from 'next/dynamic'
+import MainLayout from '../../src/layouts/main'
 
-const Products = dynamic(() =>
-  import('../../src/components/Home/Products/Products'),
+const Products = dynamic(
+  () => import('../../src/components/Home/Products/Products'),
+  { ssr: false },
 )
-const MainLayout = dynamic(() => import('../../src/layouts/main'))
 
 export default function CategoryFilter() {
   const router = useRouter()

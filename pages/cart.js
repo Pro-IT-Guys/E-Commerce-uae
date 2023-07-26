@@ -1,5 +1,5 @@
 import { Card, Container, Grid } from '@mui/material'
-import MainLayout from 'src/layouts/main'
+import MainLayout from '../src/layouts/main'
 
 export default function CartPage() {
   return (

@@ -7,15 +7,15 @@ import { ContextData } from 'context/dataProviderContext'
 import StripeForm from './StripeForm'
 
 const stripePromise = loadStripe(
-  'pk_test_51L3PqJCnJiLLpGIeL4Uixr7K4bJ183L3tSUyFg2ENBX5ovRQKSQhaYTR8kG7WbcfvkvyuLa5RfB9eZlBJfohfpYd00PM7gqopw'
+  'pk_test_51L3PqJCnJiLLpGIeL4Uixr7K4bJ183L3tSUyFg2ENBX5ovRQKSQhaYTR8kG7WbcfvkvyuLa5RfB9eZlBJfohfpYd00PM7gqopw',
 )
 
 const StripePopup = ({ setOpenPopup }) => {
-  const {  toCurrency } = useContext(ContextData)
+  const { toCurrency } = useContext(ContextData)
 
   const handleStripePayment = async paymentMethodId => {
     const response = await fetch(
-      'http://localhost:8000/api/v1/payment/stripe',
+      'https://server.aymifashion.com/api/v1/payment/stripe',
       {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ const StripePopup = ({ setOpenPopup }) => {
           paymentMethodId,
           currency: toCurrency,
         }),
-      }
+      },
     )
 
     if (response.ok) {

@@ -1,7 +1,7 @@
 import { Container } from '@mui/material'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../apis/url'
 import React, { useEffect, useState } from 'react'
-import MainLayout from 'src/layouts/main'
+import MainLayout from '../../src/layouts/main'
 
 export default function PrivacyPolicy() {
   const [privacy, setPrivacy] = useState('')
@@ -15,8 +15,8 @@ export default function PrivacyPolicy() {
 
   return (
     <MainLayout>
-      <Container maxWidth="lg" className='min-h-[80vh]'>
-        <h1 className='mt-40 text-2xl font-semibold mb-5'>Privacy Policy</h1>
+      <Container maxWidth="lg" className="min-h-[80vh]">
+        <h1 className="mt-40 text-2xl font-semibold mb-5">Privacy Policy</h1>
 
         <div className="bg-white p-5 rounded  shadow mb-5">
           <div

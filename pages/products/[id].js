@@ -126,7 +126,7 @@ export default function ProductDetails() {
   // Initialize socket..Make useEffect if only the currentlyLoggedIn exist
   useEffect(() => {
     if (currentlyLoggedIn) {
-      socket.current = io('http://localhost:8000')
+      socket.current = io('https://server.aymifashion.com')
       socket.current.emit('join', currentlyLoggedIn._id)
 
       socket.current.on('activeUsers', users => {
@@ -264,7 +264,7 @@ export default function ProductDetails() {
                         {convertCurrency(
                           fromCurrency,
                           toCurrency,
-                          sellingPrice
+                          sellingPrice,
                         )}
                       </p>
                       <ButtonAnimate mediumClick>
@@ -326,7 +326,7 @@ export default function ProductDetails() {
                           className="cursor-pointer select-none rounded text-center flex items-center justify-center bg-[#ecebff] h-8 w-8"
                           onClick={() =>
                             setProductQuantity(
-                              productQuantity > 1 ? productQuantity - 1 : 1
+                              productQuantity > 1 ? productQuantity - 1 : 1,
                             )
                           }
                         >
@@ -341,7 +341,7 @@ export default function ProductDetails() {
                             setProductQuantity(
                               productQuantity < quantity
                                 ? productQuantity + 1
-                                : quantity
+                                : quantity,
                             )
                           }
                         >
@@ -366,7 +366,7 @@ export default function ProductDetails() {
                       <Button
                         onClick={() =>
                           router.push(
-                            `/checkout/product/sku=${productDetails.sku}&quantity=${productQuantity}&size=${productSize}&color=${productColor}`
+                            `/checkout/product/sku=${productDetails.sku}&quantity=${productQuantity}&size=${productSize}&color=${productColor}`,
                           )
                         }
                         fullWidth
