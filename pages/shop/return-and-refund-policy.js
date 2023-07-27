@@ -1,7 +1,7 @@
 import { Container } from '@mui/material'
-import { BASE_URL } from 'apis/url'
 import React, { useEffect, useState } from 'react'
-import MainLayout from 'src/layouts/main'
+import MainLayout from '../../src/layouts/main'
+import { BASE_URL } from '../../apis/url'
 
 export default function ReturnPolicy() {
   const [returnPolicy, setReturnPolicy] = useState('')

@@ -1,7 +1,7 @@
 import { Container } from '@mui/material'
-import { BASE_URL } from 'apis/url'
 import React, { useEffect, useState } from 'react'
-import MainLayout from 'src/layouts/main'
+import { BASE_URL } from '../../apis/url'
+import MainLayout from '../../src/layouts/main'
 
 export default function PrivacyPolicy() {
   const [privacy, setPrivacy] = useState('')

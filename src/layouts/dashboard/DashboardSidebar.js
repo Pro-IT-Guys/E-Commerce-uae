@@ -142,11 +142,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }}
       >
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
         >
-          <NextLink href="/">
+          <NextLink href='/'>
             <Box sx={{ display: 'inline-flex' }}>
               <Image
                 src={logoImg}

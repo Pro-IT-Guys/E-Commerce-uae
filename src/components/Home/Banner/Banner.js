@@ -34,8 +34,8 @@ const Banner = () => {
 
   // Lazy load the images
   const bannerImages = [
-    'https://i.ibb.co/k6bPwrY/Delivery-within-48-Hours-Banner-AYMI-Fashion-1200x600.png',
-    'https://i.ibb.co/p3H86Hs/Free-Delivery-Banner-AYMI-Fashion-1200x600.png',
+    'https://i.ibb.co/1zWZkRp/Free-Delivery-Banner-AYMI-Fashion-1200x600.webp',
+    'https://i.ibb.co/wK3HkcD/Delivery-within-48-Hours-Banner-AYMI-Fashion-1200x600.webp',
   ]
 
   return (
