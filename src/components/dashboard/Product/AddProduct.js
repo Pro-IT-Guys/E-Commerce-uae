@@ -25,6 +25,7 @@ import { UploadMultiFile } from '../../../../src/components/upload'
 import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export default function AddProductForm() {
   const [typeValue, setTypeValue] = useState([])
@@ -99,7 +100,6 @@ export default function AddProductForm() {
     formData.append('color', colorValue)
     formData.append('size', sizeValue)
     formData.append('tag', tagValue)
-    formData.append('brand', data.brand)
     formData.append('type', typeValue)
     formData.append('style', data.style)
     formData.append('fabric', data.fabric)
@@ -176,38 +176,7 @@ export default function AddProductForm() {
                     </Select>
                   </FormControl>
                 </div>
-                <div className="flex flex-col items-start">
-                  <FormControl fullWidth>
-                    <InputLabel>Brand</InputLabel>
-                    <Select
-                      label="Brand"
-                      native
-                      {...register('brand', {
-                        required: {
-                          value: true,
-                          message: 'Brand is Required',
-                        },
-                      })}
-                    >
-                      {BRAND_OPTION.map(brand => (
-                        <optgroup key={brand.group} label={brand.group}>
-                          {brand.classify.map(classify => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                    <label className="label">
-                      {errors.brand?.type === 'required' && (
-                        <span className="pl-2 text-xs mt-1 text-red-500">
-                          {errors.brand.message}
-                        </span>
-                      )}
-                    </label>
-                  </FormControl>
-                </div>
+
                 <div className="flex flex-col items-start">
                   <FormControl fullWidth>
                     <InputLabel>Style</InputLabel>
@@ -526,13 +495,17 @@ export default function AddProductForm() {
                   onRemoveAll={handleRemoveAll}
                 />
 
-                {/* {imagesArray?.map((image, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="ml-2 mt-5 text-sm text-gray-500">
-                      {++index}. {image?.name}
-                    </span>
-                  </div>
-                ))} */}
+                <div className="flex items-center mt-5 gap-4">
+                  {imagesUrl?.map((image, index) => (
+                    <div key={index}>
+                      {/* <span className="ml-2 mt-5 text-sm text-gray-500">
+                      {++index}. {image}
+                    </span> */}
+
+                      <Image src={image} width={100} height={100} className='h-32 w-28 object-cover' />
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="relative mt-2">

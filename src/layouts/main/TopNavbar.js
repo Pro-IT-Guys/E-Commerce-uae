@@ -3,6 +3,10 @@ import { Icon } from '@iconify/react'
 import MenuItem from '@mui/material/MenuItem'
 import { Container, FormControl, Select } from '@mui/material'
 import { ContextData } from '../../../context/dataProviderContext'
+import Link from 'next/link'
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 export default function TopNavbar() {
   const { toCurrency, setToCurrency } = useContext(ContextData)
@@ -15,15 +19,15 @@ export default function TopNavbar() {
             <div>
               <h1 className="sm:text-xs text-xs  flex items-center gap-2">
                 Follow us
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <Icon icon="gg:facebook" />
-                </span>
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <Icon icon="ri:youtube-fill" />
-                </span>
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <Icon icon="mdi:twitter" />
-                </span>
+                <Link href={'https://www.facebook.com/aymifashionofficial/'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <FacebookIcon fontSize='small' />
+                </Link>
+                <Link href={'https://www.instagram.com/aymi_fashions/'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <InstagramIcon fontSize='small' />
+                </Link>
+                <Link href={'https://twitter.com/AymiFashion'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <TwitterIcon fontSize='small'/>
+                </Link>
               </h1>
             </div>
             <div className="flex items-center gap-4">
