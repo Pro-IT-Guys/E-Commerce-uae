@@ -396,7 +396,7 @@ export default function LoginForm({ onClose }) {
                         Forgot password?{' '}
                       </div>
                       <div
-                        // onClick={() => navigate('/forgot-password')}
+                        onClick={() => setForgotPassForm(true)}
                         className="text-sm bg-primary  flex items-center justify-center p-1 rounded text-white cursor-pointer font-semibold"
                       >
                         Send OTP
