@@ -99,7 +99,7 @@ export default function SignUpForm({ onClose }) {
                   {...register('otp', {
                     required: {
                       value: true,
-                      message: 'First Name is Required',
+                      message: 'Otp is Required',
                     },
                   })}
                 />
