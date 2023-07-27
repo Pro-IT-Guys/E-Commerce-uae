@@ -1,7 +1,7 @@
 import { Container } from '@mui/material'
+import { BASE_URL } from '../../apis/url'
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../src/layouts/main'
-import { BASE_URL } from '../../apis/url'
 
 export default function ReturnPolicy() {
   const [returnPolicy, setReturnPolicy] = useState('')
@@ -15,8 +15,10 @@ export default function ReturnPolicy() {
 
   return (
     <MainLayout>
-      <Container maxWidth="lg" className='min-h-[80vh]'>
-        <h1 className='mt-40 text-2xl font-semibold mb-5'>Return and Refund Policy</h1>
+      <Container maxWidth="lg" className="min-h-[80vh]">
+        <h1 className="mt-40 text-2xl font-semibold mb-5">
+          Return and Refund Policy
+        </h1>
 
         <div className="bg-white p-5 rounded  shadow mb-5 ">
           <div

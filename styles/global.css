@@ -311,3 +311,14 @@
 .margin_bottom_16px {
   margin-bottom: 16px;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(transparent, #00ab55);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(transparent, #fac100);
+}

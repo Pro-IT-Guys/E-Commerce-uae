@@ -55,26 +55,13 @@ export default function CartDrawer() {
     }
   }
 
-  const handleViewCart = async id => {
-    // First update the updated cart in the database
-    // Then redirect to the cart page
-    const dataToUpdate = {
-      token,
-      cartId: usersCart?._id,
-      product: cartSimplified,
-    }
-    const updateCart = await bulkUpdateCart(dataToUpdate)
-
-    router.push('/cart')
-  }
-
   const handleCheckout = async () => {
     const dataToUpdate = {
       token,
       cartId: usersCart?._id,
       product: cartSimplified,
     }
-    const updateCart = await bulkUpdateCart(dataToUpdate)
+     await bulkUpdateCart(dataToUpdate)
     router.push(`/checkout/product/cart=${usersCart?._id}`)
   }
 
@@ -231,12 +218,6 @@ export default function CartDrawer() {
               padding: '10px',
             }}
           >
-            <Button
-              variant="contained"
-              onClick={() => handleViewCart(usersCart?._id)}
-            >
-              View Cart
-            </Button>
             <Button variant="contained" onClick={handleCheckout}>
               Checkout
             </Button>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useContext } from 'react'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import {
@@ -50,7 +49,7 @@ export default function AllOrders() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/order?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
+      `https://server.aymifashion.com/api/v1/order?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
     )
       .then(res => res.json())
       .then(data => setUserList(data?.data))
@@ -73,7 +72,7 @@ export default function AllOrders() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0
 
   const handleUpdateOrder = (id, status) => {
-    fetch(`http://localhost:8000/api/v1/order/${id}`, {
+    fetch(`https://server.aymifashion.com/api/v1/order/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

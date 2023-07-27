@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardLayout from "src/layouts/dashboard";
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 const AddBrand = () => {
   return <DashboardLayout>add Brand</DashboardLayout>;

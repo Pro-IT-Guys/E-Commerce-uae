@@ -1,27 +1,18 @@
 import { Toaster } from 'react-hot-toast'
 import 'react-quill/dist/quill.snow.css'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
-// next
 import Head from 'next/head'
 import { CacheProvider } from '@emotion/react'
-
-// contexts
 import { SettingsProvider } from '../src/contexts/SettingsContext'
 import { CollapseDrawerProvider } from '../src/contexts/CollapseDrawerContext'
-// theme
 import ThemeConfig from '../src/theme'
 import GlobalStyles from '../src/theme/globalStyles'
-// utils
 import createEmotionCache from '../src/utils/createEmotionCache'
-// components
 import RtlLayout from '../src/components/RtlLayout'
 import ProgressBar from '../src/components/ProgressBar'
 import ThemePrimaryColor from '../src/components/ThemePrimaryColor'
 import '../styles/global.css'
 import { ContextProvider } from '../context/dataProviderContext'
-
-// ----------------------------------------------------------------------
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -43,10 +34,8 @@ export default function MyApp(props) {
               <ThemeConfig>
                 <ThemePrimaryColor>
                   <RtlLayout>
-                    {/* <NoSsr><Settings /></NoSsr> */}
                     <GlobalStyles />
                     <ProgressBar />
-                    {/* <LoadingScreen /> */}
                     <Component {...pageProps} />
                   </RtlLayout>
                 </ThemePrimaryColor>

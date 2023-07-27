@@ -1,18 +1,13 @@
-// Import dependencies
 import { motion } from 'framer-motion'
 import { styled } from '@mui/material/styles'
 import { Box, Button, Typography, Container } from '@mui/material'
-import dynamic from 'next/dynamic'
 import { PageNotFoundIllustration } from '../src/assets'
 import Link from 'next/link'
 import { varBounceIn } from '../src/components/animate'
+import Page from '../src/components/Page'
+import LogoOnlyLayout from '../src/layouts/LogoOnlyLayout'
+import { MotionContainer } from '../src/components/animate'
 
-// Import other components
-const LogoOnlyLayout = dynamic(() => import('../src/layouts/LogoOnlyLayout'))
-const MotionContainer = dynamic(() => import('../src/components/animate'))
-const Page = dynamic(() => import('../src/components/Page'))
-
-// Styling
 const RootStyle = styled(Page)(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
@@ -21,7 +16,6 @@ const RootStyle = styled(Page)(({ theme }) => ({
   paddingBottom: theme.spacing(10),
 }))
 
-// Component
 export default function PageNotFound() {
   return (
     <LogoOnlyLayout>

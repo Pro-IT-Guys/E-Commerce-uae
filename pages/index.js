@@ -6,7 +6,9 @@ import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 import MainLayout from '../src/layouts/main'
 import Page from '../src/components/Page'
-const Banner = dynamic(() => import('../src/components/Home/Banner/Banner'))
+const Banner = dynamic(() => import('../src/components/Home/Banner/Banner'), {
+  loading: () => <CustomLoadingScreen />,
+})
 const Products = dynamic(() =>
   import('../src/components/Home/Products/Products'),
 )
@@ -25,7 +27,7 @@ export default function LandingPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 500)
 
     return () => clearTimeout(timer)
   }, [])
