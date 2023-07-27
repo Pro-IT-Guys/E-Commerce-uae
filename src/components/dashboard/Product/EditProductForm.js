@@ -169,7 +169,6 @@ export default function EditProductForm({ productId }) {
       sizeValue.length > 0 ? sizeValue : productDetails?.size
     )
     formData.append('tag', tagValue.length > 0 ? tagValue : productDetails?.tag)
-    formData.append('brand', data.brand || productDetails?.brand)
     formData.append(
       'type',
       typeValue.length > 0 ? typeValue : productDetails?.type
@@ -230,22 +229,6 @@ export default function EditProductForm({ productId }) {
                       {CATEGORY_OPTION.map(category => (
                         <optgroup key={category.group} label={category.group}>
                           {category.classify.map(classify => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="flex flex-col items-start">
-                  <FormControl fullWidth>
-                    <InputLabel>Brand</InputLabel>
-                    <Select label="Brand" native {...register('brand')}>
-                      {BRAND_OPTION.map(brand => (
-                        <optgroup key={brand.group} label={brand.group}>
-                          {brand.classify.map(classify => (
                             <option key={classify} value={classify}>
                               {classify}
                             </option>
