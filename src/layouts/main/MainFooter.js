@@ -160,7 +160,7 @@ export default function MainFooter() {
             <div className="flex items-center  gap-2">
               <h1 className="text-xs">Design & Developed By ~ </h1>
               <Link
-                href="https://www.facebook.com/ImRanKhan81m/"
+                href="https://www.facebook.com/ayon.jodder.75/"
                 target="blank"
               >
                 <span className="uppercase text-xs text-warning font-semibold">

@@ -20,10 +20,9 @@ export default function contact() {
             <div className="sm:py-20 py-10 mt-32">
                 <Container
                     maxWidth="lg"
-                    className=" bg-[#fbfbfd] rounded-xl shadow"
+                    className=" "
                 >
-
-                    <div className="md:flex gap-10 py-5">
+                    <div className="md:flex gap-10 p-5 bg-[#fbfbfd]  rounded-xl shadow">
                         <div className="md:w-[40%]">
                             <h1 className='font-bold text-center py-4 text-3xl'>Contact Us</h1>
                             <form onSubmit={handleSubmit(onSubmit)}>
