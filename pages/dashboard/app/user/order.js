@@ -79,7 +79,7 @@ export default function UserOrders() {
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [orderList, setOrderList] = useState([])
-  const { fromCurrency, toCurrency, currentlyLoggedIn } =
+  const { fromCurrency, toCurrency, currentlyLoggedIn, rateAEDtoUSD } =
     useContext(ContextData)
   const [update, setUpdate] = useState('')
 
@@ -146,9 +146,7 @@ export default function UserOrders() {
                       } = row
                       return (
                         <TableRow hover key={_id} tabIndex={-1} role="checkbox">
-                             <TableCell align="left">
-                            {++index}
-                          </TableCell>
+                          <TableCell align="left">{++index}</TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
                               direction="row"
@@ -174,7 +172,8 @@ export default function UserOrders() {
                             {convertCurrency(
                               fromCurrency,
                               toCurrency,
-                              subTotal
+                              subTotal,
+                              rateAEDtoUSD,
                             )}
                           </TableCell>
                           <TableCell align="left"> {paymentMethod}</TableCell>
@@ -201,7 +200,7 @@ export default function UserOrders() {
                             <RemoveRedEyeOutlinedIcon
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/app/orders/details/${_id}`
+                                  `/dashboard/app/orders/details/${_id}`,
                                 )
                               }
                               className="cursor-pointer"

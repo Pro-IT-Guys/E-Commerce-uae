@@ -14,7 +14,7 @@ import { convertCurrency } from '../../../../helpers/currencyHandler'
 import React, { useContext, useEffect, useState } from 'react'
 
 const PrintableTable = ({ orderData }) => {
-  const { fromCurrency, toCurrency } = useContext(ContextData)
+  const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [isLoaded, setIsLoaded] = useState(false)
   /**
    * This function prints the contents of a specific HTML element and restores the original contents
@@ -170,7 +170,8 @@ const PrintableTable = ({ orderData }) => {
                           fromCurrency,
                           toCurrency,
                           Number(order?.product?.sellingPrice) *
-                            Number(order?.quantity)
+                            Number(order?.quantity),
+                          rateAEDtoUSD,
                         )}`}
                       </Typography>
                     </TableCell>

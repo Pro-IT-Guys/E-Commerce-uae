@@ -46,7 +46,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 export default function Checkout() {
-  const { token, toCurrency, currentlyLoggedIn, fromCurrency } =
+  const { token, toCurrency, currentlyLoggedIn, fromCurrency, rateAEDtoUSD } =
     useContext(ContextData)
   const [addressPopup, setAddressPopup] = useState(false)
   const router = useRouter()
@@ -236,11 +236,13 @@ export default function Checkout() {
         fromCurrency,
         toCurrency,
         Number(totalPrice) - Number(offerDiscountPrice),
+        rateAEDtoUSD,
       ),
       deliveryFee: convertCurrencyForCalculation(
         fromCurrency,
         toCurrency,
         calculatedDeliveryFee,
+        rateAEDtoUSD,
       ),
     }
 
@@ -397,6 +399,7 @@ export default function Checkout() {
                               fromCurrency,
                               toCurrency,
                               totalPrice,
+                              rateAEDtoUSD,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -415,6 +418,7 @@ export default function Checkout() {
                               fromCurrency,
                               toCurrency,
                               offerDiscountPrice,
+                              rateAEDtoUSD,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -435,6 +439,7 @@ export default function Checkout() {
                                 fromCurrency,
                                 toCurrency,
                                 discountByCupon,
+                                rateAEDtoUSD,
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>
@@ -454,6 +459,7 @@ export default function Checkout() {
                               fromCurrency,
                               toCurrency,
                               totalDeliveryFee,
+                              rateAEDtoUSD,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -476,6 +482,7 @@ export default function Checkout() {
                                   Number(totalDeliveryFee) -
                                   Number(offerDiscountPrice) -
                                   Number(discountByCupon),
+                                rateAEDtoUSD,
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>

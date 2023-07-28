@@ -44,7 +44,7 @@ export default function AllOrders() {
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
-  const { fromCurrency, toCurrency } = useContext(ContextData)
+  const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [update, setUpdate] = useState('')
 
   useEffect(() => {
@@ -166,6 +166,7 @@ export default function AllOrders() {
                               fromCurrency,
                               toCurrency,
                               subTotal,
+                              rateAEDtoUSD,
                             )}
                           </TableCell>
                           <TableCell align="left"> {paymentMethod}</TableCell>
@@ -182,13 +183,17 @@ export default function AllOrders() {
                           <TableCell align="left">
                             {' '}
                             <span
-                              className={`font-semibold ${deliveryStatus === 'Pending' && 'text-secondary'
-                                } ${deliveryStatus === 'Delivered' && 'text-success'
-                                } ${deliveryStatus === 'Cancelled' &&
+                              className={`font-semibold ${
+                                deliveryStatus === 'Pending' && 'text-secondary'
+                              } ${
+                                deliveryStatus === 'Delivered' && 'text-success'
+                              } ${
+                                deliveryStatus === 'Cancelled' &&
                                 'text-[#b9b9b9]'
-                                } ${deliveryStatus === 'Processing' &&
+                              } ${
+                                deliveryStatus === 'Processing' &&
                                 'text-warning'
-                                }  `}
+                              }  `}
                             >
                               {' '}
                               {deliveryStatus}

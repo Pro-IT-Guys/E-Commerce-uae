@@ -13,7 +13,7 @@ ProductCard.propTypes = {
 }
 
 export default function ProductCard({ product }) {
-  const { fromCurrency, toCurrency } = useContext(ContextData)
+  const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const { name, sellingPrice, frontImage, backImage, path } = product || {}
   const router = useRouter()
   const [hovering, setHovering] = useState(false)
@@ -69,7 +69,12 @@ export default function ProductCard({ product }) {
             </h1>
           </div>
           <p className="text-error mt-2 mb-0">
-            {convertCurrency(fromCurrency, toCurrency, sellingPrice)}
+            {convertCurrency(
+              fromCurrency,
+              toCurrency,
+              sellingPrice,
+              rateAEDtoUSD,
+            )}
           </p>
         </div>
       </div>

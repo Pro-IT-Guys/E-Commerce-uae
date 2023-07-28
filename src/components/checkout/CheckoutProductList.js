@@ -113,7 +113,7 @@ export default function ProductList({
   setSelectedProductIdForDelete,
   handleProductRemove,
 }) {
-  const { toCurrency, fromCurrency } = useContext(ContextData)
+  const { toCurrency, fromCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [quantity, setQuantity] = useState(item.quantity)
   const [available, setAvailable] = useState(item.productId.quantity)
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -202,7 +202,12 @@ export default function ProductList({
 
       <TableCell align="left">
         {toCurrency === 'USD' && '$ '}
-        {convertCurrencyForCalculation(fromCurrency, toCurrency, sellingPrice)}
+        {convertCurrencyForCalculation(
+          fromCurrency,
+          toCurrency,
+          sellingPrice,
+          rateAEDtoUSD,
+        )}
         {toCurrency === 'AED' && ' AED'}
       </TableCell>
 
@@ -222,7 +227,8 @@ export default function ProductList({
         {convertCurrencyForCalculation(
           fromCurrency,
           toCurrency,
-          Number(sellingPrice) * Number(quantity)
+          Number(sellingPrice) * Number(quantity),
+          rateAEDtoUSD,
         )}{' '}
         {toCurrency === 'AED' && 'AED'}
       </TableCell>

@@ -45,6 +45,7 @@ const Products = () => {
     handleClearFilter,
     fromCurrency,
     toCurrency,
+    rateAEDtoUSD,
   } = useContext(ContextData)
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
@@ -60,11 +61,11 @@ const Products = () => {
     setLoading(true)
     const maxPrice =
       toCurrency === 'USD'
-        ? convertCurrencyForCalculation('USD', 'AED', value[1])
+        ? convertCurrencyForCalculation('USD', 'AED', value[1], rateAEDtoUSD)
         : value[1]
     const minPrice =
       fromCurrency === 'USD'
-        ? convertCurrencyForCalculation('USD', 'AED', value[0])
+        ? convertCurrencyForCalculation('USD', 'AED', value[0], rateAEDtoUSD)
         : value[0]
     const queryParams = {
       searchTerm,
@@ -86,8 +87,7 @@ const Products = () => {
     retriveProduct()
   }, [searchTerm, category, value, type, style, fabric])
 
-
-  console.log(category);
+  console.log(category)
   return (
     <div className="bg-[#f7f7ff9c] ">
       <Container maxWidth="lg" className="pb-20 ">
@@ -190,57 +190,55 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-                {
-                  !pathname.includes('category') && (
-                    <div className="bg-white shadow rounded">
-                      <div className="  py-2 px-3 border-b">
-                        <h1 className="font-semibold "> Filter by Categories</h1>
-                      </div>
-                      <div className=" py-3 pl-4 pr-3">
-                        <FormControl fullWidth>
-                          <div>
-                            <Autocomplete
-                              size="small"
-                              className="w-full"
-                              multiple
-                              freeSolo
-                              value={category}
-                              onChange={(event, newValue) => {
-                                setCategory(newValue)
-                              }}
-                              options={CATEGORY_OPTION_ARRAY}
-                              getOptionLabel={option => option}
-                              renderTags={() => null}
-                              renderInput={params => (
-                                <TextField label="Category" {...params} />
-                              )}
-                            ></Autocomplete>
-
-                            <div style={{ marginTop: '8px' }}>
-                              {category?.map((option, index) => (
-                                <Chip
-                                  key={option}
-                                  size="small"
-                                  label={option}
-                                  onDelete={() => {
-                                    setCategory(prevValue =>
-                                      prevValue?.filter(val => val !== option),
-                                    )
-                                  }}
-                                  deleteIcon={<CloseIcon />}
-                                  style={{
-                                    marginRight: '8px',
-                                    marginBottom: '8px',
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        </FormControl>
-                      </div>
+                {!pathname.includes('category') && (
+                  <div className="bg-white shadow rounded">
+                    <div className="  py-2 px-3 border-b">
+                      <h1 className="font-semibold "> Filter by Categories</h1>
                     </div>
-                  )
-                }
+                    <div className=" py-3 pl-4 pr-3">
+                      <FormControl fullWidth>
+                        <div>
+                          <Autocomplete
+                            size="small"
+                            className="w-full"
+                            multiple
+                            freeSolo
+                            value={category}
+                            onChange={(event, newValue) => {
+                              setCategory(newValue)
+                            }}
+                            options={CATEGORY_OPTION_ARRAY}
+                            getOptionLabel={option => option}
+                            renderTags={() => null}
+                            renderInput={params => (
+                              <TextField label="Category" {...params} />
+                            )}
+                          ></Autocomplete>
+
+                          <div style={{ marginTop: '8px' }}>
+                            {category?.map((option, index) => (
+                              <Chip
+                                key={option}
+                                size="small"
+                                label={option}
+                                onDelete={() => {
+                                  setCategory(prevValue =>
+                                    prevValue?.filter(val => val !== option),
+                                  )
+                                }}
+                                deleteIcon={<CloseIcon />}
+                                style={{
+                                  marginRight: '8px',
+                                  marginBottom: '8px',
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </FormControl>
+                    </div>
+                  </div>
+                )}
                 <div className="bg-white shadow rounded">
                   <div className="  py-2 px-3 border-b">
                     <h1 className="font-semibold "> Filter by Fabrics</h1>
@@ -398,32 +396,30 @@ const Products = () => {
                   </div>
                 )}
 
-                {
-                  !pathname.includes('category') && (
-                    <>
-                      {products?.length ? (
-                        <>
-                          <div>
-                            <h1 className="font-bold text-xl mt-7">
-                              Popular Products
-                            </h1>
-                            <PopularProducts products={products} />
-                            <h1 className="font-bold text-xl mt-7">
-                              Latest Collection
-                            </h1>
-                            <PopularProducts products={products} />
-                          </div>
-                        </>
-                      ) : (
-                        <div className="flex justify-center items-center h-[50vh]">
-                          <h1 className="text-xl font-semibold text-error">
-                            No Product Found!
+                {!pathname.includes('category') && (
+                  <>
+                    {products?.length ? (
+                      <>
+                        <div>
+                          <h1 className="font-bold text-xl mt-7">
+                            Popular Products
                           </h1>
+                          <PopularProducts products={products} />
+                          <h1 className="font-bold text-xl mt-7">
+                            Latest Collection
+                          </h1>
+                          <PopularProducts products={products} />
                         </div>
-                      )}
-                    </>
-                  )
-                }
+                      </>
+                    ) : (
+                      <div className="flex justify-center items-center h-[50vh]">
+                        <h1 className="text-xl font-semibold text-error">
+                          No Product Found!
+                        </h1>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -1,6 +1,4 @@
-export function convertCurrency(from, to, amount) {
-  const rateAEDtoUSD = 0.27
-
+export function convertCurrency(from, to, amount, rateAEDtoUSD) {
   try {
     if (from === to) {
       return `${amount?.toString()} AED`
@@ -20,9 +18,7 @@ export function convertCurrency(from, to, amount) {
   }
 }
 
-export function convertCurrencyForCalculation(from, to, amount) {
-  const rateAEDtoUSD = 0.27
-
+export function convertCurrencyForCalculation(from, to, amount, rateAEDtoUSD) {
   try {
     if (from === to) {
       return Number(amount)

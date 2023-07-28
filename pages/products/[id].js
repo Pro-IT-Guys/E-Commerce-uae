@@ -67,6 +67,7 @@ export default function ProductDetails() {
     setCartUpdate,
     fromCurrency,
     toCurrency,
+    rateAEDtoUSD,
   } = useContext(ContextData)
   const [productSize, setProductSize] = useState('XL')
   const [productDetails, setProductDetails] = useState({})
@@ -284,6 +285,7 @@ export default function ProductDetails() {
                               fromCurrency,
                               toCurrency,
                               sellingPrice,
+                              rateAEDtoUSD,
                             )}
                           </strike>
                           <p className="text-xl font-semibold  text-secondary">
@@ -292,6 +294,7 @@ export default function ProductDetails() {
                               toCurrency,
                               Number(sellingPrice) -
                                 Number(offerDetails?.discountPrice || 0),
+                              rateAEDtoUSD,
                             )}
                           </p>
                         </div>
@@ -301,6 +304,7 @@ export default function ProductDetails() {
                             fromCurrency,
                             toCurrency,
                             sellingPrice,
+                            rateAEDtoUSD,
                           )}
                         </p>
                       )}

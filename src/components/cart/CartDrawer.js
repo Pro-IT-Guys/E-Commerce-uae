@@ -18,6 +18,7 @@ export default function CartDrawer() {
     token,
     fromCurrency,
     toCurrency,
+    rateAEDtoUSD,
   } = useContext(ContextData)
 
   const handleDrawerOpen = () => {
@@ -148,7 +149,8 @@ export default function CartDrawer() {
                           {convertCurrency(
                             fromCurrency,
                             toCurrency,
-                            product?.subtotal
+                            product?.subtotal,
+                            rateAEDtoUSD,
                           )}
                         </>
                       ) : (
@@ -157,7 +159,8 @@ export default function CartDrawer() {
                             fromCurrency,
                             toCurrency,
                             Number(product?.productId?.sellingPrice) *
-                              Number(product?.quantity)
+                              Number(product?.quantity),
+                            rateAEDtoUSD,
                           )}
                         </>
                       )}
