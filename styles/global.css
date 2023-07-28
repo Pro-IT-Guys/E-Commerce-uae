@@ -322,3 +322,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(transparent, #fac100);
 }
+
+.simplebar-placeholder {
+  height: 0 !important;
+}
