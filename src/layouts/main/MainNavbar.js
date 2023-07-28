@@ -129,6 +129,7 @@ export default function MainNavbar() {
                   alt="Picture of the logo"
                   width={150}
                   height={50}
+                  loading="lazy"
                   className="cursor-pointer object-cover w-full"
                 />
               </NextLink>
