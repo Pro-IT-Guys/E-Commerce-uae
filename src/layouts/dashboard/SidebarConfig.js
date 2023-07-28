@@ -95,8 +95,8 @@ const sidebarConfig = [
             path: PATH_DASHBOARD.myShop.addCampaign,
           },
           {
-            title: 'Cupon & Discount',
-            path: PATH_DASHBOARD.myShop.cupon,
+            title: 'Coupon & Discount',
+            path: PATH_DASHBOARD.myShop.coupon,
           },
           {
             title: 'Terms & Conditions',

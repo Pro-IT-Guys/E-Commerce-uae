@@ -58,11 +58,11 @@ export default function Cupon() {
 
   return (
     <DashboardLayout>
-      <Page title="AYMi | Cupon">
+      <Page title="AYMi | Coupon">
         <Container maxWidth="lg">
           <Card>
             <CardHeader
-              title="Create Cupon"
+              title="Create Coupon"
               titleTypographyProps={{
                 sx: {
                   mb: 2.5,
@@ -98,7 +98,7 @@ export default function Cupon() {
                       color="primary"
                       onClick={handleCreateCupon}
                     >
-                      Create Cupon
+                      Create Coupon
                     </Button>
                   </ButtonAnimate>
                 </Grid>
@@ -108,7 +108,7 @@ export default function Cupon() {
 
           <Card sx={{ marginTop: 4 }}>
             <CardHeader
-              title="Cupon List"
+              title="Coupon List"
               titleTypographyProps={{
                 sx: {
                   mb: 2.5,
@@ -127,7 +127,7 @@ export default function Cupon() {
                           variant="subtitle2"
                           sx={{ fontWeight: 'bold' }}
                         >
-                          Cupon Code
+                          Coupon Code
                         </Typography>
                       </TableCell>
                       <TableCell>
