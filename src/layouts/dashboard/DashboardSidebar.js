@@ -25,6 +25,7 @@ import sidebarConfig from './SidebarConfig'
 import logoImg from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
 import { ContextData } from '../../../context/dataProviderContext'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 // ----------------------------------------------------------------------
 
@@ -146,17 +147,24 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           alignItems='center'
           justifyContent='space-between'
         >
-          <NextLink href='/'>
-            <Box sx={{ display: 'inline-flex' }}>
-              <Image
-                src={logoImg}
-                alt="Picture of the logo"
-                width={130}
-                height={60}
-                className="cursor-pointer"
-              />
-            </Box>
-          </NextLink>
+          <div className='flex items-center justify-between w-full'>
+            <NextLink href='/'>
+              <Box sx={{ display: 'inline-flex' }}>
+                <Image
+                  src={logoImg}
+                  alt="Picture of the logo"
+                  width={130}
+                  height={60}
+                  className="cursor-pointer"
+                />
+              </Box>
+            </NextLink>
+            <div
+            onClick={onCloseSidebar}
+            className="flex justify-end mr-2 cursor-pointer text-secondary">
+            <CancelIcon fontSize="large" />
+          </div>
+          </div>
 
           <MHidden width="lgDown">
             {!isCollapse && (

@@ -26,6 +26,7 @@ import { useContext } from 'react'
 import Scrollbar from '../common/Scrollbar'
 import { ContextData } from '../../../../context/dataProviderContext'
 import CloseIcon from '@mui/icons-material/Close'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 // ----------------------------------------------------------------------
 
@@ -80,9 +81,11 @@ export default function ProductFilterDrawer({
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
             Filters
           </Typography>
-          <MIconButton onClick={onCloseFilter}>
-            <Icon icon={closeFill} width={20} height={20} />
-          </MIconButton>
+          <div
+            onClick={onCloseFilter}
+            className="flex justify-end mr-2 cursor-pointer text-secondary">
+            <CancelIcon fontSize="large" />
+          </div>
         </Stack>
 
         <Divider />
