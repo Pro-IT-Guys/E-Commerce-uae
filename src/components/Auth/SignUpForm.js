@@ -1,17 +1,15 @@
 import { useState } from 'react'
-import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
 import FetchUrls from '../../utils/FetchUrls'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
+import CloseIcon from '@mui/icons-material/Close'
 
 // ----------------------------------------------------------------------
 
 export default function SignUpForm({ onClose }) {
   const [otpModal, setOtpModal] = useState(false)
   const [otpEmail, setOtpEmail] = useState('')
-  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -73,8 +71,7 @@ export default function SignUpForm({ onClose }) {
         }
       })
       .catch(err => {
-        console.log(err.response)
-        // toast.error('User Already Exist!')
+        toast.error('User Already Exist!')
       })
   }
 
@@ -124,9 +121,14 @@ export default function SignUpForm({ onClose }) {
         </>
       ) : (
         <>
-          <div className='shadow border'>
-            <h1 className="text-xl font-bold text-center mt-5">
-              Sign up Now
+          <div className="shadow border">
+            <CloseIcon
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={onClose}
+              fontSize="medium"
+            />
+            <h1 className="text-xl font-bold text-center mt-8">
+              Join AYMi Fashion
             </h1>
             <div className="flex justify-center ">
               <div className="w-full  md:px-10 px-5 py-5">

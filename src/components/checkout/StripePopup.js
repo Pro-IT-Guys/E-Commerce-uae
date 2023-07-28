@@ -15,7 +15,7 @@ const StripePopup = ({ setOpenPopup }) => {
 
   const handleStripePayment = async paymentMethodId => {
     const response = await fetch(
-      'http://localhost:8000/api/v1/payment/stripe',
+      'https://server.aymifashion.com/api/v1/payment/stripe',
       {
         method: 'POST',
         headers: {

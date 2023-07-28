@@ -164,7 +164,7 @@ export default function MainNavbar() {
                 <div>
                   <Icon
                     icon="eva:people-outline"
-                    className="text-black md:text-3xl text-2xl"
+                    className="text-gray-600 md:text-3xl text-2xl"
                   />
                 </div>
                 <div className="text-black ">

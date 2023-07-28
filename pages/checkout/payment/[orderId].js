@@ -34,7 +34,7 @@ import Page from '../../../src/components/Page'
 import { BASE_URL } from '../../../apis/url'
 
 const stripePromise = loadStripe(
-  'pk_test_51L3PqJCnJiLLpGIeL4Uixr7K4bJ183L3tSUyFg2ENBX5ovRQKSQhaYTR8kG7WbcfvkvyuLa5RfB9eZlBJfohfpYd00PM7gqopw'
+  'pk_test_51NL63QKBXnbzmZqgcYcweVF6rQn1AYl0PYTWdPi6iKnd6c4XY35AYLkOfge5MVeuNY722okW7W1jhAV69JhsWICJ00impyVmaz',
 )
 
 const RootStyle = styled('div')(({ theme }) => ({

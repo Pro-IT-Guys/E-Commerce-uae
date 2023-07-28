@@ -7,6 +7,7 @@ import { ContextData } from '../../../context/dataProviderContext'
 import { bulkUpdateCart } from '../../../apis/cart.api'
 import { useRouter } from 'next/router'
 import { convertCurrency } from '../../../helpers/currencyHandler'
+import CloseIcon from '@mui/icons-material/Close'
 
 export default function CartDrawer() {
   const router = useRouter()
@@ -32,7 +33,7 @@ export default function CartDrawer() {
   const handleIncreaseQuantity = productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
-      item => item.productId._id === productId
+      item => item.productId._id === productId,
     )
 
     if (productIndex !== -1) {
@@ -44,7 +45,7 @@ export default function CartDrawer() {
   const handleDecreaseQuantity = productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
-      item => item.productId._id === productId
+      item => item.productId._id === productId,
     )
 
     if (productIndex !== -1) {
@@ -62,7 +63,7 @@ export default function CartDrawer() {
       cartId: usersCart?._id,
       product: cartSimplified,
     }
-     await bulkUpdateCart(dataToUpdate)
+    await bulkUpdateCart(dataToUpdate)
     router.push(`/checkout/product/cart=${usersCart?._id}`)
   }
 
@@ -88,7 +89,7 @@ export default function CartDrawer() {
           </h1>
           <div className="text-[10px] flex gap-1">
             <p className="hover:text-secondary duration-200">
-              ({cartSimplified ? cartSimplified.length : 0}) items
+              ({cartSimplified ? cartSimplified.length : 0}) Items
             </p>
           </div>
         </div>
@@ -100,7 +101,13 @@ export default function CartDrawer() {
         anchor="right"
         ModalProps={{ keepMounted: true }}
         PaperProps={{ sx: { pb: 5, width: 260 } }}
+        className="relative"
       >
+        <CloseIcon
+          className="absolute top-2 left-2 cursor-pointer"
+          onClick={handleDrawerClose}
+          fontSize="medium"
+        />
         <Scrollbar>
           <Typography
             variant="h5"
@@ -221,9 +228,11 @@ export default function CartDrawer() {
               padding: '10px',
             }}
           >
-            <Button variant="contained" onClick={handleCheckout}>
-              Checkout
-            </Button>
+            {cartSimplified && (
+              <Button variant="contained" onClick={handleCheckout}>
+                Checkout
+              </Button>
+            )}
           </div>
         </Scrollbar>
       </Drawer>

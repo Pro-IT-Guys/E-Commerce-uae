@@ -74,7 +74,7 @@ export default function UserList() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
+      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
     )
       .then(res => res.json())
       .then(data => setUserList(data?.data))
@@ -122,8 +122,8 @@ export default function UserList() {
                     // orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={userList.length}
-                  // numSelected={selected.length}
-                  // onSelectAllClick={handleSelectAllClick}
+                    // numSelected={selected.length}
+                    // onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
                     {userList.map(row => {
