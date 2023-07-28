@@ -5,13 +5,14 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import { Autoplay} from 'swiper/modules'
+import { Autoplay } from 'swiper/modules'
 
 import Image from 'next/image'
 import { useContext } from 'react'
 import { BASE_URL } from '../../../../apis/url'
 import { ContextData } from '../../../../context/dataProviderContext'
 import dynamic from 'next/dynamic'
+import { getCurrentOffer } from '../../../../apis/offer.api'
 const Container = dynamic(() => import('@mui/material/Container'), {
   ssr: false,
 })
@@ -24,12 +25,11 @@ const Banner = () => {
   const { image, isVisible } = offer || {}
 
   useEffect(() => {
-    fetch(`${BASE_URL}/Offer`)
-      .then(res => res.json())
-      .then(data => {
-        setOffer(data.data)
-      })
-      .catch(err => console.log(err))
+    const retriveOffer = async () => {
+      const response = await getCurrentOffer()
+      setOffer(response.data)
+    }
+    retriveOffer()
   }, [currentlyLoggedIn])
 
   // Lazy load the images

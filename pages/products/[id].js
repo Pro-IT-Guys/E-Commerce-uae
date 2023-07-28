@@ -35,12 +35,13 @@ import { getStorage } from '../../apis/loadStorage'
 import { addToCart, updateCart } from '../../apis/cart.api'
 import { convertCurrency } from '../../helpers/currencyHandler'
 import { toast } from 'react-hot-toast'
-import Loader from '../../src/components/Loader/Loader'
 import ProductDetailsTab from '../../src/components/Products/ProductDetailsTab'
 import RelatedProducts from '../../src/components/Products/RelatedProducts'
 import { ButtonAnimate, DialogAnimate } from '../../src/components/animate'
 import ClearIcon from '@mui/icons-material/Clear'
-import { BASE_URL } from '../../apis/url'
+import { getProductByPath } from '../../apis/product.api'
+import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
+import { getCurrentOffer } from '../../apis/offer.api'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -69,6 +70,7 @@ export default function ProductDetails() {
   } = useContext(ContextData)
   const [productSize, setProductSize] = useState('XL')
   const [productDetails, setProductDetails] = useState({})
+  const [offerDetails, setOfferDetails] = useState({})
   const [productQuantity, setProductQuantity] = useState(1)
   const [productColor, setProductColor] = useState('Black')
   const router = useRouter()
@@ -77,6 +79,8 @@ export default function ProductDetails() {
   const [retriveCartState, setRetriveCartState] = useState(false)
   const [productUrl, setProductUrl] = useState('')
   const [openSizeChartPopup, setOpenSizeChartPopup] = useState(false)
+
+  const [isProductIsInOffer, setIsProductIsInOffer] = useState(undefined)
 
   useEffect(() => {
     setProductUrl(window.location.href)
@@ -153,16 +157,29 @@ export default function ProductDetails() {
 
   useEffect(() => {
     setLoader(false)
-    fetch(`${BASE_URL}/product/path/${params}`)
-      .then(res => res.json())
-      .then(data => setProductDetails(data?.data))
-      .finally(() => setLoader(false))
+    const _retriveData = async () => {
+      const [product, offer] = await Promise.all([
+        getProductByPath(params),
+        getCurrentOffer(),
+      ])
+      setProductDetails(product?.data)
+      setOfferDetails(offer?.data)
+      setLoader(false)
+    }
+    _retriveData()
   }, [params])
+
+  useEffect(() => {
+    const isProductIsInOffer = offerDetails?.product?.find(
+      product => product === productDetails?._id,
+    )
+    setIsProductIsInOffer(isProductIsInOffer)
+  }, [productDetails, offerDetails])
 
   const { name, sellingPrice, quantity, rating, metaDescription, frontImage } =
     productDetails || {}
 
-  if (loader || !productUrl) return <Loader />
+  if (loader || !productUrl) return <CustomLoadingScreen />
 
   // Cart Logics===============>
   const handleAddToCart = async () => {
@@ -260,13 +277,34 @@ export default function ProductDetails() {
                     <p className="text-sm">Fabric: {productDetails?.fabric}</p>
 
                     <div className="flex items-center mt-3">
-                      <p className="text-xl font-semibold  text-secondary">
-                        {convertCurrency(
-                          fromCurrency,
-                          toCurrency,
-                          sellingPrice,
-                        )}
-                      </p>
+                      {isProductIsInOffer ? (
+                        <div className="flex flex-col items-start">
+                          <strike className="text-sm font-semibold  text-gray-600">
+                            {convertCurrency(
+                              fromCurrency,
+                              toCurrency,
+                              sellingPrice,
+                            )}
+                          </strike>
+                          <p className="text-xl font-semibold  text-secondary">
+                            {convertCurrency(
+                              fromCurrency,
+                              toCurrency,
+                              Number(sellingPrice) -
+                                Number(offerDetails?.discountPrice || 0),
+                            )}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-xl font-semibold  text-secondary">
+                          {convertCurrency(
+                            fromCurrency,
+                            toCurrency,
+                            sellingPrice,
+                          )}
+                        </p>
+                      )}
+
                       <ButtonAnimate mediumClick>
                         <small
                           onClick={() => setOpenSizeChartPopup(true)}
