@@ -28,7 +28,7 @@ import { useRouter } from 'next/router'
 
 const MENU_OPTIONS = [
   { label: 'Home', icon: homeFill, linkTo: '/', role: 'user' },
-  { label: 'Profile', icon: personFill, linkTo: '#', role: 'user' },
+  { label: 'Profile', icon: personFill, linkTo: '/dashboard/app/my-profile', role: 'user' },
   { label: 'Settings', icon: settings2Fill, linkTo: '#' },
 ]
 
@@ -131,8 +131,8 @@ export default function AccountPopover() {
           </MenuItem>
         </NextLink>
 
-        {role === 'admin' && (
-          <NextLink href={'/dashboard/app/my-profile'}>
+        {role === 'user' && (
+          <NextLink href={'/dashboard/app/my-orders'}>
             <MenuItem
               onClick={handleClose}
               sx={{ typography: 'body2', py: 1, px: 2.5 }}
