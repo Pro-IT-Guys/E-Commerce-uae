@@ -160,10 +160,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               </Box>
             </NextLink>
             <div
-            onClick={onCloseSidebar}
-            className="flex justify-end mr-2 cursor-pointer text-secondary">
-            <CancelIcon fontSize="large" />
-          </div>
+              onClick={onCloseSidebar}
+              className="mr-2 cursor-pointer text-secondary lg:hidden block">
+              <CancelIcon fontSize="large" />
+            </div>
           </div>
 
           <MHidden width="lgDown">
