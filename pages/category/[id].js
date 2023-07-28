@@ -28,7 +28,7 @@ export default function CategoryFilter() {
             </p>{' '}
             <ChevronRightOutlinedIcon />
             <p>Category </p> <ChevronRightOutlinedIcon />
-            <p className="font-semibold">{params}</p>
+            <p className="font-semibold text-secondary">{params}</p>
           </div>
         </Container>
         <Products />

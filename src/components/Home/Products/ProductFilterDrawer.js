@@ -196,7 +196,7 @@ export default function ProductFilterDrawer({
                     ></Autocomplete>
 
                     <div style={{ marginTop: '8px' }}>
-                      {fabric.map((option) => (
+                      {fabric?.map((option) => (
                         <Chip
                           key={option}
                           size="small"
@@ -243,7 +243,7 @@ export default function ProductFilterDrawer({
                     ></Autocomplete>
 
                     <div style={{ marginTop: '8px' }}>
-                      {style.map((option) => (
+                      {style?.map((option) => (
                         <Chip
                           key={option}
                           size="small"
