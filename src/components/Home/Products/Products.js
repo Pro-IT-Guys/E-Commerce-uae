@@ -50,6 +50,7 @@ const Products = () => {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+  const {pathname} = router
 
   const handlePriceRange = (event, newValue) => {
     setValue(newValue)
@@ -85,6 +86,8 @@ const Products = () => {
     retriveProduct()
   }, [searchTerm, category, value, type, style, fabric])
 
+
+  console.log(category);
   return (
     <div className="bg-[#f7f7ff9c] ">
       <Container maxWidth="lg" className="pb-20 ">
@@ -187,7 +190,9 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow rounded">
+              {
+                !pathname.includes('category') && (
+                  <div className="bg-white shadow rounded">
                   <div className="  py-2 px-3 border-b">
                     <h1 className="font-semibold "> Filter by Categories</h1>
                   </div>
@@ -234,6 +239,8 @@ const Products = () => {
                     </FormControl>
                   </div>
                 </div>
+                )
+              }
                 <div className="bg-white shadow rounded">
                   <div className="  py-2 px-3 border-b">
                     <h1 className="font-semibold "> Filter by Fabrics</h1>

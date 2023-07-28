@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { Container } from '@mui/material'
 import { CATEGORY_OPTION_ARRAY } from '../../../constant/product'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { ContextData } from '../../../context/dataProviderContext'
+import { set } from 'lodash'
 const ProductFilterDrawer = dynamic(() =>
   import('../../components/Home/Products/ProductFilterDrawer'),
 )
@@ -12,6 +14,15 @@ const Searchbar = dynamic(() => import('../dashboard/Searchbar'))
 
 export default function CategoryNav() {
   const [openFilter, setOpenFilter] = useState(false)
+
+  const {
+    category,
+    setCategory,
+  } = useContext(ContextData)
+
+  const handleSetCategory = (data) => {
+    setCategory([data])
+  }
 
   const handleOpenFilter = () => {
     setOpenFilter(true)
@@ -34,8 +45,14 @@ export default function CategoryNav() {
             <div className="flex justify-center items-center gap-10">
               <div className="flex gap-4 justify-center text-[14px]">
                 {CATEGORY_OPTION_ARRAY?.map((category, index) => (
-                  <Link key={index} href={`/category/${category}`} passHref>
-                    <span className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold">
+                  <Link
+
+                    key={index}
+                    href={`/category/${category}`}
+                    passHref >
+                    <span
+                      onClick={()=> handleSetCategory(category)}
+                      className="text-black hover:text-[#ff4d4f] hover:underline uppercase font-bold">
                       {category}
                     </span>
                   </Link>
