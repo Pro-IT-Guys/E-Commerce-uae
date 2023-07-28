@@ -129,6 +129,7 @@ export default function MainNavbar() {
                   alt="Picture of the logo"
                   width={150}
                   height={50}
+                  loading="lazy"
                   className="cursor-pointer object-cover w-full"
                 />
               </NextLink>
@@ -164,7 +165,7 @@ export default function MainNavbar() {
                 <div>
                   <Icon
                     icon="eva:people-outline"
-                    className="text-black md:text-3xl text-2xl"
+                    className="text-gray-600 md:text-3xl text-2xl"
                   />
                 </div>
                 <div className="text-black ">

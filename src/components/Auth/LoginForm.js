@@ -1,12 +1,10 @@
 import { useContext, useState } from 'react'
-import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
 import axios from 'axios'
 import FetchUrls from '../../utils/FetchUrls'
 import { toast } from 'react-hot-toast'
 import { ContextData } from '../../../context/dataProviderContext'
-import { set } from 'lodash'
+import CloseIcon from '@mui/icons-material/Close'
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +32,6 @@ export default function LoginForm({ onClose }) {
     axios
       .post(FetchUrls('auth/login'), body)
       .then(res => {
-        console.log(res)
         if (res.status === 200 && res?.data?.data?.isVerified) {
           // navigate(from, { replace: true })
           onClose()
@@ -47,8 +44,7 @@ export default function LoginForm({ onClose }) {
           }, 1500)
         } else if (res.status === 200 && !res?.data?.data?.isVerified) {
           toast.error('Please verify your account first!')
-        }
-        else {
+        } else {
           toast.error('Incorrect Email or Password!')
         }
       })
@@ -58,7 +54,7 @@ export default function LoginForm({ onClose }) {
       })
   }
 
-  const handleSendOtp = (data) => {
+  const handleSendOtp = data => {
     const { email } = data
 
     const body = {
@@ -93,7 +89,6 @@ export default function LoginForm({ onClose }) {
     axios
       .post(FetchUrls('auth/verify'), body)
       .then(res => {
-        console.log(res)
         if (res.status === 200) {
           setOtpForm(false)
           setResetPassForm(true)
@@ -103,7 +98,6 @@ export default function LoginForm({ onClose }) {
         }
       })
       .catch(err => {
-        console.log(err.response)
         toast.error('Incorrect OTP!')
       })
   }
@@ -113,39 +107,30 @@ export default function LoginForm({ onClose }) {
 
     const body = {
       email: otpEmail,
-      password
+      password,
     }
     axios
       .post(FetchUrls('auth/reset_password'), body)
       .then(res => {
-        console.log(res)
         if (res.status === 200) {
           setOtpForm(false)
           setResetPassForm(false)
           setForgotPassForm(false)
-          toast.success('Password reset successfully! Now login with new password')
+          toast.success(
+            'Password reset successfully! Now login with new password',
+          )
         } else {
           toast.error('Password reset failed!')
         }
       })
       .catch(err => {
-        console.log(err.response)
         toast.error(' Password reset failed! Try again')
       })
   }
 
-
   const handleForgotPassForm = () => {
     setForgotPassForm(true)
   }
-
-  // if (forgotPassForm) {
-  //   return (
-      
-  //   )
-  // }
-
-
 
   return (
     <>
@@ -304,106 +289,112 @@ export default function LoginForm({ onClose }) {
         </div>
       )}
       {!forgotPassForm && !otpForm && !resetPassForm && (
-        <div className="flex justify-center">
-          <div className="w-full px-10 pb-10 pt-10 shadow border rounded">
-            <h1 className="text-xl font-bold text-center">Login Now</h1>
-            <div className=" rounded-lg w-full mt-5">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                  <div className="flex flex-col items-start mb-5">
-                    <label htmlFor="email" className="ml-3 mb-1">
-                      Email
-                    </label>
-                    <input
-                      className="py-3 px-3 text-gray-500 rounded w-full  border-[1px]"
-                      type="email"
-                      id="email"
-                      {...register('email', {
-                        required: {
-                          value: true,
-                          message: 'Email is Required',
-                        },
-                        pattern: {
-                          value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                          message: 'Provide a valid Email',
-                        },
-                      })}
-                    />
-                    <label className="label">
-                      {errors.email?.type === 'required' && (
-                        <span className="pl-3 text-sm mt-1 text-red-500">
-                          {errors.email.message}
-                        </span>
-                      )}
-                      {errors.email?.type === 'pattern' && (
-                        <span className="pl-3 text-sm mt-1 text-red-500">
-                          {errors.email.message}
-                        </span>
-                      )}
-                    </label>
-                  </div>
-                  <div className="flex flex-col items-start">
-                    <label htmlFor="password" className="ml-3 mb-1">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      className="py-3 px-3 rounded w-full  border-[1px]"
-                      id="password"
-                      {...register('password', {
-                        required: {
-                          value: true,
-                          message: 'Password is Required',
-                        },
-                        minLength: {
-                          value: 6,
-                          message: 'Must be 6 characters or longer',
-                        },
-                      })}
-                    />
-                    <label className="label">
-                      {errors.password?.type === 'required' && (
-                        <span className=" text-sm mt-2 text-red-500">
-                          {errors.password.message}
-                        </span>
-                      )}
-                      {errors.password?.type === 'minLength' && (
-                        <span className=" text-sm mt-2  text-red-500">
-                          {errors.password.message}
-                        </span>
-                      )}
-                      {/* {error && (
+        <div className="relative">
+          <CloseIcon
+            className="absolute top-2 right-2 cursor-pointer"
+            onClick={onClose}
+            fontSize="medium"
+          />
+          <div className="flex justify-center mt-10">
+            <div className="w-full px-10 pb-10 shadow rounded">
+              <h1 className="text-xl font-bold text-center">Login Now</h1>
+              <div className=" rounded-lg w-full mt-5">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div>
+                    <div className="flex flex-col items-start mb-5">
+                      <label htmlFor="email" className="ml-3 mb-1">
+                        Email
+                      </label>
+                      <input
+                        className="py-3 px-3 text-gray-500 rounded w-full  border-[1px]"
+                        type="email"
+                        id="email"
+                        {...register('email', {
+                          required: {
+                            value: true,
+                            message: 'Email is Required',
+                          },
+                          pattern: {
+                            value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                            message: 'Provide a valid Email',
+                          },
+                        })}
+                      />
+                      <label className="label">
+                        {errors.email?.type === 'required' && (
+                          <span className="pl-3 text-sm mt-1 text-red-500">
+                            {errors.email.message}
+                          </span>
+                        )}
+                        {errors.email?.type === 'pattern' && (
+                          <span className="pl-3 text-sm mt-1 text-red-500">
+                            {errors.email.message}
+                          </span>
+                        )}
+                      </label>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <label htmlFor="password" className="ml-3 mb-1">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        className="py-3 px-3 rounded w-full  border-[1px]"
+                        id="password"
+                        {...register('password', {
+                          required: {
+                            value: true,
+                            message: 'Password is Required',
+                          },
+                          minLength: {
+                            value: 6,
+                            message: 'Must be 6 characters or longer',
+                          },
+                        })}
+                      />
+                      <label className="label">
+                        {errors.password?.type === 'required' && (
+                          <span className=" text-sm mt-2 text-red-500">
+                            {errors.password.message}
+                          </span>
+                        )}
+                        {errors.password?.type === 'minLength' && (
+                          <span className=" text-sm mt-2  text-red-500">
+                            {errors.password.message}
+                          </span>
+                        )}
+                        {/* {error && (
                     <span className="pl-5 label-text-alt text-red-500">
                       {errorMsg}
                     </span>
                   )} */}
-                    </label>
-                  </div>
-                  <div className="flex justify-between mt-4">
-                    <div
-                      onClick={handleForgotPassForm}
-                      className="text-sm text-secondary pr-2 pt-1 cursor-pointer font-semibold"
-                    >
-                      Forgot password?{' '}
+                      </label>
                     </div>
-                    <div
-                      onClick={() => setForgotPassForm(true)}
-                      className="text-sm bg-primary  flex items-center justify-center p-1 rounded text-white cursor-pointer font-semibold"
-                    >
-                      Verify Email
+                    <div className="flex justify-between mt-4">
+                      <div
+                        onClick={handleForgotPassForm}
+                        className="text-sm text-secondary pr-2 pt-1 cursor-pointer font-semibold"
+                      >
+                        Forgot password?{' '}
+                      </div>
+                      <div
+                        onClick={() => setForgotPassForm(true)}
+                        className="text-sm bg-primary  flex items-center justify-center p-1 rounded text-white cursor-pointer font-semibold"
+                      >
+                        Verify Email
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="relative mt-7">
-                    <button
-                      type="submit"
-                      className="font-bold  py-3 rounded bg-primary text-white w-full"
-                    >
-                      Login
-                    </button>
-                  </div>
+                    <div className="relative mt-7">
+                      <button
+                        type="submit"
+                        className="font-bold  py-3 rounded bg-primary text-white w-full"
+                      >
+                        Login
+                      </button>
+                    </div>
 
-                  {/* <div>
+                    {/* <div>
                 <p className="text-sm text-center pt-3 pb-4">
                   Don't have an account?{" "}
                   <span
@@ -414,8 +405,9 @@ export default function LoginForm({ onClose }) {
                   </span>
                 </p>
               </div> */}
-                </div>
-              </form>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

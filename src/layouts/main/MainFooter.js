@@ -1,12 +1,6 @@
-import { Icon } from '@iconify/react'
-import googleFill from '@iconify/icons-eva/google-fill'
-import twitterFill from '@iconify/icons-eva/twitter-fill'
-import facebookFill from '@iconify/icons-eva/facebook-fill'
-import linkedinFill from '@iconify/icons-eva/linkedin-fill'
-import InstagramIcon from '@mui/icons-material/Instagram';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { Link as ScrollLink } from 'react-scroll'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import TwitterIcon from '@mui/icons-material/Twitter'
 import logo from '../../assets/logo/aymi-logo.png'
 // next
 import NextLink from 'next/link'
@@ -22,19 +16,25 @@ import {
   IconButton,
 } from '@mui/material'
 import Image from 'next/image'
-//
-// import Logo from '../../components/Logo'
 
 // ----------------------------------------------------------------------
 
 const SOCIALS = [
-  // { name: 'FaceBook', icon: facebookFill, url: 'https://www.facebook.com/aymifashionofficial/' },
-  // { name: 'Google', icon: googleFill, url: 'https://www.facebook.com/aymifashionofficial/' },
-  // { name: 'Linkedin', icon: linkedinFill, url: 'https://www.instagram.com/aymi_fashions/' },
-  // { name: 'Twitter', icon: twitterFill, url: 'https://www.facebook.com/aymifashionofficial/' },
-  { name: 'Facebook', icon: <FacebookIcon/>, url: 'https://www.facebook.com/aymifashionofficial/' },
-  { name: 'Instagram', icon: <InstagramIcon/>, url: 'https://www.instagram.com/aymi_fashions/' },
-  { name: 'Twitter', icon: <TwitterIcon/>, url: 'https://twitter.com/AymiFashion' },
+  {
+    name: 'Facebook',
+    icon: <FacebookIcon />,
+    url: 'https://www.facebook.com/aymifashionofficial/',
+  },
+  {
+    name: 'Instagram',
+    icon: <InstagramIcon />,
+    url: 'https://www.instagram.com/aymi_fashions/',
+  },
+  {
+    name: 'Twitter',
+    icon: <TwitterIcon />,
+    url: 'https://twitter.com/AymiFashion',
+  },
 ]
 
 const LINKS = [
@@ -84,17 +84,14 @@ export default function MainFooter() {
             className="md:pb-20 pb-10 "
           >
             <Grid item xs={12} sx={{ mb: 3 }}>
-              {/* <ScrollLink to="move_top" spy smooth>
-                <Logo sx={{ mx: { xs: 'auto', md: 'inherit' } }} />
-              </ScrollLink> */}
               <NextLink href="/">
-                {/* <Logo /> */}
-                <div className='w-36 h-16'>
+                <div className="w-36 h-16">
                   <Image
                     src={logo}
                     alt="Picture of the logo"
                     width={150}
                     height={10}
+                    loading="lazy"
                     className="cursor-pointer object-cover w-full h-full rounded-md"
                   />
                 </div>
@@ -102,8 +99,8 @@ export default function MainFooter() {
             </Grid>
             <Grid item xs={8} md={3}>
               <Typography variant="body2" sx={{ pr: { md: 5 } }}>
-                Buy Luxurious Abaya Online and Discover the Wide Range of Design with AYMI Fashion
-
+                Buy Luxurious Abaya Online and Discover the Wide Range of Design
+                with AYMI Fashion
               </Typography>
 
               <Stack
@@ -113,14 +110,8 @@ export default function MainFooter() {
                 sx={{ mt: 2, color: 'whitespace', mb: { xs: 4, md: 0 } }}
               >
                 {SOCIALS.map(social => (
-                  <Link href={social?.url} target='_blank'>
+                  <Link href={social?.url} target="_blank">
                     <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
-                      {/* <Icon
-                        className="text-white"
-                        icon={social.icon}
-                        width={16}
-                        height={16}
-                      /> */}
                       {social?.icon}
                     </IconButton>
                   </Link>
@@ -129,12 +120,7 @@ export default function MainFooter() {
             </Grid>
 
             <Grid item xs={12} md={7}>
-              <div
-                // spacing={5}
-                // direction={{ xs: "column", md: "row" }}
-                // justifyContent="space-between"
-                className="flex-none grid md:grid-cols-3 grid-cols-2 text-start gap-x-5  gap-y-10 text-sm "
-              >
+              <div className="flex-none grid md:grid-cols-3 grid-cols-2 text-start gap-x-5  gap-y-10 text-sm ">
                 {LINKS.map(list => {
                   const { headline, children } = list
                   return (

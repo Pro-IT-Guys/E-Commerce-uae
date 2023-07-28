@@ -9,7 +9,6 @@ import { Autoplay } from 'swiper/modules'
 
 import Image from 'next/image'
 import { useContext } from 'react'
-import { BASE_URL } from '../../../../apis/url'
 import { ContextData } from '../../../../context/dataProviderContext'
 import dynamic from 'next/dynamic'
 import { getCurrentOffer } from '../../../../apis/offer.api'
@@ -58,16 +57,15 @@ const Banner = () => {
                 >
                   {bannerImages.map((imageUrl, index) => (
                     <SwiperSlide key={index}>
-                      <div className=" ">
-                        <Image
-                          alt={`banner-${index}`}
-                          src={imageUrl}
-                          layout="responsive"
-                          width={1200}
-                          height={600}
-                          className="w-full h-full object-cover md:rounded-lg rounded"
-                        />
-                      </div>
+                      <Image
+                        alt={`banner-${index}`}
+                        src={imageUrl}
+                        layout="responsive"
+                        width={1200}
+                        height={600}
+                        loading="lazy"
+                        className="w-full h-full object-cover md:rounded-lg rounded"
+                      />
                     </SwiperSlide>
                   ))}
                 </Swiper>
