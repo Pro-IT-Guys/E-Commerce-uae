@@ -59,6 +59,7 @@ export default function Checkout() {
   const [totalPrice, setTotalPrice] = useState(0)
   const [feeOfLocation, setFeeOfLocation] = useState(0)
   const [totalDeliveryFee, setTotalDeliveryFee] = useState(0)
+  const [offerDiscountPrice, setOfferDiscountPrice] = useState(0)
 
   const [country, setCountry] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -148,13 +149,19 @@ export default function Checkout() {
     if (product && product.length > 0) {
       let totalPrice = 0
       let calculatedDeliveryFee = 0
+      let totalOfferDiscountPrice = 0
       product.forEach(item => {
         totalPrice +=
           Number(item.quantity) * Number(item.productId.sellingPrice)
         calculatedDeliveryFee += Number(item.quantity) * Number(feeOfLocation)
+
+        if (item?.productId?.isVisibleOffer) {
+          totalOfferDiscountPrice += Number(item?.productId?.discountPrice)
+        }
       })
       setTotalPrice(totalPrice)
       setTotalDeliveryFee(calculatedDeliveryFee)
+      setOfferDiscountPrice(totalOfferDiscountPrice)
     }
   }, [product, feeOfLocation])
 
@@ -228,12 +235,12 @@ export default function Checkout() {
       subTotal: convertCurrencyForCalculation(
         fromCurrency,
         toCurrency,
-        totalPrice
+        Number(totalPrice) - Number(offerDiscountPrice),
       ),
       deliveryFee: convertCurrencyForCalculation(
         fromCurrency,
         toCurrency,
-        calculatedDeliveryFee
+        calculatedDeliveryFee,
       ),
     }
 
@@ -390,7 +397,7 @@ export default function Checkout() {
                             {convertCurrencyForCalculation(
                               fromCurrency,
                               toCurrency,
-                              totalPrice
+                              totalPrice,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -403,7 +410,16 @@ export default function Checkout() {
                           >
                             Discount
                           </Typography>
-                          <Typography variant="subtitle2">0</Typography>
+                          <Typography variant="subtitle2">
+                            {toCurrency === 'USD' && '$ '}
+                            {convertCurrencyForCalculation(
+                              fromCurrency,
+                              toCurrency,
+                              offerDiscountPrice,
+                            )}
+                            {toCurrency === 'AED' && 'AED'}
+                          </Typography>
+                          {}
                         </Stack>
 
                         {discountByCupon > 0 && (
@@ -419,7 +435,7 @@ export default function Checkout() {
                               {convertCurrencyForCalculation(
                                 fromCurrency,
                                 toCurrency,
-                                discountByCupon
+                                discountByCupon,
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>
@@ -438,7 +454,7 @@ export default function Checkout() {
                             {convertCurrencyForCalculation(
                               fromCurrency,
                               toCurrency,
-                              totalDeliveryFee
+                              totalDeliveryFee,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -457,7 +473,9 @@ export default function Checkout() {
                               {convertCurrencyForCalculation(
                                 fromCurrency,
                                 toCurrency,
-                                Number(totalPrice) + Number(totalDeliveryFee)
+                                Number(totalPrice) +
+                                  Number(totalDeliveryFee) -
+                                  Number(offerDiscountPrice),
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>
