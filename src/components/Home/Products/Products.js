@@ -50,7 +50,7 @@ const Products = () => {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
-  const {pathname} = router
+  const { pathname } = router
 
   const handlePriceRange = (event, newValue) => {
     setValue(newValue)
@@ -190,57 +190,57 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-              {
-                !pathname.includes('category') && (
-                  <div className="bg-white shadow rounded">
-                  <div className="  py-2 px-3 border-b">
-                    <h1 className="font-semibold "> Filter by Categories</h1>
-                  </div>
-                  <div className=" py-3 pl-4 pr-3">
-                    <FormControl fullWidth>
-                      <div>
-                        <Autocomplete
-                          size="small"
-                          className="w-full"
-                          multiple
-                          freeSolo
-                          value={category}
-                          onChange={(event, newValue) => {
-                            setCategory(newValue)
-                          }}
-                          options={CATEGORY_OPTION_ARRAY}
-                          getOptionLabel={option => option}
-                          renderTags={() => null}
-                          renderInput={params => (
-                            <TextField label="Category" {...params} />
-                          )}
-                        ></Autocomplete>
-
-                        <div style={{ marginTop: '8px' }}>
-                          {category?.map((option, index) => (
-                            <Chip
-                              key={option}
-                              size="small"
-                              label={option}
-                              onDelete={() => {
-                                setCategory(prevValue =>
-                                  prevValue?.filter(val => val !== option),
-                                )
-                              }}
-                              deleteIcon={<CloseIcon />}
-                              style={{
-                                marginRight: '8px',
-                                marginBottom: '8px',
-                              }}
-                            />
-                          ))}
-                        </div>
+                {
+                  !pathname.includes('category') && (
+                    <div className="bg-white shadow rounded">
+                      <div className="  py-2 px-3 border-b">
+                        <h1 className="font-semibold "> Filter by Categories</h1>
                       </div>
-                    </FormControl>
-                  </div>
-                </div>
-                )
-              }
+                      <div className=" py-3 pl-4 pr-3">
+                        <FormControl fullWidth>
+                          <div>
+                            <Autocomplete
+                              size="small"
+                              className="w-full"
+                              multiple
+                              freeSolo
+                              value={category}
+                              onChange={(event, newValue) => {
+                                setCategory(newValue)
+                              }}
+                              options={CATEGORY_OPTION_ARRAY}
+                              getOptionLabel={option => option}
+                              renderTags={() => null}
+                              renderInput={params => (
+                                <TextField label="Category" {...params} />
+                              )}
+                            ></Autocomplete>
+
+                            <div style={{ marginTop: '8px' }}>
+                              {category?.map((option, index) => (
+                                <Chip
+                                  key={option}
+                                  size="small"
+                                  label={option}
+                                  onDelete={() => {
+                                    setCategory(prevValue =>
+                                      prevValue?.filter(val => val !== option),
+                                    )
+                                  }}
+                                  deleteIcon={<CloseIcon />}
+                                  style={{
+                                    marginRight: '8px',
+                                    marginBottom: '8px',
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </FormControl>
+                      </div>
+                    </div>
+                  )
+                }
                 <div className="bg-white shadow rounded">
                   <div className="  py-2 px-3 border-b">
                     <h1 className="font-semibold "> Filter by Fabrics</h1>
@@ -398,26 +398,32 @@ const Products = () => {
                   </div>
                 )}
 
-                {products?.length ? (
-                  <>
-                    <div>
-                      <h1 className="font-bold text-xl mt-7">
-                        Popular Products
-                      </h1>
-                      <PopularProducts products={products} />
-                      <h1 className="font-bold text-xl mt-7">
-                        Latest Collection
-                      </h1>
-                      <PopularProducts products={products} />
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex justify-center items-center h-[50vh]">
-                    <h1 className="text-xl font-semibold text-error">
-                      No Product Found!
-                    </h1>
-                  </div>
-                )}
+                {
+                  !pathname.includes('category') && (
+                    <>
+                      {products?.length ? (
+                        <>
+                          <div>
+                            <h1 className="font-bold text-xl mt-7">
+                              Popular Products
+                            </h1>
+                            <PopularProducts products={products} />
+                            <h1 className="font-bold text-xl mt-7">
+                              Latest Collection
+                            </h1>
+                            <PopularProducts products={products} />
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex justify-center items-center h-[50vh]">
+                          <h1 className="text-xl font-semibold text-error">
+                            No Product Found!
+                          </h1>
+                        </div>
+                      )}
+                    </>
+                  )
+                }
               </div>
             </div>
           </div>
