@@ -82,7 +82,7 @@ export default function SignUpForm({ onClose }) {
     <>
       {otpModal && otpEmail ? (
         <>
-          <div className="px-10 pb-16 pt-10">
+          <div className="px-10 pb-16 pt-10 border">
             <h1 className="text-xl font-semibold text-center mb-7">
               Otp input Form
             </h1>
@@ -114,7 +114,7 @@ export default function SignUpForm({ onClose }) {
               <div className="mt-5">
                 <button
                   type="submit"
-                  className="font-bold  py-3 rounded-full bg-primary text-white w-full"
+                  className="font-bold  py-3 rounded bg-primary text-white w-full"
                 >
                   Verify OTP
                 </button>
@@ -124,7 +124,7 @@ export default function SignUpForm({ onClose }) {
         </>
       ) : (
         <>
-          <div className='shadow'>
+          <div className='shadow border'>
             <h1 className="text-xl font-bold text-center mt-5">
               Sign up Now
             </h1>

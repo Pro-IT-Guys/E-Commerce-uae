@@ -241,7 +241,7 @@ export default function LoginForm({ onClose }) {
             <div className="mt-5">
               <button
                 type="submit"
-                className="font-bold  py-3 rounded-full bg-primary text-white w-full"
+                className="font-bold  py-3 rounded bg-primary text-white w-full"
               >
                 Verify OTP
               </button>
