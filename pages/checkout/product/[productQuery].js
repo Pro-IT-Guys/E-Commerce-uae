@@ -278,7 +278,6 @@ export default function Checkout() {
       // Calculate discount
       const parcentage = res?.data?.discount
       const discount = (Number(totalPrice) * Number(parcentage)) / 100
-      console.log(discount)
       setDiscountByCupon(discount)
       setTotalPrice(Number(totalPrice) - Number(discount))
       toast.success(`You got ${parcentage}% discount.`)
@@ -475,7 +474,8 @@ export default function Checkout() {
                                 toCurrency,
                                 Number(totalPrice) +
                                   Number(totalDeliveryFee) -
-                                  Number(offerDiscountPrice),
+                                  Number(offerDiscountPrice) -
+                                  Number(discountByCupon),
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>

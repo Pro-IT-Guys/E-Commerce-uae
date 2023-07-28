@@ -14,12 +14,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { getAllCupon } from '../../../../apis/cupon.api'
+import { createCupon, getAllCupon } from '../../../../apis/cupon.api'
 import { useEffect, useState } from 'react'
 import CustomLoadingScreen from '../../../../src/components/CustomLoadingScreen'
 import Page from '../../../../src/components/Page'
 import { ButtonAnimate } from '../../../../src/components/animate'
 import DashboardLayout from '../../../../src/layouts/dashboard'
+import { toast } from 'react-hot-toast'
 
 export default function Cupon() {
   const [discountParcentage, setDiscountParcentage] = useState(0)
@@ -36,6 +37,22 @@ export default function Cupon() {
     }
     _retriveCuponList()
   }, [])
+
+  const handleCreateCupon = async () => {
+    if (!discountParcentage || !expireDate)
+      return toast.error('Please fill all the fields')
+    const response = await createCupon({
+      discount: discountParcentage,
+      expireDate,
+    })
+    console.log(response)
+    if (response?.success) {
+      toast.success('Cupon Created Successfully')
+      setCuponList([...cuponList, response?.data])
+      setDiscountParcentage(0)
+      setExpireDate(new Date())
+    }
+  }
 
   if (loading) return <CustomLoadingScreen />
 
@@ -76,7 +93,11 @@ export default function Cupon() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <ButtonAnimate mediumClick={true}>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleCreateCupon}
+                    >
                       Create Cupon
                     </Button>
                   </ButtonAnimate>
@@ -139,7 +160,7 @@ export default function Cupon() {
                               month: 'long',
                               day: 'numeric',
                               year: 'numeric',
-                            }
+                            },
                           )}
                         </TableCell>
                       </TableRow>

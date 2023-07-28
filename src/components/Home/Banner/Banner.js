@@ -27,7 +27,7 @@ const Banner = () => {
   useEffect(() => {
     const retriveOffer = async () => {
       const response = await getCurrentOffer()
-      setOffer(response.data)
+      setOffer(response?.data)
     }
     retriveOffer()
   }, [currentlyLoggedIn])
