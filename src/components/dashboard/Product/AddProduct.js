@@ -487,7 +487,7 @@ export default function AddProductForm() {
                 <h1 className="ml-1 text-sm mb-1 mt-5">All Images</h1>
                 <UploadMultiFile
                   showPreview
-                  maxSize={3145728}
+                  // maxSize={3145728}
                   accept="image/*"
                   files={values}
                   onDrop={handleDrop}

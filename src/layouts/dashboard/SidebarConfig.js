@@ -46,7 +46,7 @@ const sidebarConfig = [
         icon: ICONS.user,
       },
       {
-        title: 'customer',
+        title: 'customers',
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         role: 'admin',
@@ -63,10 +63,10 @@ const sidebarConfig = [
             path: PATH_DASHBOARD.product.pageAllProduct,
           },
           {
-            title: 'Create Products',
+            title: 'Create Product',
             path: PATH_DASHBOARD.product.createProduct,
           },
-          { title: 'Review & Ratings', path: PATH_DASHBOARD.product.review },
+          // { title: 'Review & Ratings', path: PATH_DASHBOARD.product.review },
         ],
       },
       // {

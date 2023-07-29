@@ -28,7 +28,6 @@ const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'action', label: 'Action', alignRight: true },
 ]
 
 // ----------------------------------------------------------------------
@@ -69,7 +68,7 @@ export default function UserList() {
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
   const [filterName, setFilterName] = useState('')
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
 
   useEffect(() => {
@@ -158,13 +157,13 @@ export default function UserList() {
                             {isVerified ? 'Yes' : 'No'}
                           </TableCell>
 
-                          <TableCell align="right">
-                            {/* <UserMoreMenu
+                          {/* <TableCell align="right">
+                            <UserMoreMenu
                               onDelete={() => handleDeleteUser(id)}
-                              // userName={row?.name?.firstName}
-                            /> */}
+                              userName={row?.name?.firstName}
+                            />
                             <MoreVertIcon className="cursor-pointer" />
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       )
                     })}
