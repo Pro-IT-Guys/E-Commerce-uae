@@ -284,7 +284,7 @@ export default function Checkout() {
       setTotalPrice(Number(totalPrice) - Number(discount))
       toast.success(`You got ${parcentage}% discount.`)
     } else {
-      toast.error('Invalid cupon code.')
+      toast.error('Invalid coupon code.')
     }
   }
 

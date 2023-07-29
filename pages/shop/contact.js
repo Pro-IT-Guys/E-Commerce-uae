@@ -27,7 +27,30 @@ export default function contact() {
                             <h1 className='font-bold text-center py-4 text-3xl'>Contact Us</h1>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div>
-                                    <div className="flex flex-col items-start mb-5">
+                                    <div className="flex flex-col items-start mb-2">
+                                        <label htmlFor="email" className="ml-1 mb-1">
+                                            Your Name
+                                        </label>
+                                        <input
+                                            className="py-3 px-3 text-gray-500 rounded w-full  border-[1px]"
+                                            type="name"
+                                            id="name"
+                                            {...register('name', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'Name is Required',
+                                                },
+                                            })}
+                                        />
+                                        <label className="label m-1">
+                                            {errors.name?.type === 'required' && (
+                                                <span className=" text-sm  text-red-500">
+                                                    {errors.name.message}
+                                                </span>
+                                            )}
+                                        </label>
+                                    </div>
+                                    <div className="flex flex-col items-start mb-3">
                                         <label htmlFor="email" className="ml-1 mb-1">
                                             Your Email
                                         </label>
@@ -65,7 +88,7 @@ export default function contact() {
                                         </label>
                                         <textarea
                                             type="text"
-                                            className="py-3 px-3 rounded w-full h-36 border-[1px]"
+                                            className="py-3 px-3 rounded w-full h-28 border-[1px]"
                                             id="message"
                                             {...register('message', {
                                                 required: {

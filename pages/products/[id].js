@@ -438,6 +438,7 @@ export default function ProductDetails() {
                             size="medium"
                             type="submit"
                             variant="contained"
+                            color='info'
                           >
                             Message
                           </Button>
