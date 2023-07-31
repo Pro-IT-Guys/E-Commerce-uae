@@ -49,7 +49,6 @@ export default function LoginForm({ onClose }) {
         }
       })
       .catch(err => {
-        console.log(err)
         toast.error('Incorrect Email or Password!')
       })
   }
@@ -74,8 +73,6 @@ export default function LoginForm({ onClose }) {
         }
       })
       .catch(err => {
-        console.log(err)
-        // toast.error('User email not found!')
       })
   }
 

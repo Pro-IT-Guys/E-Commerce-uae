@@ -39,12 +39,10 @@ export default function SignUpForm({ onClose }) {
             JSON.stringify(res.headers.authorization.split(' ')[1]),
           )
         } else {
-          toast.error('User Already Exist!')
+          toast.error('User Already Exist! ')
         }
       })
       .catch(err => {
-        console.log(err.response)
-        toast.error('User Already Exist!')
       })
   }
 
@@ -67,11 +65,11 @@ export default function SignUpForm({ onClose }) {
           setUpdate(Math.random())
           localStorage.setItem('token', res.headers.authorization.split(' ')[1])
         } else {
-          toast.error('User Already Exist!')
+          toast.error('Otp does not match! Please Try Again')
         }
       })
       .catch(err => {
-        toast.error('User Already Exist!')
+        // toast.error('User Already Exist!')
       })
   }
 
