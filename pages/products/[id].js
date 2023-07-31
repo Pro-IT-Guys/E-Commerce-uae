@@ -42,6 +42,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { getProductByPath } from '../../apis/product.api'
 import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
 import { getCurrentOffer } from '../../apis/offer.api'
+import { getReviews } from '../../apis/review.api'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -80,12 +81,13 @@ export default function ProductDetails() {
   const [retriveCartState, setRetriveCartState] = useState(false)
   const [productUrl, setProductUrl] = useState('')
   const [openSizeChartPopup, setOpenSizeChartPopup] = useState(false)
-
   const [isProductIsInOffer, setIsProductIsInOffer] = useState(undefined)
+  const [reviewList, setReviewList] = useState([])
 
   useEffect(() => {
     setProductUrl(window.location.href)
   }, [params])
+
 
   // Create chat with admin / get chat if already exist
   useEffect(() => {
@@ -149,6 +151,17 @@ export default function ProductDetails() {
     })
   }, [retriveCartState])
 
+  
+  useEffect(() => {
+    const _retriveReviews = async () => {
+      const response = await getReviews(productDetails?._id)
+      if (response?.statusCode === 200) {
+        setReviewList(response?.data)
+      }
+    }
+    _retriveReviews()
+  }, [params, productDetails])
+
   // Create chat with admin / get chat if already exist
   const handleChatClick = async () => {
     if (currentlyLoggedIn?.role === 'admin') return
@@ -168,7 +181,7 @@ export default function ProductDetails() {
       setLoader(false)
     }
     _retriveData()
-  }, [params])
+  }, [params,])
 
   useEffect(() => {
     const isProductIsInOffer = offerDetails?.product?.find(
@@ -177,7 +190,7 @@ export default function ProductDetails() {
     setIsProductIsInOffer(isProductIsInOffer)
   }, [productDetails, offerDetails])
 
-  const { name, sellingPrice, quantity, rating, metaDescription, frontImage } =
+  const { name, sellingPrice, quantity, review, metaDescription, frontImage } =
     productDetails || {}
 
   if (loader || !productUrl) return <CustomLoadingScreen />
@@ -267,12 +280,12 @@ export default function ProductDetails() {
                       alignItems="center"
                       sx={{ mb: 2, mt: 1 }}
                     >
-                      <Rating value={`${rating}.5`} precision={0.1} readOnly />
+                      <Rating value={`${reviewList?.rating}`}  readOnly />
                       <Typography
                         variant="body2"
                         sx={{ color: 'text.primary' }}
                       >
-                        {rating} Ratings
+                        ({review?.length}) Ratings
                       </Typography>
                     </Stack>
                     <p className="text-sm">Fabric: {productDetails?.fabric}</p>

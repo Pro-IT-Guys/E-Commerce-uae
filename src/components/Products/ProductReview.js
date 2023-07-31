@@ -37,7 +37,7 @@ export default function ProductReview({ product }) {
     _retriveReviews()
   }, [product])
 
-  console.log(reviewList, 'reviewList')
+
 
   const handleRatingChange = (event, newValue) => {
     setRating(newValue)
