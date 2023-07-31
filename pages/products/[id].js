@@ -151,7 +151,7 @@ export default function ProductDetails() {
     })
   }, [retriveCartState])
 
-  
+
   useEffect(() => {
     const _retriveReviews = async () => {
       const response = await getReviews(productDetails?._id)
@@ -236,6 +236,21 @@ export default function ProductDetails() {
     }
   }
 
+
+  let imagesArray = []
+  if (productDetails?.frontImage) {
+    imagesArray.push(productDetails?.frontImage)
+  }
+  if (productDetails?.backImage) {
+    imagesArray.push(productDetails?.backImage)
+  }
+  if (productDetails?.restImage) {
+    productDetails?.restImage?.forEach(image => {
+      imagesArray.push(image)
+    })
+  }
+
+
   return (
     <>
       <MainLayout>
@@ -256,7 +271,7 @@ export default function ProductDetails() {
                     p={3}
                     className="overflow-hidden"
                   >
-                    <ProductDetailsCarousel product={productDetails} />
+                    <ProductDetailsCarousel product={productDetails} imagesArray={imagesArray} />
                   </Grid>
                   <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
@@ -280,7 +295,7 @@ export default function ProductDetails() {
                       alignItems="center"
                       sx={{ mb: 2, mt: 1 }}
                     >
-                      <Rating value={`${reviewList?.rating}`}  readOnly />
+                      <Rating value={`${reviewList?.rating}`} readOnly />
                       <Typography
                         variant="body2"
                         sx={{ color: 'text.primary' }}
@@ -306,7 +321,7 @@ export default function ProductDetails() {
                               fromCurrency,
                               toCurrency,
                               Number(sellingPrice) -
-                                Number(offerDetails?.discountPrice || 0),
+                              Number(offerDetails?.discountPrice || 0),
                               rateAEDtoUSD,
                             )}
                           </p>

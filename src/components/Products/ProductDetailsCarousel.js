@@ -89,7 +89,7 @@ function ThumbnailItem({ item }) {
   );
 }
 
-export default function ProductDetailsCarousel({product}) {
+export default function ProductDetailsCarousel({product, imagesArray}) {
   const [openLightbox, setOpenLightbox] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -98,7 +98,7 @@ export default function ProductDetailsCarousel({product}) {
   const slider1 = useRef(null);
   const slider2 = useRef(null);
 
-  const imagesLightbox = product?.restImage?.map((_image) => _image);
+  const imagesLightbox = imagesArray?.map((_image) => _image);
 
   const handleOpenLightbox = (url) => {
     const selectedImage = findIndex(imagesLightbox, (index) => index === url);
@@ -125,7 +125,7 @@ export default function ProductDetailsCarousel({product}) {
     focusOnSelect: true,
     variableWidth: true,
     centerPadding: '0px',
-    slidesToShow: product?.restImage?.length > 3 ? 3 : product?.restImage?.length
+    slidesToShow: imagesArray?.length > 3 ? 3 : imagesArray?.length
   };
 
   useEffect(() => {
@@ -153,13 +153,13 @@ export default function ProductDetailsCarousel({product}) {
           }}
         >
           <Slider {...settings1} asNavFor={nav2} ref={slider1}>
-            {product?.restImage?.map((item, index) => (
+            {imagesArray?.map((item, index) => (
               <LargeItem key={index} item={item} onOpenLightbox={handleOpenLightbox} />
             ))}
           </Slider>
           <CarouselControlsArrowsIndex
             index={currentIndex}
-            total={product?.restImage?.length}
+            total={imagesArray?.length}
             onNext={handleNext}
             onPrevious={handlePrevious}
           />
@@ -171,12 +171,12 @@ export default function ProductDetailsCarousel({product}) {
           my: 3,
           mx: 'auto',
           '& .slick-current .isActive': { opacity: 1 },
-          ...(product?.restImage?.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
-          ...(product?.restImage?.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
-          ...(product?.restImage?.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
-          ...(product?.restImage?.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
-          ...(product?.restImage?.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
-          ...(product?.restImage?.length > 2 && {
+          ...(imagesArray?.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
+          ...(imagesArray?.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
+          ...(imagesArray?.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(imagesArray?.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(imagesArray?.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
+          ...(imagesArray?.length > 2 && {
             position: 'relative',
             '&:before, &:after': {
               top: 0,
@@ -195,7 +195,7 @@ export default function ProductDetailsCarousel({product}) {
         }}
       >
         <Slider {...settings2} asNavFor={nav1} ref={slider2}>
-          {product?.restImage?.map((item) => (
+          {imagesArray?.map((item) => (
             <ThumbnailItem key={item} item={item} />
           ))}
         </Slider>
