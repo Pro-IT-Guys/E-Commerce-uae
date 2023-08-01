@@ -32,13 +32,15 @@ export default function ProductCard({ product }) {
     <div className="shadow hover:shadow-md rounded overflow-hidden h-full">
       <div className="bg-white h-full">
         <div
-          className="h-80 w-full relative overflow-hidden"
+          className="h-80 w-full relative overflow-hidden cursor-pointer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onClick={() => router.push(`/products/${path}`)}
         >
           <div
-            className={`absolute inset-0 transition-opacity duration-300 ${hovering ? 'opacity-0' : 'opacity-100'
-              }`}
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              hovering ? 'opacity-0' : 'opacity-100'
+            }`}
           >
             <Image
               src={frontImage}
@@ -48,8 +50,9 @@ export default function ProductCard({ product }) {
             />
           </div>
           <div
-            className={`absolute inset-0 transition-opacity duration-300 ${hovering ? 'opacity-100' : 'opacity-0'
-              }`}
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              hovering ? 'opacity-100' : 'opacity-0'
+            }`}
           >
             <Image
               src={backImage}
