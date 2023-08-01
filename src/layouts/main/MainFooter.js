@@ -42,7 +42,7 @@ const LINKS = [
     headline: 'Minimal',
     children: [
       { name: 'About us', href: '#' },
-      { name: 'Contact us', href: '/shop/contact' },
+      { name: 'Contact us', href: '/contact' },
       { name: 'FAQs', href: '#' },
     ],
   },
