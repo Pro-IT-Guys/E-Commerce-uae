@@ -39,7 +39,6 @@ export default function contact() {
       )
       .then(
         result => {
-          console.log(result.text, 'success')
           setFormdata({
             loading: false,
             alertmessage: `SUCCESS! ,Thanks ${data.name} for your messege`,
@@ -48,7 +47,6 @@ export default function contact() {
           })
         },
         error => {
-          console.log(error, 'error')
           setFormdata({
             alertmessage: `Faild to send!,${error.text}`,
             severity: 'error',
