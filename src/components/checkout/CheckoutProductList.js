@@ -140,8 +140,6 @@ export default function ProductList({
     }
   }, [quantity, selectedProduct])
 
-  // console.log(sellingPrice, quantity)
-
   return (
     <TableRow>
       <TableCell>
@@ -237,7 +235,7 @@ export default function ProductList({
         <MIconButton>
           <Icon
             onClick={() => {
-              handleProductRemove(item._id)
+              handleProductRemove(item.productId._id)
             }}
             icon={trash2Fill}
             width={20}

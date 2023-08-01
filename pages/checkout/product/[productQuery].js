@@ -46,8 +46,14 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 export default function Checkout() {
-  const { token, toCurrency, currentlyLoggedIn, fromCurrency, rateAEDtoUSD } =
-    useContext(ContextData)
+  const {
+    token,
+    toCurrency,
+    currentlyLoggedIn,
+    fromCurrency,
+    rateAEDtoUSD,
+    setCartSimplified,
+  } = useContext(ContextData)
   const [addressPopup, setAddressPopup] = useState(false)
   const router = useRouter()
   const query = router.query.productQuery
@@ -180,22 +186,23 @@ export default function Checkout() {
   const handleProductRemove = async id => {
     if (id) {
       const newProductList = product.filter(item => {
-        return item._id !== id
+        return item.productId._id !== id
       })
-      setProduct(newProductList)
-      if (newProductList.length === 0) {
-        setTotalPrice(0)
-        setTotalDeliveryFee(0)
-      }
 
       product.forEach(async item => {
-        if (item._id === id) {
+        if (item.productId._id === id) {
           const res = await deleteAProductFromCart({
             token,
             cartId: query?.split('=')[1],
             productId: item.productId._id,
           })
           if (res?.statusCode === 200) {
+            setCartSimplified(newProductList)
+            setProduct(newProductList)
+            if (newProductList.length === 0) {
+              setTotalPrice(0)
+              setTotalDeliveryFee(0)
+            }
             toast.success('Product removed successfully.')
           } else {
             toast.error('Something went wrong.')
