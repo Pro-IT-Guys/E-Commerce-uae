@@ -21,6 +21,7 @@ import ProductTableRowItem from '../../../../src/components/Products/ProductTabl
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', alignRight: false },
   { id: 'category', label: 'Category', alignRight: false },
+  { id: 'code', label: 'Product Code', alignRight: false },
   { id: 'style', label: 'Style', alignRight: false },
   { id: 'fabric', label: 'Fabric', alignRight: false },
   { id: 'type', label: 'Type', alignRight: false },
@@ -98,94 +99,10 @@ export default function ProductList() {
               <TableContainer>
                 <Table>
                   <UserListHead
-           
-                    // order={order}
-                    // orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={productList.length}
-                    // numSelected={selected.length}
-                    // onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
-                    {/* {productList.map(row => {
-                      const {
-                        _id,
-                        frontImage,
-                        name,
-                        quantity,
-                        buyingPrice,
-                        sellingPrice,
-                        isVerified,
-                      } = row
-                      const isItemSelected =
-                        selected.indexOf(row?.name?.firstName) !== -1
-
-                      return (
-                        <TableRow
-                          hover
-                          key={_id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell
-                            align="left"
-                            component="th"
-                            scope="row"
-                            padding="none"
-                          >
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <div className="w-16 h-16 overflow-hidden my-2">
-                                <Image
-                                  alt={frontImage}
-                                  src={frontImage}
-                                  height={80}
-                                  width={80}
-                                  className="h-full w-full object-cover rounded-full "
-                                />
-                              </div>
-                              <h1
-                                variant="subtitle2"
-                                className="text-xs font-semibold"
-                              >
-                                {name?.slice(0, 30) + '...'}
-                              </h1>
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{quantity}</TableCell>
-                          <TableCell align="left">
-                            <h1 className="text-xs">
-                              {' '}
-                              Buying Price: {buyingPrice}
-                            </h1>
-                            <h1 className="text-xs">
-                              {' '}
-                              Selling Price: {sellingPrice}
-                            </h1>
-                          </TableCell>
-                          <TableCell align="left">
-                            {isVerified ? 'Yes' : 'No'}
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <ProductMoreMenu
-                              setDeleteModalOpen={setDeleteModalOpen}
-                              handleClickOpen={handleClickOpen}
-                              handleClose={handleClose}
-                              deleteModalOpen={deleteModalOpen}
-                              onDelete={handleDeleteProduct}
-                              id= {_id}
-                              // userName={row?.name?.firstName}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })} */}
                     {productList?.map(product => (
                       <ProductTableRowItem
                         key={product?._id}

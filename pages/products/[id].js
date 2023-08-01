@@ -302,6 +302,7 @@ export default function ProductDetails() {
                         ({review?.length}) Ratings
                       </Typography>
                     </Stack>
+                    <p className="text-sm">Product Code: {productDetails?.sku}</p>
                     <p className="text-sm">Fabric: {productDetails?.fabric}</p>
 
                     <div className="flex items-center mt-3">
