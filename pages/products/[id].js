@@ -88,7 +88,6 @@ export default function ProductDetails() {
     setProductUrl(window.location.href)
   }, [params])
 
-
   // Create chat with admin / get chat if already exist
   useEffect(() => {
     const retriveChat = async () => {
@@ -133,7 +132,7 @@ export default function ProductDetails() {
   // Initialize socket..Make useEffect if only the currentlyLoggedIn exist
   useEffect(() => {
     if (currentlyLoggedIn) {
-      socket.current = io('https://server.aymifashion.com')
+      socket.current = io('http://localhost:8000')
       socket.current.emit('join', currentlyLoggedIn._id)
 
       socket.current.on('activeUsers', users => {
@@ -150,7 +149,6 @@ export default function ProductDetails() {
       }
     })
   }, [retriveCartState])
-
 
   useEffect(() => {
     const _retriveReviews = async () => {
@@ -181,7 +179,7 @@ export default function ProductDetails() {
       setLoader(false)
     }
     _retriveData()
-  }, [params,])
+  }, [params])
 
   useEffect(() => {
     const isProductIsInOffer = offerDetails?.product?.find(
@@ -236,7 +234,6 @@ export default function ProductDetails() {
     }
   }
 
-
   let imagesArray = []
   if (productDetails?.frontImage) {
     imagesArray.push(productDetails?.frontImage)
@@ -249,7 +246,6 @@ export default function ProductDetails() {
       imagesArray.push(image)
     })
   }
-
 
   return (
     <>
@@ -271,7 +267,10 @@ export default function ProductDetails() {
                     p={3}
                     className="overflow-hidden"
                   >
-                    <ProductDetailsCarousel product={productDetails} imagesArray={imagesArray} />
+                    <ProductDetailsCarousel
+                      product={productDetails}
+                      imagesArray={imagesArray}
+                    />
                   </Grid>
                   <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
@@ -321,7 +320,7 @@ export default function ProductDetails() {
                               fromCurrency,
                               toCurrency,
                               Number(sellingPrice) -
-                              Number(offerDetails?.discountPrice || 0),
+                                Number(offerDetails?.discountPrice || 0),
                               rateAEDtoUSD,
                             )}
                           </p>
@@ -466,7 +465,7 @@ export default function ProductDetails() {
                             size="medium"
                             type="submit"
                             variant="contained"
-                            color='info'
+                            color="info"
                           >
                             Message
                           </Button>

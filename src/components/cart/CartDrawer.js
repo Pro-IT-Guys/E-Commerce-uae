@@ -4,7 +4,11 @@ import { Badge, Box, Drawer, Typography } from '@mui/material'
 import Scrollbar from '../Scrollbar'
 import { CustomIcons } from '../../../public/static/mui-icons'
 import { ContextData } from '../../../context/dataProviderContext'
-import { bulkUpdateCart } from '../../../apis/cart.api'
+import {
+  bulkUpdateCart,
+  deleteAProductFromCart,
+  updateCartProductQuantity,
+} from '../../../apis/cart.api'
 import { useRouter } from 'next/router'
 import { convertCurrency } from '../../../helpers/currencyHandler'
 import CloseIcon from '@mui/icons-material/Close'
@@ -30,7 +34,7 @@ export default function CartDrawer() {
     setDrawerOpen(false)
   }
 
-  const handleIncreaseQuantity = productId => {
+  const handleIncreaseQuantity = async productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
       item => item.productId._id === productId,
@@ -39,10 +43,16 @@ export default function CartDrawer() {
     if (productIndex !== -1) {
       updatedCart[productIndex].quantity += 1
       setCartSimplified(updatedCart)
+      await updateCartProductQuantity({
+        token,
+        cartId: usersCart?._id,
+        productId,
+        quantity: updatedCart[productIndex].quantity,
+      })
     }
   }
 
-  const handleDecreaseQuantity = productId => {
+  const handleDecreaseQuantity = async productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
       item => item.productId._id === productId,
@@ -51,8 +61,22 @@ export default function CartDrawer() {
     if (productIndex !== -1) {
       if (updatedCart[productIndex].quantity > 1) {
         updatedCart[productIndex].quantity -= 1
-
         setCartSimplified(updatedCart)
+
+        await updateCartProductQuantity({
+          token,
+          cartId: usersCart?._id,
+          productId,
+          quantity: updatedCart[productIndex].quantity,
+        })
+      } else {
+        updatedCart.splice(productIndex, 1)
+        setCartSimplified(updatedCart)
+        await deleteAProductFromCart({
+          token,
+          cartId: usersCart?._id,
+          productId,
+        })
       }
     }
   }
@@ -124,7 +148,7 @@ export default function CartDrawer() {
           </Typography>
 
           <Box sx={{ marginTop: 2 }}>
-            {cartSimplified ? (
+            {cartSimplified?.length > 0 ? (
               cartSimplified.map((product, index) => (
                 <div
                   key={index}
@@ -223,13 +247,13 @@ export default function CartDrawer() {
 
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
+              // display: 'flex',
+              // justifyContent: 'space-between',
               padding: '10px',
             }}
           >
-            {cartSimplified && (
-              <Button variant="contained" onClick={handleCheckout}>
+            {cartSimplified?.length > 0 && (
+              <Button sx={{width: '100%'}} variant="contained" onClick={handleCheckout}>
                 Checkout
               </Button>
             )}

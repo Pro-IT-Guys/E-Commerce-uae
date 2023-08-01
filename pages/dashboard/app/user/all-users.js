@@ -121,8 +121,8 @@ export default function UserList() {
                     // orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={userList.length}
-                  // numSelected={selected.length}
-                  // onSelectAllClick={handleSelectAllClick}
+                    // numSelected={selected.length}
+                    // onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
                     {userList.map(row => {

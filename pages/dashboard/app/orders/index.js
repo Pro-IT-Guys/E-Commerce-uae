@@ -112,8 +112,8 @@ export default function AllOrders() {
                     // orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={userList.length}
-                  // numSelected={selected.length}
-                  // onSelectAllClick={handleSelectAllClick}
+                    // numSelected={selected.length}
+                    // onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
                     {userList?.map(row => {
@@ -183,13 +183,17 @@ export default function AllOrders() {
                           <TableCell align="left">
                             {' '}
                             <span
-                              className={`font-semibold ${deliveryStatus === 'Pending' && 'text-secondary'
-                                } ${deliveryStatus === 'Delivered' && 'text-success'
-                                } ${deliveryStatus === 'Cancelled' &&
+                              className={`font-semibold ${
+                                deliveryStatus === 'Pending' && 'text-secondary'
+                              } ${
+                                deliveryStatus === 'Delivered' && 'text-success'
+                              } ${
+                                deliveryStatus === 'Cancelled' &&
                                 'text-[#b9b9b9]'
-                                } ${deliveryStatus === 'Processing' &&
+                              } ${
+                                deliveryStatus === 'Processing' &&
                                 'text-warning'
-                                }  `}
+                              }  `}
                             >
                               {' '}
                               {deliveryStatus}
