@@ -60,7 +60,7 @@ export default function contact() {
   return (
     <MainLayout>
       <Page
-        title={`AYMi | Contact Us`}
+        title={`Contact Us | AYMi Fashion`}
       >
         <div className="sm:py-20 py-10 mt-32">
           <Container maxWidth="lg" className=" ">

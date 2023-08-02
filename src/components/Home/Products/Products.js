@@ -420,6 +420,21 @@ const Products = () => {
                     )}
                   </>
                 )}
+
+                {
+                  pathname.includes('category') && (
+                    <>
+                      {
+                        !products?.length && (
+                          <div className="flex justify-center items-center h-[50vh]">
+                            <h1 className="text-xl font-semibold text-error">
+                              No Product Found!
+                            </h1>
+                          </div>
+                        )
+                      }
+                    </>)
+                }
               </div>
             </div>
           </div>
