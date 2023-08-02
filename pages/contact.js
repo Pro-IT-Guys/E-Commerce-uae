@@ -1,5 +1,5 @@
 import React from 'react'
-import * as emailjs from 'emailjs-com'
+import emailjs from 'emailjs-com'
 import MainLayout from '../src/layouts/main'
 import { Alert, Container } from '@mui/material'
 import { useForm } from 'react-hook-form'
@@ -173,7 +173,9 @@ export default function contact() {
               </div>
               <div className="md:w-[60%] mt-10 md:mt-0">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14732.804523400351!2d91.87001616256866!3d22.608963251482823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad2b2bc4ac17a3%3A0x27643f37d448b04!2sDharmapur%20High%20School!5e0!3m2!1sen!2sbd!4v1688411737450!5m2!1sen!2sbd"
+                  // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14732.804523400351!2d91.87001616256866!3d22.608963251482823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad2b2bc4ac17a3%3A0x27643f37d448b04!2sDharmapur%20High%20School!5e0!3m2!1sen!2sbd!4v1688411737450!5m2!1sen!2sbd"
+
+                  src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.27483980210604!2d55.51075739192818!3d25.391503741350387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f7c9babcdcf7%3A0xd27888e6ceb9dd88!2sAl%20Rawda%202%20-%20Ajman%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sbd!4v1690970001577!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
                   //   width="800"
                   //   height="450"
                   //   style="border:0;"
