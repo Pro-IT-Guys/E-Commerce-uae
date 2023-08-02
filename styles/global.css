@@ -355,3 +355,37 @@
     transform: translateX(100%);
   }
 }
+
+
+
+
+/* ================ About Us================= */
+
+.about-img {
+  position: relative;
+  height: 40vh;
+  width: 100%;
+  margin-top: 150px;
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+ 
+}
+
+
+.about-img::before {
+  content: "";
+  background-image: url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  filter: brightness(.4);
+  border-radius: 5px;
+}

@@ -41,8 +41,8 @@ const LINKS = [
   {
     headline: 'Minimal',
     children: [
-      { name: 'About us', href: '#' },
-      { name: 'Contact us', href: '/contact' },
+      { name: 'About us', href: '/shop/about-us' },
+      { name: 'Contact us', href: '/shop/contact' },
       { name: 'FAQs', href: '#' },
     ],
   },

@@ -26,24 +26,26 @@ export default function TopNavbar() {
                   <InstagramIcon fontSize='small' />
                 </Link>
                 <Link href={'https://twitter.com/AymiFashion'} target='_black' className="cursor-pointer hover:text-primary duration-300">
-                  <TwitterIcon fontSize='small'/>
+                  <TwitterIcon fontSize='small' />
                 </Link>
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              <h1 className="sm:text-xs text-xs flex items-center gap-1 font-normal">
-                {' '}
-                <span>
-                  <Icon icon="ic:baseline-email" />
-                </span>
-                support@aymifashion.com
-              </h1>
+              <div className='sm:block hidden'>
+                <div className="sm:text-xs text-xs flex items-center gap-1 font-normal ">
+                  {' '}
+                  <span>
+                    <Icon icon="ic:baseline-email" />
+                  </span>
+                  support@aymifashion.com
+                </div>
+              </div>
               <div className="sm:text-xs text-xs flex items-center gap-1 font-normal">
                 {' '}
                 <span>
                   <Icon icon="solar:phone-bold" />
                 </span>
-                +971566535046 
+                +971566535046
               </div>
               <div className=" z-50">
                 <FormControl variant="standard">

@@ -1,11 +1,11 @@
 import React from 'react'
 import emailjs from 'emailjs-com'
-import MainLayout from '../src/layouts/main'
+import MainLayout from '../../src/layouts/main'
 import { Alert, Container } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { contactConfig } from '../constant/constant'
+import { contactConfig } from '../../constant/constant'
 import { useState } from 'react'
-import Page from '../src/components/Page'
+import Page from '../../src/components/Page'
 
 export default function contact() {
   const {
