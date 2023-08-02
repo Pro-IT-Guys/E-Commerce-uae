@@ -43,6 +43,8 @@ import { getProductByPath } from '../../apis/product.api'
 import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
 import { getCurrentOffer } from '../../apis/offer.api'
 import { getReviews } from '../../apis/review.api'
+import Image from 'next/image'
+import ReactImageMagnify from 'react-image-magnify';
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -83,6 +85,9 @@ export default function ProductDetails() {
   const [openSizeChartPopup, setOpenSizeChartPopup] = useState(false)
   const [isProductIsInOffer, setIsProductIsInOffer] = useState(undefined)
   const [reviewList, setReviewList] = useState([])
+
+  let imagesArray = []
+  const [imgUrl, setImgUrl] = useState('');
 
   useEffect(() => {
     setProductUrl(window.location.href)
@@ -154,6 +159,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     const _retriveReviews = async () => {
+      setImgUrl(imagesArray[0])
       const response = await getReviews(productDetails?._id)
       if (response?.statusCode === 200) {
         setReviewList(response?.data)
@@ -237,9 +243,10 @@ export default function ProductDetails() {
   }
 
 
-  let imagesArray = []
+
   if (productDetails?.frontImage) {
     imagesArray.push(productDetails?.frontImage)
+
   }
   if (productDetails?.backImage) {
     imagesArray.push(productDetails?.backImage)
@@ -247,9 +254,11 @@ export default function ProductDetails() {
   if (productDetails?.restImage) {
     productDetails?.restImage?.forEach(image => {
       imagesArray.push(image)
+
     })
   }
 
+  console.log(imgUrl, '====================imgUrl====================');
 
   return (
     <>
@@ -269,9 +278,27 @@ export default function ProductDetails() {
                     md={6}
                     lg={7}
                     p={3}
-                    className="overflow-hidden"
+                  // className="overflow-hidden"
                   >
-                    <ProductDetailsCarousel product={productDetails} imagesArray={imagesArray} />
+                    {/* <ProductDetailsCarousel product={productDetails} imagesArray={imagesArray} /> */}
+
+                    <div>
+                      <div className='h-52 w-full'>
+                        <ReactImageMagnify {...{
+                          smallImage: {
+                            alt: 'Wristwatch by Ted Baker London',
+                            isFluidWidth: true,
+                            src: imgUrl,
+                            className: 'h-full w-full object-cover'
+                          },
+                          largeImage: {
+                            src:  imgUrl,
+                            width: 1200,
+                            height: 1800
+                          }
+                        }} />
+                      </div>
+                    </div>
                   </Grid>
                   <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
