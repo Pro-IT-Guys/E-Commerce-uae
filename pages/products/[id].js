@@ -132,7 +132,7 @@ export default function ProductDetails() {
   // Initialize socket..Make useEffect if only the currentlyLoggedIn exist
   useEffect(() => {
     if (currentlyLoggedIn) {
-      socket.current = io('http://localhost:8000')
+      socket.current = io('https://server.aymifashion.com')
       socket.current.emit('join', currentlyLoggedIn._id)
 
       socket.current.on('activeUsers', users => {
@@ -302,7 +302,9 @@ export default function ProductDetails() {
                         ({review?.length}) Ratings
                       </Typography>
                     </Stack>
-                    <p className="text-sm">Product Code: {productDetails?.sku}</p>
+                    <p className="text-sm">
+                      Product Code: {productDetails?.sku}
+                    </p>
                     <p className="text-sm">Fabric: {productDetails?.fabric}</p>
 
                     <div className="flex items-center mt-3">
