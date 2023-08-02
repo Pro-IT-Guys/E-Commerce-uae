@@ -26,8 +26,6 @@ export default function ProductCard({ product }) {
     setHovering(false)
   }
 
-  console.log(rateAEDtoUSD, '=========================');
-
   return (
     <div className="shadow hover:shadow-md rounded overflow-hidden h-full">
       <div className="bg-white h-full">
