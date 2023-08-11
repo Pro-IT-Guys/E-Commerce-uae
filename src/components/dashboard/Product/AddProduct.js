@@ -1,4 +1,3 @@
-
 import {
   Autocomplete,
   Chip,
@@ -26,6 +25,7 @@ import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { toast } from 'react-hot-toast'
 
 export default function AddProductForm() {
   const [typeValue, setTypeValue] = useState([])
@@ -36,6 +36,7 @@ export default function AddProductForm() {
   const [values, setFieldValue] = useState([])
   const router = useRouter()
   const [imagesUrl, setImagesUrl] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const {
     register,
@@ -44,7 +45,6 @@ export default function AddProductForm() {
     reset,
   } = useForm()
   const handleDrop = useCallback(async acceptedFiles => {
-
     const formData = new FormData()
     acceptedFiles.forEach(file => {
       formData.append('image', file)
@@ -58,18 +58,16 @@ export default function AddProductForm() {
 
       if (response.ok) {
         const data = await response.json()
-        console.log(data)
         if (data?.status === 'success') {
           setImagesUrl(data?.imageURLs)
         }
       } else {
-        console.error('Image upload failed.')
+        toast.error('Image upload failed.')
       }
     } catch (error) {
-      console.error('Error occurred while uploading images:', error)
+      toast.error('Error occurred while uploading images:')
     }
   }, [])
-
 
   const handleRemoveAll = () => {
     setFieldValue('images', [])
@@ -83,9 +81,9 @@ export default function AddProductForm() {
   }
 
   const onSubmit = data => {
-
     const formData = new FormData()
-    // const boundary = formData.getBoundary();
+    setLoading(true)
+
     formData.append('name', data.name)
     formData.append('path', data?.name?.replace(/\s+/g, '-').toLowerCase())
     formData.append('frontImage', data.frontImage[0])
@@ -119,9 +117,11 @@ export default function AddProductForm() {
             title: 'Product Created Successfully',
           })
         }
+        setLoading(false)
       })
       .catch(err => {
-        console.log(err)
+        toast.error('Error occurred while creating product.')
+        setLoading(false)
       })
   }
 
@@ -502,13 +502,21 @@ export default function AddProductForm() {
                       {++index}. {image}
                     </span> */}
 
-                      <Image src={image} width={100} height={100} className='h-32 w-28 object-cover' />
+                      <Image
+                        src={image}
+                        width={100}
+                        height={100}
+                        className="h-32 w-28 object-cover"
+                      />
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="relative mt-2">
+                {
+                  
+                }
                 <button
                   type="submit"
                   className=" py-2 px-5 rounded bg-primary text-white "

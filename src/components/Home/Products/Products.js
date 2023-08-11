@@ -87,7 +87,7 @@ const Products = () => {
     retriveProduct()
   }, [searchTerm, category, value, type, style, fabric])
 
-  console.log(category)
+ 
   return (
     <div className="bg-[#f7f7ff9c] ">
       <Container maxWidth="lg" className="pb-20 ">
