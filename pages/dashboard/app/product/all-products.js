@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 // material
 import {
@@ -15,6 +14,8 @@ import Scrollbar from '../../../../src/components/Scrollbar'
 import DashboardLayout from '../../../../src/layouts/dashboard'
 import { BASE_URL } from '../../../../apis/url'
 import ProductTableRowItem from '../../../../src/components/Products/ProductTableRowItem'
+import { useContext } from 'react'
+import { ContextData } from '../../../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 
@@ -34,16 +35,6 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
 export default function ProductList() {
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState([])
@@ -51,15 +42,21 @@ export default function ProductList() {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [productList, setProductList] = useState([])
   const [update, setUpdate] = useState('')
+  const { searchTerm } = useContext(ContextData)
 
   useEffect(() => {
-    fetch(
-      `${BASE_URL}/product?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`
-    )
-      .then(res => res.json())
-      .then(data => setProductList(data?.data))
-  }, [page, rowsPerPage, filterName, update])
-
+    if (searchTerm === '') {
+      fetch(`${BASE_URL}/product?&page=${page}&limit=${rowsPerPage}`)
+        .then(res => res.json())
+        .then(data => setProductList(data?.data))
+    } else {
+      fetch(
+        `${BASE_URL}/product?searchTerm=${searchTerm}&page=${page}&limit=${rowsPerPage}`,
+      )
+        .then(res => res.json())
+        .then(data => setProductList(data?.data))
+    }
+  }, [page, rowsPerPage, searchTerm, update])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -69,13 +66,6 @@ export default function ProductList() {
     setRowsPerPage(Number(event.target.value, 10))
     setPage(0)
   }
-
-  const handleFilterByName = event => {
-    setFilterName(event.target.value)
-  }
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productList.length) : 0
 
   return (
     <DashboardLayout>
@@ -89,11 +79,6 @@ export default function ProductList() {
           </div>
 
           <Card className="mt-5">
-            <UserListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            />
 
             <Scrollbar>
               <TableContainer>
