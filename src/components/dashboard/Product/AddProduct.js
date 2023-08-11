@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Button,
   Chip,
   CircularProgress,
   FormControl,
@@ -11,7 +12,6 @@ import {
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
-  BRAND_OPTION,
   CATEGORY_OPTION,
   STYLE_OPTION,
   FABRIC_OPTION,
@@ -515,12 +515,13 @@ export default function AddProductForm() {
               </div>
 
               <div className="relative mt-2">
-                <button
-                  type="submit"
-                  className=" py-2 px-5 rounded bg-primary text-white "
-                >
-                  {loading ? <CircularProgress /> : 'Publish Product'}
-                </button>
+                <Button sx={{width: '150px'}} type="submit" variant="contained" color="primary">
+                  {loading ? (
+                    <CircularProgress color="inherit" size={24} />
+                  ) : (
+                    'Publish Product'
+                  )}
+                </Button>
               </div>
             </div>
           </form>
