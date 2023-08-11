@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Chip,
+  CircularProgress,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -514,14 +515,11 @@ export default function AddProductForm() {
               </div>
 
               <div className="relative mt-2">
-                {
-                  
-                }
                 <button
                   type="submit"
                   className=" py-2 px-5 rounded bg-primary text-white "
                 >
-                  Publish Product
+                  {loading ? <CircularProgress /> : 'Publish Product'}
                 </button>
               </div>
             </div>
