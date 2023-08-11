@@ -37,8 +37,6 @@ const TABLE_HEAD = [
 
 export default function ProductList() {
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState([])
-  const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [productList, setProductList] = useState([])
   const [update, setUpdate] = useState('')
