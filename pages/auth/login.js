@@ -1,25 +1,16 @@
-
-import { Container } from "@mui/material";
-import React from "react";
-import LoginForm from "../../src/components/Auth/LoginForm";
-import MainLayout from "../../src/layouts/main";
-
-
-
+import { Container } from '@mui/material'
+import React from 'react'
+import LoginForm from '../../src/components/Auth/LoginForm'
+import MainLayout from '../../src/layouts/main'
 
 export default function login() {
-
   return (
-
     <MainLayout>
-      <Container maxWidth='md'>
+      <Container maxWidth="md">
         <div className="pt-40 mb-10">
           <LoginForm />
         </div>
       </Container>
-
     </MainLayout>
-  );
-};
-
-
+  )
+}

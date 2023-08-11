@@ -37,6 +37,7 @@ import Scrollbar from '../../../src/components/Scrollbar'
 import ProductList from '../../../src/components/checkout/CheckoutProductList'
 import ShippingAddressPopup from '../../../src/components/checkout/ShippingAddressPopup'
 import MainLayout from '../../../src/layouts/main'
+import LoginFormModal from '../../../src/components/AuthModal/LoginModal'
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(20),
@@ -61,6 +62,7 @@ export default function Checkout() {
   const [loader, setLoader] = useState(false)
   const [muiLoader, setMuiLoader] = useState(false)
   const [orderItem, setOrderItem] = useState([])
+  const [loginPopup, setLoginPopup] = useState(false)
 
   const [totalPrice, setTotalPrice] = useState(0)
   const [feeOfLocation, setFeeOfLocation] = useState(0)
@@ -81,6 +83,10 @@ export default function Checkout() {
 
   const [cupon, setCupon] = useState('')
   const [discountByCupon, setDiscountByCupon] = useState(0)
+
+  const handleClose = () => {
+    setLoginPopup(false)
+  }
 
   const handleAdditionalInfo = e => {
     const { name, value } = e.target
@@ -213,6 +219,11 @@ export default function Checkout() {
   }
 
   const handleConfirmAddress = async () => {
+    if (!currentlyLoggedIn) {
+      setLoginPopup(true)
+      return toast.error('Please login to continue.')
+    }
+
     const shippingFee = await getFeeOfLocation({
       countryId: selectedCountry,
       stateCode: selectedState,
@@ -253,7 +264,6 @@ export default function Checkout() {
       ),
     }
 
-    if (!currentlyLoggedIn) return toast.error('Please login to continue.')
     if (!selectedCountry) return toast.error('Please select a country.')
     if (!selectedState) return toast.error('Please select a state.')
     if (city?.length > 0 && !selectedCity)
@@ -274,7 +284,10 @@ export default function Checkout() {
 
   const handleApplyCupon = async () => {
     if (!cupon) return toast.error('Please enter a cupon code.')
-    if (!currentlyLoggedIn) return toast.error('Please login to continue.')
+    if (!currentlyLoggedIn) {
+      setLoginPopup(true)
+      return toast.error('Please login to continue.')
+    }
 
     const data = {
       cuponCode: cupon,
@@ -519,6 +532,7 @@ export default function Checkout() {
           </RootStyle>
         </MainLayout>
       </Page>
+      {loginPopup && <LoginFormModal open={loginPopup} onClose={handleClose} />}
       {addressPopup && (
         <ShippingAddressPopup
           handleCountryChange={handleCountryChange}
