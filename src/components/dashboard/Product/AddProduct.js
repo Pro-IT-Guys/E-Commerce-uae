@@ -86,7 +86,7 @@ export default function AddProductForm() {
     setLoading(true)
 
     formData.append('name', data.name)
-    formData.append('path', data?.name?.replace(/\s+/g, '-').toLowerCase())
+    formData.append('path', data?.name?.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase())
     formData.append('frontImage', data.frontImage[0])
     formData.append('backImage', data.backImage[0])
     formData.append('restImage', imagesUrl)

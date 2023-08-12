@@ -27,7 +27,8 @@ import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
 export default function EditProductForm({ productId }) {
-  const [typeValue, setTypeValue] = useState([])
+  const [productDetails, setProductDetails] = useState({})
+  const [typeValue, setTypeValue] = useState(productDetails?.type)
   const [tagValue, setTagValue] = useState([])
   const [colorValue, setColorValue] = useState([])
   const [sizeValue, setSizeValue] = useState([])
@@ -36,19 +37,28 @@ export default function EditProductForm({ productId }) {
   const [values, setFieldValue] = useState([])
   const router = useRouter()
   const [imagesUrl, setImagesUrl] = useState([])
-  const [productDetails, setProductDetails] = useState({})
   const [loader, setLoader] = useState(false)
   const [productName, setProductName] = useState('')
   const [buyingPriceValue, setBuyingPriceValue] = useState('')
   const [sellingPriceValue, setSellingPriceValue] = useState('')
+  const [quantityValue, setQuantityValue] = useState('')
 
   useEffect(() => {
+
     setLoader(true)
     fetch(`${BASE_URL}/product/${productId}`)
       .then(res => res.json())
       .then(data => setProductDetails(data?.data))
       .finally(() => setLoader(false))
   }, [productId])
+
+  useEffect(() => {
+    setTypeValue(productDetails?.type)
+    const autocompleteInput = document.querySelector(".MuiAutocomplete-inputRoot");
+    if (autocompleteInput) {
+      autocompleteInput.focus();
+    }
+  }, [productDetails])
 
   const {
     register,
@@ -133,8 +143,8 @@ export default function EditProductForm({ productId }) {
     formData.append(
       'path',
       productName
-        ? productName.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now()
-        : productDetails?.path.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now()
+        ? productName.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase()
+        : productDetails?.path.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase() + '-' + Math.floor(Math.random() * 9)
     )
     formData.append(
       'frontImage',
@@ -158,7 +168,7 @@ export default function EditProductForm({ productId }) {
       'metaDescription',
       data.metaDescription || productDetails?.metaDescription
     )
-    formData.append('quantity', data.quantity || productDetails?.quantity)
+    formData.append('quantity', quantityValue || productDetails?.quantity)
     formData.append('category', data.category || productDetails?.category)
     formData.append(
       'color',
@@ -194,9 +204,21 @@ export default function EditProductForm({ productId }) {
             title: 'Product Updated Successfully',
           })
         }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
+        }
       })
       .catch(err => {
         console.log(err, 'error')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        })
       })
   }
 
@@ -276,7 +298,7 @@ export default function EditProductForm({ productId }) {
                       className="w-full"
                       multiple
                       freeSolo
-                      value={typeValue.length ? typeValue : productDetails?.type}
+                      defaultValue={productDetails?.type}
                       onChange={(event, newValue) => {
                         setTypeValue(newValue)
                       }}
@@ -363,7 +385,7 @@ export default function EditProductForm({ productId }) {
                   </FormControl>
                 </div>
                 <div className="flex flex-col items-start">
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     label=" Stock Quantity"
                     InputProps={{
@@ -374,6 +396,26 @@ export default function EditProductForm({ productId }) {
                       type: 'number',
                     }}
                     {...register('quantity')}
+                  /> */}
+                  <label htmlFor="title" className=" font-semibold ">
+                    Stock Quantity
+                  </label>
+                  <input
+                    onChange={e => {
+                      if (e.target.value < 0) {
+                        toast('Please Select Positive value', { type: 'error' })
+                        e.target.value = 0
+                      } else {
+                        setQuantityValue(e.target.value)
+                      }
+                    }}
+                    type="number"
+                    required
+                    id="quantity"
+                    defaultValue={productDetails?.quantity}
+                    min={0}
+                    name="quantity"
+                    className="border px-2 py-3 w-full rounded input input-bordered focus:border-warning duration-300 ease-in-out focus:outline-none"
                   />
                 </div>
                 <div className="flex flex-col items-start">
