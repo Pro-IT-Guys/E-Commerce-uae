@@ -276,7 +276,7 @@ export default function EditProductForm({ productId }) {
                       className="w-full"
                       multiple
                       freeSolo
-                      value={typeValue}
+                      value={typeValue.length ? typeValue : productDetails?.type}
                       onChange={(event, newValue) => {
                         setTypeValue(newValue)
                       }}
