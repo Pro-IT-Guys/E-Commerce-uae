@@ -203,12 +203,16 @@ export default function OrderDetails() {
                 <span className="text-sm "> {orderItems?.length}</span>
               </div>
               <div className="  shadow py-1 px-2 text-sm rounded">
+                <span className="font-semibold">Order Total : </span>
+                <span className="text-sm"> ${subTotal}</span>
+              </div>
+              <div className="  shadow py-1 px-2 text-sm rounded">
                 <span className="font-semibold">Shipping Fee : </span>
                 <span className="text-sm"> ${deliveryFee}</span>
               </div>
               <div className="  shadow py-1 px-2 text-sm rounded">
                 <span className="font-semibold">Subtotal : </span>
-                <span className="text-sm"> ${subTotal}</span>
+                <span className="text-sm"> ${subTotal + deliveryFee}</span>
               </div>
             </div>
           </div>

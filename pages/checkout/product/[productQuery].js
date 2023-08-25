@@ -442,7 +442,7 @@ export default function Checkout() {
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
-                          {}
+                          { }
                         </Stack>
 
                         {discountByCupon > 0 && (
@@ -499,9 +499,9 @@ export default function Checkout() {
                                 fromCurrency,
                                 toCurrency,
                                 Number(totalPrice) +
-                                  Number(totalDeliveryFee) -
-                                  Number(offerDiscountPrice) -
-                                  Number(discountByCupon),
+                                Number(totalDeliveryFee) -
+                                Number(offerDiscountPrice) -
+                                Number(discountByCupon),
                                 rateAEDtoUSD,
                               )}
                               {toCurrency === 'AED' && 'AED'}
@@ -517,15 +517,30 @@ export default function Checkout() {
                       </Stack>
                     </CardContent>
                   </Card>
-                  <Button
-                    onClick={() => setAddressPopup(true)}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Check Out
-                  </Button>
+                  {
+                    currentlyLoggedIn ? (
+                      <>
+                        <Button
+                          onClick={() => setAddressPopup(true)}
+                          fullWidth
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                        >
+                          Check Out
+                        </Button></>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => setLoginPopup(true)}
+                          fullWidth
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                        > Check Out</Button>
+                      </>
+                    )
+                  }
                 </Grid>
               </Grid>
             </Container>

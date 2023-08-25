@@ -41,20 +41,21 @@ export default function ProductList() {
   const [productList, setProductList] = useState([])
   const [update, setUpdate] = useState('')
   const { searchTerm } = useContext(ContextData)
+  const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
-    if (searchTerm === '') {
+    if (searchValue === '') {
       fetch(`${BASE_URL}/product?&page=${page}&limit=${rowsPerPage}`)
         .then(res => res.json())
         .then(data => setProductList(data?.data))
     } else {
       fetch(
-        `${BASE_URL}/product?searchTerm=${searchTerm}&page=${page}&limit=${rowsPerPage}`,
+        `${BASE_URL}/product?searchTerm=${searchValue}&page=${page}&limit=${rowsPerPage}`,
       )
         .then(res => res.json())
         .then(data => setProductList(data?.data))
     }
-  }, [page, rowsPerPage, searchTerm, update])
+  }, [page, rowsPerPage, searchTerm, update, searchValue])
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -63,6 +64,10 @@ export default function ProductList() {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(Number(event.target.value, 10))
     setPage(0)
+  }
+
+  const searchTermHandler = value => {
+    setSearchValue(value)
   }
 
   return (
@@ -76,7 +81,17 @@ export default function ProductList() {
             <p>All Products</p>
           </div>
 
-          <Card className="mt-5">
+
+          <div className='mt-3'>
+            <input
+              type='search'
+              onChange={e => searchTermHandler(e.target.value)}
+              placeholder='Search Product ...'
+              className='border border-[#E1E1E1] rounded-md px-2 py-3 w-[80%] mt-5 focus:outline-none'
+            ></input>
+          </div>
+
+          <Card className="mt-5 py-2">
 
             <Scrollbar>
               <TableContainer>
