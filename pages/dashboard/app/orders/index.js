@@ -11,6 +11,7 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Pagination,
 } from '@mui/material'
 import Page from '../../../../src/components/Page'
 import { UserListHead, UserListToolbar } from '../../../../src/components/list'
@@ -46,14 +47,33 @@ export default function AllOrders() {
   const [userList, setUserList] = useState([])
   const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [update, setUpdate] = useState('')
+  const [productCount, setProductCount] = useState(0)
+  const itemsPerPage = 2;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  useEffect(() => {
+    if (productCount) {
+      setTotalPages(Math.ceil(productCount / itemsPerPage))
+    }
+  }, [productCount, itemsPerPage])
+
 
   useEffect(() => {
     fetch(
-      `https://server.aymifashion.com/api/v1/order?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
+      `http://localhost:8000/api/v1/order?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
     )
       .then(res => res.json())
-      .then(data => setUserList(data?.data))
-  }, [filterName, page, rowsPerPage, update])
+      .then(data => {
+        setUserList(data?.data)
+        setProductCount(data?.meta?.total)
+      })
+  }, [filterName, currentPage, rowsPerPage, update])
 
   const handleFilterByName = event => {
     setFilterName(event.target.value)
@@ -214,15 +234,16 @@ export default function AllOrders() {
               </TableContainer>
             </Scrollbar>
 
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={userList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            <div className="mt-7 flex sm:justify-end justify-center pr-5 pb-5">
+              <Stack spacing={2}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Stack>
+            </div>
           </Card>
         </Container>
       </Page>

@@ -14,6 +14,7 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Pagination,
 } from '@mui/material'
 // redux
 import Page from '../../../../src/components/Page'
@@ -70,14 +71,33 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
+  const [productCount, setProductCount] = useState(0)
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  useEffect(() => {
+    if (productCount) {
+      setTotalPages(Math.ceil(productCount / itemsPerPage))
+    }
+  }, [productCount, itemsPerPage])
+
 
   useEffect(() => {
     fetch(
-      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
+      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
     )
       .then(res => res.json())
-      .then(data => setUserList(data?.data))
-  }, [filterName, page, rowsPerPage])
+      .then(data =>{
+        setUserList(data?.data)
+        setProductCount(data?.meta?.total)
+      })
+  }, [filterName, currentPage, rowsPerPage])
 
   const handleFilterByName = event => {
     setFilterName(event.target.value)
@@ -132,6 +152,7 @@ export default function UserList() {
 
                       return (
                         <TableRow
+                        className='border-b'
                           hover
                           key={id}
                           tabIndex={-1}
@@ -172,15 +193,16 @@ export default function UserList() {
               </TableContainer>
             </Scrollbar>
 
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={userList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            <div className="mt-7 flex sm:justify-end justify-center pr-5 pb-5">
+              <Stack spacing={2}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Stack>
+            </div>
           </Card>
         </Container>
       </Page>

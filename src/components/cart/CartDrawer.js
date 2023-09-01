@@ -161,11 +161,8 @@ export default function CartDrawer() {
                   <img
                     src={product?.productId?.frontImage}
                     alt={product?.productId?.metaDescription}
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      marginRight: '10px',
-                    }}
+                   
+                    className='object-cover h-12 w-12 mr-3'
                   />
                   <div>
                     <Typography sx={{ fontSize: 13 }}>
