@@ -7,6 +7,8 @@ import {
   Container,
   TableContainer,
   TablePagination,
+  Stack,
+  Pagination,
 } from '@mui/material'
 import Page from '../../../../src/components/Page'
 import { UserListHead, UserListToolbar } from '../../../../src/components/list'
@@ -42,33 +44,48 @@ export default function ProductList() {
   const [update, setUpdate] = useState('')
   const { searchTerm } = useContext(ContextData)
   const [searchValue, setSearchValue] = useState('')
+  const [productCount, setProductCount] = useState(0)
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  useEffect(() => {
+    if (productCount) {
+      setTotalPages(Math.ceil(productCount / itemsPerPage))
+    }
+  }, [productCount, itemsPerPage])
 
   useEffect(() => {
     if (searchValue === '') {
-      fetch(`${BASE_URL}/product?&page=${page}&limit=${rowsPerPage}`)
+      fetch(`${BASE_URL}/product?&page=${currentPage}&limit=${itemsPerPage}`)
         .then(res => res.json())
-        .then(data => setProductList(data?.data))
+        .then(data => {
+          setProductList(data?.data)
+          setProductCount(data?.meta?.total)
+        })
+
     } else {
       fetch(
-        `${BASE_URL}/product?searchTerm=${searchValue}&page=${page}&limit=${rowsPerPage}`,
+        `${BASE_URL}/product?searchTerm=${searchValue}&page=${currentPage}&limit=${itemsPerPage}`,
       )
         .then(res => res.json())
-        .then(data => setProductList(data?.data))
+        .then(data => {
+          setProductList(data?.data)
+          setProductCount(data?.meta?.total)
+        })
     }
-  }, [page, rowsPerPage, searchTerm, update, searchValue])
+  }, [currentPage, rowsPerPage, searchTerm, update, searchValue])
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(Number(event.target.value, 10))
-    setPage(0)
-  }
 
   const searchTermHandler = value => {
     setSearchValue(value)
   }
+
 
   return (
     <DashboardLayout>
@@ -113,15 +130,17 @@ export default function ProductList() {
               </TableContainer>
             </Scrollbar>
 
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={productList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+    
+            <div className="mt-7 flex sm:justify-end justify-center pr-5 pb-5">
+              <Stack spacing={2}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Stack>
+            </div>
           </Card>
         </Container>
       </Page>
