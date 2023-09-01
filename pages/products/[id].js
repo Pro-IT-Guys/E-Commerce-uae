@@ -43,6 +43,8 @@ import { getProductByPath } from '../../apis/product.api'
 import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
 import { getCurrentOffer } from '../../apis/offer.api'
 import { getReviews } from '../../apis/review.api'
+import ImageMagnify from 'react-image-magnify';
+import ImageMagnifySection from '../../src/components/Products/ImageMagnifySection'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -247,6 +249,8 @@ export default function ProductDetails() {
     })
   }
 
+
+
   return (
     <>
       <MainLayout>
@@ -258,21 +262,16 @@ export default function ProductDetails() {
           <div className="bg-[#f7f7ff9c] pb-10  pt-10">
             <Container maxWidth="lg">
               <Card className="mt-28 ">
-                <Grid container>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                    lg={7}
-                    p={3}
-                    className="overflow-hidden"
-                  >
-                    <ProductDetailsCarousel
+                <div className='grid grid-cols-2'>
+                  <div  >
+                    {/* <ProductDetailsCarousel
                       product={productDetails}
                       imagesArray={imagesArray}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} lg={5} p={3}>
+                    /> */}
+                    <ImageMagnifySection images={imagesArray} />
+                  </div>
+                 
+                  <div >
                     <Label
                       color={quantity > 0 ? 'success' : 'error'}
                       sx={{ textTransform: 'uppercase' }}
@@ -323,7 +322,7 @@ export default function ProductDetails() {
                               fromCurrency,
                               toCurrency,
                               Number(sellingPrice) -
-                                Number(offerDetails?.discountPrice || 0),
+                              Number(offerDetails?.discountPrice || 0),
                               rateAEDtoUSD,
                             )}
                           </p>
@@ -474,8 +473,8 @@ export default function ProductDetails() {
                           </Button>
                         )}
                     </Stack>
-                  </Grid>
-                </Grid>
+                  </div>
+                </div>
               </Card>
 
               <ProductDetailsTab product={productDetails} />
