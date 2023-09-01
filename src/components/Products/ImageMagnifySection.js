@@ -1,6 +1,6 @@
+import { CircularProgress } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ImageMagnify from 'react-image-magnify'
-import CustomLoadingScreen from '../CustomLoadingScreen'
 
 const ImageMagnifySection = ({ loader, images }) => {
   const [mainImage, setMainImage] = useState(null)
@@ -8,7 +8,7 @@ const ImageMagnifySection = ({ loader, images }) => {
     setMainImage(images[0])
   }, [images])
 
-  if (loader) return <CustomLoadingScreen />
+  if (loader || !images) return <CircularProgress />
 
   return (
     <div>
