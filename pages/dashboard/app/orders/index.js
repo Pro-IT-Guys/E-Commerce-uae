@@ -48,14 +48,13 @@ export default function AllOrders() {
   const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [update, setUpdate] = useState('')
   const [productCount, setProductCount] = useState(0)
-  const itemsPerPage = 2;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
+  const itemsPerPage = 2
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   const handlePageChange = (event, newPage) => {
-    setCurrentPage(newPage);
-  };
+    setCurrentPage(newPage)
+  }
 
   useEffect(() => {
     if (productCount) {
@@ -63,10 +62,9 @@ export default function AllOrders() {
     }
   }, [productCount, itemsPerPage])
 
-
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/order?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
+      `https://server.aymifashion.com/api/v1/order?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
     )
       .then(res => res.json())
       .then(data => {

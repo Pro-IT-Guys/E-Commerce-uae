@@ -72,14 +72,13 @@ export default function UserList() {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
   const [productCount, setProductCount] = useState(0)
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
+  const itemsPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   const handlePageChange = (event, newPage) => {
-    setCurrentPage(newPage);
-  };
+    setCurrentPage(newPage)
+  }
 
   useEffect(() => {
     if (productCount) {
@@ -87,13 +86,12 @@ export default function UserList() {
     }
   }, [productCount, itemsPerPage])
 
-
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
+      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
     )
       .then(res => res.json())
-      .then(data =>{
+      .then(data => {
         setUserList(data?.data)
         setProductCount(data?.meta?.total)
       })
@@ -152,7 +150,7 @@ export default function UserList() {
 
                       return (
                         <TableRow
-                        className='border-b'
+                          className="border-b"
                           hover
                           key={id}
                           tabIndex={-1}
