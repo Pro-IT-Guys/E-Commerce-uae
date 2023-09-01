@@ -30,6 +30,7 @@ import { useRouter } from 'next/router'
 import { convertCurrencyForCalculation } from '../../../../helpers/currencyHandler'
 import dynamic from 'next/dynamic'
 import { getALlOrders } from '../../../../apis/order.api'
+import LatestCollection from './LatestCollection'
 
 const Products = () => {
   const {
@@ -430,7 +431,7 @@ const Products = () => {
                   <ProductLoader />
                 ) : (
                   <>
-                    <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+                    <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-y-4">
                       {products?.map(product => (
                         <ProductCard key={product.id} product={product} />
                       ))}
@@ -463,19 +464,17 @@ const Products = () => {
                   <>
                     {products?.length ? (
                       <>
-                        <div>
-                          <h1 className="font-bold text-xl mt-7">
-                            Popular Products
-                          </h1>
-                          <PopularProducts products={popularProducts} />
-                          <h1 className="font-bold text-xl mt-7">
-                            Latest Collection
-                          </h1>
-                          <PopularProducts products={products} />
-                        </div>
+                        <h1 className="font-bold text-xl mt-7 mb-4">
+                          Popular Products
+                        </h1>
+                        <PopularProducts products={popularProducts} />
+                        <h1 className="font-bold text-xl mt-7 mb-4">
+                          Latest Collection
+                        </h1>
+                        <LatestCollection products={products} />
                       </>
                     ) : (
-                      <div className="flex justify-center items-center h-[50vh]">
+                      <div className="flex justify-center items-center">
                         <h1 className="text-xl font-semibold text-error">
                           No Product Found!
                         </h1>
@@ -487,7 +486,7 @@ const Products = () => {
                 {pathname.includes('category') && (
                   <>
                     {!products?.length && (
-                      <div className="flex justify-center items-center h-[50vh]">
+                      <div className="flex justify-center items-center">
                         <h1 className="text-xl font-semibold text-error">
                           No Product Found!
                         </h1>

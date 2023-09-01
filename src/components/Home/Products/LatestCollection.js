@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import ProductCard from './ProductCard'
 import { useRef } from 'react'
 
-const PopularProducts = ({ products }) => {
+const LatestCollection = ({ products }) => {
   const carouselRef = useRef()
 
   const settings = {
@@ -36,12 +36,12 @@ const PopularProducts = ({ products }) => {
   }
 
   return (
-    <Slider ref={carouselRef} {...settings}>
-      {products?.map((product, index) => (
-        <ProductCard key={index} product={product} />
-      ))}
-    </Slider>
+      <Slider ref={carouselRef} {...settings}>
+        {products?.map((product, index) => (
+          <ProductCard key={index} product={product} />
+        ))}
+      </Slider>
   )
 }
 
-export default PopularProducts
+export default LatestCollection

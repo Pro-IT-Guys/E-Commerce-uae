@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
@@ -27,7 +26,7 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <div className="shadow hover:shadow-md rounded overflow-hidden h-full">
+    <div className="shadow hover:shadow-md rounded overflow-hidden h-full mx-2">
       <div className="bg-white h-full">
         <div
           className="h-80 w-full relative overflow-hidden cursor-pointer"
