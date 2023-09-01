@@ -73,7 +73,7 @@ export default function UserList() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:8000/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
+      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`,
     )
       .then(res => res.json())
       .then(data => setUserList(data?.data))

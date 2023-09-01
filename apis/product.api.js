@@ -42,7 +42,7 @@ export const getProductByPath = async path => {
 }
 
 export const multiFilterProduct = async data => {
-  const { searchTerm, category, maxPrice, minPrice, type, style, fabric } = data
+  const { searchTerm, category, maxPrice, minPrice, type, style, fabric, limit } = data
 
   const queryParams = {
     searchTerm,
@@ -52,6 +52,7 @@ export const multiFilterProduct = async data => {
     type: Array.isArray(type) ? type.join(',') : type,
     style: Array.isArray(style) ? style.join(',') : style,
     fabric: Array.isArray(fabric) ? fabric.join(',') : fabric,
+    limit,
   }
 
   const filteredParams = Object.fromEntries(

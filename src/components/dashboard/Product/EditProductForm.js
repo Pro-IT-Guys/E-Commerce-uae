@@ -1,4 +1,3 @@
-
 import {
   Autocomplete,
   Chip,
@@ -43,8 +42,9 @@ export default function EditProductForm({ productId }) {
   const [sellingPriceValue, setSellingPriceValue] = useState('')
   const [quantityValue, setQuantityValue] = useState('')
 
-  useEffect(() => {
+  console.log(typeValue, '=============')
 
+  useEffect(() => {
     setLoader(true)
     fetch(`${BASE_URL}/product/${productId}`)
       .then(res => res.json())
@@ -54,9 +54,11 @@ export default function EditProductForm({ productId }) {
 
   useEffect(() => {
     setTypeValue(productDetails?.type)
-    const autocompleteInput = document.querySelector(".MuiAutocomplete-inputRoot");
+    const autocompleteInput = document.querySelector(
+      '.MuiAutocomplete-inputRoot',
+    )
     if (autocompleteInput) {
-      autocompleteInput.focus();
+      autocompleteInput.focus()
     }
   }, [productDetails])
 
@@ -143,45 +145,55 @@ export default function EditProductForm({ productId }) {
     formData.append(
       'path',
       productName
-        ? productName.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase()
-        : productDetails?.path.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase() + '-' + Math.floor(Math.random() * 9)
+        ? productName
+            .replace(/[&\/@#!$%\^?]/g, '')
+            .split(' ')
+            .join('-')
+            .toLowerCase()
+        : productDetails?.path
+            .replace(/[&\/@#!$%\^?]/g, '')
+            .split(' ')
+            .join('-')
+            .toLowerCase() +
+            '-' +
+            Math.floor(Math.random() * 9),
     )
     formData.append(
       'frontImage',
-      data.frontImage[0] || productDetails?.frontImage
+      data.frontImage[0] || productDetails?.frontImage,
     )
     formData.append('backImage', data.backImage[0] || productDetails?.backImage)
     formData.append(
       'restImage',
-      imagesUrl.length > 0 ? imagesUrl : productDetails?.restImage
+      imagesUrl.length > 0 ? imagesUrl : productDetails?.restImage,
     )
     formData.append(
       'buyingPrice',
-      buyingPriceValue || productDetails?.buyingPrice
+      buyingPriceValue || productDetails?.buyingPrice,
     )
     formData.append(
       'sellingPrice',
-      sellingPriceValue || productDetails?.sellingPrice
+      sellingPriceValue || productDetails?.sellingPrice,
     )
     formData.append('description', description || productDetails?.description)
     formData.append(
       'metaDescription',
-      data.metaDescription || productDetails?.metaDescription
+      data.metaDescription || productDetails?.metaDescription,
     )
     formData.append('quantity', quantityValue || productDetails?.quantity)
     formData.append('category', data.category || productDetails?.category)
     formData.append(
       'color',
-      colorValue.length > 0 ? colorValue : productDetails?.color
+      colorValue.length > 0 ? colorValue : productDetails?.color,
     )
     formData.append(
       'size',
-      sizeValue.length > 0 ? sizeValue : productDetails?.size
+      sizeValue.length > 0 ? sizeValue : productDetails?.size,
     )
     formData.append('tag', tagValue.length > 0 ? tagValue : productDetails?.tag)
     formData.append(
       'type',
-      typeValue.length > 0 ? typeValue : productDetails?.type
+      typeValue.length > 0 ? typeValue : productDetails?.type,
     )
     formData.append('style', data.style || productDetails?.style)
     formData.append('fabric', data.fabric || productDetails?.fabric)
@@ -203,8 +215,7 @@ export default function EditProductForm({ productId }) {
             icon: 'success',
             title: 'Product Updated Successfully',
           })
-        }
-        else{
+        } else {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -298,9 +309,9 @@ export default function EditProductForm({ productId }) {
                       className="w-full"
                       multiple
                       freeSolo
-                      defaultValue={productDetails?.type}
+                      value={typeValue}
                       onChange={(event, newValue) => {
-                        setTypeValue(newValue)
+                        setTypeValue([...typeValue, ...newValue])
                       }}
                       options={TYPE_OPTION}
                       getOptionLabel={option => option}
