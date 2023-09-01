@@ -43,7 +43,7 @@ import { getProductByPath } from '../../apis/product.api'
 import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
 import { getCurrentOffer } from '../../apis/offer.api'
 import { getReviews } from '../../apis/review.api'
-import ImageMagnify from 'react-image-magnify';
+import ImageMagnify from 'react-image-magnify'
 import ImageMagnifySection from '../../src/components/Products/ImageMagnifySection'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
@@ -249,8 +249,6 @@ export default function ProductDetails() {
     })
   }
 
-
-
   return (
     <>
       <MainLayout>
@@ -262,16 +260,12 @@ export default function ProductDetails() {
           <div className="bg-[#f7f7ff9c] pb-10  pt-10">
             <Container maxWidth="lg">
               <Card className="mt-28 ">
-                <div className='grid grid-cols-2'>
-                  <div  >
-                    {/* <ProductDetailsCarousel
-                      product={productDetails}
-                      imagesArray={imagesArray}
-                    /> */}
-                    <ImageMagnifySection images={imagesArray} />
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  <div>
+                    <ImageMagnifySection loader={loader} images={imagesArray} />
                   </div>
-                 
-                  <div >
+
+                  <div className="px-5">
                     <Label
                       color={quantity > 0 ? 'success' : 'error'}
                       sx={{ textTransform: 'uppercase' }}
@@ -322,7 +316,7 @@ export default function ProductDetails() {
                               fromCurrency,
                               toCurrency,
                               Number(sellingPrice) -
-                              Number(offerDetails?.discountPrice || 0),
+                                Number(offerDetails?.discountPrice || 0),
                               rateAEDtoUSD,
                             )}
                           </p>
