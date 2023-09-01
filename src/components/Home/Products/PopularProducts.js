@@ -1,54 +1,82 @@
-import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/autoplay'
+import React, { useRef } from 'react'
 import dynamic from 'next/dynamic'
+import { useTheme } from '@mui/material/styles';
+import { Box, CardHeader } from '@mui/material'
+import { CarouselControlsArrowsBasic1 } from '../../carousel'
+import Slider from 'react-slick'
 const ProductCard = dynamic(() => import('./ProductCard'))
 
+
 const PopularProducts = ({ products }) => {
+  const theme = useTheme();
+  const carouselRef = useRef(null);
+
+  const settings = {
+    dots: false,
+    arrows: false,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    // rtl: Boolean(theme.direction === 'rtl'),
+    responsive: [
+      {
+        breakpoint: theme.breakpoints.values.lg,
+        settings: {
+          slidesToShow: 3
+        }
+      },
+      {
+        breakpoint: theme.breakpoints.values.md,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: theme.breakpoints.values.sm,
+        settings: {
+          slidesToShow: 3
+        }
+      }
+    ]
+  };
+
+  const handlePrevious = () => {
+    carouselRef.current?.slickPrev();
+  };
+
+  const handleNext = () => {
+    carouselRef.current?.slickNext();
+  };
+
   return (
-    <div>
-      <div className="mt-3">
-        <div className="mb-10">
-          <Swiper
-            autoplay={true}
-            className="mySwiper pb-3 h-full"
-            loop={true}
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-            breakpoints={{
-              320: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              440: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-                width: 768,
-              },
-              1024: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-              },
-              1440: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-              },
+
+    <Box sx={{ py: 2 }}>
+      <CardHeader
+        title="Newest Booking"
+        subheader="12 Booking"
+        action={
+          <CarouselControlsArrowsBasic1
+            arrowLine
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            sx={{
+              position: 'static',
+              '& button': { color: 'text.primary' }
             }}
-          >
-            {products?.map(product => (
-              <SwiperSlide key={product?.id} className="h-full mb-1">
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-    </div>
+          />
+        }
+        sx={{
+          p: 0,
+          mb: 3,
+          '& .MuiCardHeader-action': { alignSelf: 'center' }
+        }}
+      />
+
+        <Slider ref={carouselRef} {...settings}>
+          {products?.slice(0, 3).map((item) => (
+            <ProductCard key={item._id} product={item} />
+          ))}
+        </Slider>
+    </Box>
   )
 }
 

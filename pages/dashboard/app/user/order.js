@@ -214,15 +214,7 @@ export default function UserOrders() {
               </TableContainer>
             </Scrollbar>
 
-            {/* <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={orderList?.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
+            
           </Card>
         </Container>
       </Page>
