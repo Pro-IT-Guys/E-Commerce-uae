@@ -92,7 +92,7 @@ export default function AllOrders() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0
 
   const handleUpdateOrder = (id, status) => {
-    fetch(`http://localhost:8000/api/v1/order/${id}`, {
+    fetch(`https://server.aymifashion.com/api/v1/order/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ const ChatSideBar = () => {
 
   // Socket pat start============================>
   useEffect(() => {
-    socket.current = io('http://localhost:8000')
+    socket.current = io('https://server.aymifashion.com')
     socket.current.emit('join', currentlyLoggedIn?._id)
     socket.current.on('activeUsers', users => {
       setOnlineUsers(users)

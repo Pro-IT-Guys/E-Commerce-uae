@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Box,
+  Button,
   Chip,
   Container,
   FormControl,
@@ -49,6 +50,8 @@ const Products = () => {
   } = useContext(ContextData)
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadMode, setLoadMode] = useState(8)
+  const [totalProduct, setTotalProduct] = useState(0)
 
   const router = useRouter()
   const { pathname } = router
@@ -75,19 +78,20 @@ const Products = () => {
       type,
       style,
       fabric,
+      limit: loadMode,
     }
 
     const retriveProduct = async () => {
       const response = await multiFilterProduct(queryParams)
       if (response?.statusCode === 200) {
         setProducts(response?.data)
+        setTotalProduct(response?.meta?.total)
         setLoading(false)
       }
     }
     retriveProduct()
-  }, [searchTerm, category, value, type, style, fabric])
+  }, [searchTerm, category, value, type, style, fabric, loadMode])
 
- 
   return (
     <div className="bg-[#f7f7ff9c] ">
       <Container maxWidth="lg" className="pb-20 ">
@@ -389,11 +393,34 @@ const Products = () => {
                 {loading ? (
                   <ProductLoader />
                 ) : (
-                  <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
-                    {products?.map(product => (
-                      <ProductCard key={product.id} product={product} />
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+                      {products?.map(product => (
+                        <ProductCard key={product.id} product={product} />
+                      ))}
+                    </div>
+
+                    {totalProduct > 8 && products?.length < totalProduct && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          sx={{ mt: 3, mb: 2 }}
+                          onClick={() =>
+                            setLoadMode(prevValue => prevValue + 8)
+                          }
+                        >
+                          Load More
+                        </Button>
+                      </Box>
+                    )}
+                  </>
                 )}
 
                 {!pathname.includes('category') && (
@@ -421,20 +448,17 @@ const Products = () => {
                   </>
                 )}
 
-                {
-                  pathname.includes('category') && (
-                    <>
-                      {
-                        !products?.length && (
-                          <div className="flex justify-center items-center h-[50vh]">
-                            <h1 className="text-xl font-semibold text-error">
-                              No Product Found!
-                            </h1>
-                          </div>
-                        )
-                      }
-                    </>)
-                }
+                {pathname.includes('category') && (
+                  <>
+                    {!products?.length && (
+                      <div className="flex justify-center items-center h-[50vh]">
+                        <h1 className="text-xl font-semibold text-error">
+                          No Product Found!
+                        </h1>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
