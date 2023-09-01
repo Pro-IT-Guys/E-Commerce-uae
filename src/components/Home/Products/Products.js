@@ -29,6 +29,7 @@ import ProductLoader from './ProductLoader'
 import { useRouter } from 'next/router'
 import { convertCurrencyForCalculation } from '../../../../helpers/currencyHandler'
 import dynamic from 'next/dynamic'
+import { getALlOrders } from '../../../../apis/order.api'
 
 const Products = () => {
   const {
@@ -52,6 +53,7 @@ const Products = () => {
   const [loading, setLoading] = useState(false)
   const [loadMode, setLoadMode] = useState(8)
   const [totalProduct, setTotalProduct] = useState(0)
+  const [popularProducts, setPopularProducts] = useState([])
 
   const router = useRouter()
   const { pathname } = router
@@ -88,9 +90,43 @@ const Products = () => {
         setTotalProduct(response?.meta?.total)
         setLoading(false)
       }
+      handlePopularProduct()
     }
     retriveProduct()
   }, [searchTerm, category, value, type, style, fabric, loadMode])
+
+  const handlePopularProduct = async () => {
+    const orderList = await getALlOrders()
+    if (orderList?.statusCode === 200) {
+      const popularProduct = orderList?.data?.flatMap(order => {
+        return order?.orderItems?.map(product => {
+          if (product?.product !== null) {
+            return product?.product
+          }
+        })
+      })
+
+      // Count the occurrences of each product
+      const productCounts = popularProduct.reduce((acc, product) => {
+        if (product !== undefined) {
+          acc[product._id] = (acc[product._id] || 0) + 1
+        }
+        return acc
+      }, {})
+
+      // Sort products based on occurrence count
+      const sortedProducts = popularProduct.sort((a, b) => {
+        return productCounts[b._id] - productCounts[a._id]
+      })
+
+      // Remove duplicates while maintaining order
+      const uniqueSortedProducts = Array.from(
+        new Set(sortedProducts.map(product => product._id)),
+      ).map(id => sortedProducts.find(product => product._id === id))
+
+      setPopularProducts(uniqueSortedProducts)
+    }
+  }
 
   return (
     <div className="bg-[#f7f7ff9c] ">
@@ -431,7 +467,7 @@ const Products = () => {
                           <h1 className="font-bold text-xl mt-7">
                             Popular Products
                           </h1>
-                          <PopularProducts products={products} />
+                          <PopularProducts products={popularProducts} />
                           <h1 className="font-bold text-xl mt-7">
                             Latest Collection
                           </h1>
