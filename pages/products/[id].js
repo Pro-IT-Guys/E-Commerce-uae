@@ -43,8 +43,8 @@ import { getProductByPath } from '../../apis/product.api'
 import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
 import { getCurrentOffer } from '../../apis/offer.api'
 import { getReviews } from '../../apis/review.api'
-import ImageMagnify from 'react-image-magnify'
-import ImageMagnifySection from '../../src/components/Products/ImageMagnifySection'
+// import ImageMagnify from 'react-image-magnify'
+// import ImageMagnifySection from '../../src/components/Products/ImageMagnifySection'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -260,12 +260,28 @@ export default function ProductDetails() {
           <div className="bg-[#f7f7ff9c] pb-10  pt-10">
             <Container maxWidth="lg">
               <Card className="mt-28 ">
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  <div>
+                {/* <div className="grid grid-cols-1 md:grid-cols-2"> */}
+                {/* <div>
                     <ImageMagnifySection loader={loader} images={imagesArray} />
-                  </div>
+                  </div> */}
 
-                  <div className="px-5">
+                <Grid container>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    lg={7}
+                    p={3}
+                    className="overflow-hidden"
+                  >
+                    <ProductDetailsCarousel
+                      product={productDetails}
+                      imagesArray={imagesArray}
+                    />
+
+                    {/* <div className="px-5"> */}
+                  </Grid>
+                  <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
                       color={quantity > 0 ? 'success' : 'error'}
                       sx={{ textTransform: 'uppercase' }}
@@ -467,8 +483,10 @@ export default function ProductDetails() {
                           </Button>
                         )}
                     </Stack>
-                  </div>
-                </div>
+                    {/* </div>
+                </div> */}
+                  </Grid>
+                </Grid>
               </Card>
 
               <ProductDetailsTab product={productDetails} />
