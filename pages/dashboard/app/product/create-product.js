@@ -1,16 +1,13 @@
-import { Container, Typography } from '@mui/material'
+import { Container } from '@mui/material'
 // layouts
-import DashboardLayout from 'src/layouts/dashboard'
-// hooks
-import useSettings from 'src/hooks/useSettings'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 // components
-import Page from 'src/components/Page'
-import AddProductForm from 'src/components/dashboard/Product/AddProduct'
+import Page from '../../../../src/components/Page'
+import AddProductForm from '../../../../src/components/dashboard/Product/AddProduct'
 
 // ----------------------------------------------------------------------
 
 export default function CreateProduct() {
-  const { themeStretch } = useSettings()
 
   return (
     <DashboardLayout>

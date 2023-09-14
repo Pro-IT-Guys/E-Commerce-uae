@@ -1,7 +1,7 @@
 import React from 'react'
-import Page from 'src/components/Page'
-import ChatSideBar from 'src/components/dashboard/chatSideBar'
-import DashboardLayout from 'src/layouts/dashboard'
+import Page from '../../../../src/components/Page'
+import ChatSideBar from '../../../../src/components/dashboard/chatSideBar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 const Chat = () => {
   return (

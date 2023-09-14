@@ -1,10 +1,11 @@
 import io from 'socket.io-client'
-import { loggedInUser } from 'apis/auth.api'
-import { getCartByUserId } from 'apis/cart.api'
-import { getStorage, removeStorage, setStorage } from 'apis/loadStorage'
-import { getCurrentLocation } from 'apis/location'
+import { loggedInUser } from '../apis/auth.api'
+import { getCartByUserId } from '../apis/cart.api'
+import { getStorage } from '../apis/loadStorage'
+import { getCurrentLocation } from '../apis/location'
 import React, { createContext, useEffect, useRef, useState } from 'react'
-import generateUniqueId from 'helpers/generateUniqueId'
+import generateUniqueId from '../helpers/generateUniqueId'
+import { getCurrency } from '../apis/currency.api'
 
 export const ContextData = createContext()
 
@@ -19,6 +20,7 @@ export const ContextProvider = ({ children }) => {
   const [usersCart, setUsersCart] = useState(null)
   const [cartSimplified, setCartSimplified] = useState(null)
   const [update, setUpdate] = useState('')
+  const [rateAEDtoUSD, setRateAEDtoUSD] = useState(0.27)
   // Search Term amd Filter
   const [searchTerm, setSearchTerm] = useState('')
   const [category, setCategory] = useState([])
@@ -48,6 +50,11 @@ export const ContextProvider = ({ children }) => {
       } else {
         setFromCurrency('AED')
         setToCurrency('USD')
+      }
+
+      const rate = await getCurrency()
+      if (rate?.success) {
+        setRateAEDtoUSD(rate?.data?.convertRate)
       }
 
       const token = await getStorage('token')
@@ -115,6 +122,8 @@ export const ContextProvider = ({ children }) => {
     cartUpdate,
     setCartUpdate,
     onlineUsers,
+    rateAEDtoUSD,
+    setRateAEDtoUSD,
   }
 
   return (

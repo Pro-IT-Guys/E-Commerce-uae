@@ -2,6 +2,12 @@
 import { PATH_DASHBOARD } from '../../routes/paths'
 // components
 import SvgIconStyle from '../../components/SvgIconStyle'
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import StoreIcon from '@mui/icons-material/Store';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 // ----------------------------------------------------------------------
 
@@ -46,16 +52,16 @@ const sidebarConfig = [
         icon: ICONS.user,
       },
       {
-        title: 'customer',
+        title: 'customers',
         path: PATH_DASHBOARD.user.root,
-        icon: ICONS.user,
+        icon: <PeopleAltIcon fontSize='small'/>,
         role: 'admin',
         children: [{ title: 'All Users', path: PATH_DASHBOARD.user.pageUser }],
       },
       {
         title: 'product',
         path: PATH_DASHBOARD.product.root,
-        icon: ICONS.ecommerce,
+        icon: <InventoryIcon fontSize='small'/>,
         role: 'admin',
         children: [
           {
@@ -63,10 +69,10 @@ const sidebarConfig = [
             path: PATH_DASHBOARD.product.pageAllProduct,
           },
           {
-            title: 'Create Products',
+            title: 'Create Product',
             path: PATH_DASHBOARD.product.createProduct,
           },
-          { title: 'Review & Ratings', path: PATH_DASHBOARD.product.review },
+          // { title: 'Review & Ratings', path: PATH_DASHBOARD.product.review },
         ],
       },
       // {
@@ -81,13 +87,13 @@ const sidebarConfig = [
       {
         title: 'all orders',
         path: PATH_DASHBOARD.order.root,
-        icon: ICONS.user,
+        icon: <ShoppingCartIcon fontSize='small'/>,
         role: 'admin',
       },
       {
         title: 'my shop',
         path: PATH_DASHBOARD.myShop.root,
-        icon: ICONS.ecommerce,
+        icon: <StoreIcon  fontSize='small' />,
         role: 'admin',
         children: [
           {
@@ -95,8 +101,8 @@ const sidebarConfig = [
             path: PATH_DASHBOARD.myShop.addCampaign,
           },
           {
-            title: 'Cupon & Discount',
-            path: PATH_DASHBOARD.myShop.cupon,
+            title: 'Coupon & Discount',
+            path: PATH_DASHBOARD.myShop.coupon,
           },
           {
             title: 'Terms & Conditions',
@@ -115,19 +121,19 @@ const sidebarConfig = [
       {
         title: 'currency ',
         path: PATH_DASHBOARD.currency.root,
-        icon: ICONS.user,
+        icon: ICONS.ecommerce,
         role: 'admin',
       },
       {
         title: 'Delivery Fee ',
         path: PATH_DASHBOARD.delivery.root,
-        icon: ICONS.user,
+        icon: <LocalShippingIcon  fontSize='small'/>,
         role: 'admin',
       },
       {
         title: 'tickets',
         path: PATH_DASHBOARD.ticket.root,
-        icon: ICONS.user,
+        icon: <ConfirmationNumberIcon fontSize='small'/>,
         role: 'admin',
       },
     ],

@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ImCross } from 'react-icons/im'
-import { ContextData } from 'context/dataProviderContext'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
-  CircularProgress,
   Container,
   FormControl,
   Grid,
@@ -13,9 +10,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import DashboardLayout from 'src/layouts/dashboard'
-import { ButtonAnimate } from 'src/components/animate'
-import { getAllCountriesWithFees } from 'apis/fee.api'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { ButtonAnimate } from '../../../../src/components/animate'
+import {
+  getAllCountriesWithFees,
+  updateFeeOfLocation,
+} from '../../../../apis/fee.api'
+import { toast } from 'react-hot-toast'
 
 const DeliveryFee = ({}) => {
   const [country, setCountry] = useState(null)
@@ -24,6 +25,7 @@ const DeliveryFee = ({}) => {
   const [selectedState, setSelectedState] = useState(null)
   const [selectedCity, setSelectedCity] = useState(null)
   const [state, setState] = useState(null)
+  const [deliveryFee, setDeliveryFee] = useState(0)
 
   useEffect(() => {
     const getCountry = async () => {
@@ -32,6 +34,16 @@ const DeliveryFee = ({}) => {
     }
     getCountry()
   }, [])
+
+  useEffect(() => {
+    if (city && city.length > 0) {
+      const selected = city?.find(i => i?.city_name === selectedCity)
+      setDeliveryFee(selected?.delivery_fee)
+    } else {
+      const selected = state?.find(i => i?.state_code === selectedState)
+      setDeliveryFee(selected?.delivery_fee)
+    }
+  }, [selectedCountry, selectedState, selectedCity])
 
   const handleCountryChange = e => {
     const countryId = e.target.value
@@ -45,6 +57,26 @@ const DeliveryFee = ({}) => {
     setSelectedState(stateId)
   }
 
+  const handleDeliveryFee = async () => {
+    const data = {
+      countryId: selectedCountry,
+      dataPayload: {
+        state_code: selectedState,
+        city_name: selectedCity,
+        delivery_fee: Number(deliveryFee),
+      },
+    }
+    const response = await updateFeeOfLocation(data)
+    if (response?.success) {
+      toast.success('Delivery fee updated successfully')
+      // reset
+      setSelectedCountry(null)
+      setSelectedState(null)
+      setSelectedCity(null)
+    } else {
+      toast.error('Failed to update delivery fee')
+    }
+  }
 
   return (
     <DashboardLayout>
@@ -130,7 +162,9 @@ const DeliveryFee = ({}) => {
                   <TextField
                     label="Delivery Fee"
                     name="delivery_fee"
-                    onChange={e => handleAdditionalInfo(e)}
+                    value={deliveryFee || ''}
+                    type="number"
+                    onChange={e => setDeliveryFee(e.target.value)}
                   />
                 </FormControl>
               </Grid>
@@ -138,13 +172,11 @@ const DeliveryFee = ({}) => {
               <Grid item xs={12} md={city && city.length > 0 ? 12 : 6}>
                 <ButtonAnimate mediumClick={true}>
                   <Button
+                    onClick={handleDeliveryFee}
                     variant="contained"
                     color="primary"
                     sx={{ mt: 2, width: '130px' }}
-                    // onClick={handleConfirmAddress}
-                    // disabled={loading}
                   >
-                    {/* {loading ? <CircularProgress size={24} /> : 'Confirm'} */}
                     Confirm
                   </Button>
                 </ButtonAnimate>

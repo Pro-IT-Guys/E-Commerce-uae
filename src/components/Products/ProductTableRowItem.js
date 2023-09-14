@@ -2,7 +2,7 @@ import { Stack, TableCell, TableRow } from '@mui/material'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import ProductMoreMenu from '../list/ProductMoreMenu'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../apis/url'
 import Swal from 'sweetalert2'
 
 export default function ProductTableRowItem({ row, setUpdate }) {
@@ -10,6 +10,7 @@ export default function ProductTableRowItem({ row, setUpdate }) {
     _id,
     frontImage,
     name,
+    sku,
     quantity,
     buyingPrice,
     sellingPrice,
@@ -80,6 +81,9 @@ export default function ProductTableRowItem({ row, setUpdate }) {
         <h1 className="text-xs">{category}</h1>
       </TableCell>
       <TableCell align="left">
+        <h1 className="text-xs">{sku}</h1>
+      </TableCell>
+      <TableCell align="left">
         <h1 className="text-xs">{style}</h1>
       </TableCell>
       <TableCell align="left">
@@ -89,7 +93,6 @@ export default function ProductTableRowItem({ row, setUpdate }) {
         {type?.map((item, index) => (
           <h1 key={index} className="text-xs w-16">
             {++index}. {item}
-            
           </h1>
         ))}
       </TableCell>
@@ -101,11 +104,11 @@ export default function ProductTableRowItem({ row, setUpdate }) {
         ))}
       </TableCell>
       <TableCell align="left">
-          {size?.map((item, index) => (
-            <h1 key={index} className="text-xs w-10">
-              {++index}. {item}
-            </h1>
-          ))}
+        {size?.map((item, index) => (
+          <h1 key={index} className="text-xs w-10">
+            {++index}. {item}
+          </h1>
+        ))}
       </TableCell>
       <TableCell align="left">
         {' '}

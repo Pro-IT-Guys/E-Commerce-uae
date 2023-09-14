@@ -1,42 +1,27 @@
 import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
 import { useState, useEffect, useContext } from 'react'
-import plusFill from '@iconify/icons-eva/plus-fill'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 // material
-import { useTheme } from '@mui/material/styles'
 import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
   TableContainer,
-  TablePagination,
 } from '@mui/material'
 // redux
-import useSettings from 'src/hooks/useSettings'
-import Page from 'src/components/Page'
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
+import Page from '../../../../src/components/Page'
+import { UserListHead } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 import { useRouter } from 'next/router'
-import OrderMoreMenu from 'src/components/list/OrderMoreMenu'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../../apis/url'
 
 // ----------------------------------------------------------------------
 
@@ -94,7 +79,7 @@ export default function UserOrders() {
   const [filterName, setFilterName] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [orderList, setOrderList] = useState([])
-  const { fromCurrency, toCurrency, currentlyLoggedIn } =
+  const { fromCurrency, toCurrency, currentlyLoggedIn, rateAEDtoUSD } =
     useContext(ContextData)
   const [update, setUpdate] = useState('')
 
@@ -161,9 +146,7 @@ export default function UserOrders() {
                       } = row
                       return (
                         <TableRow hover key={_id} tabIndex={-1} role="checkbox">
-                             <TableCell align="left">
-                            {++index}
-                          </TableCell>
+                          <TableCell align="left">{++index}</TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack
                               direction="row"
@@ -189,7 +172,8 @@ export default function UserOrders() {
                             {convertCurrency(
                               fromCurrency,
                               toCurrency,
-                              subTotal
+                              subTotal,
+                              rateAEDtoUSD,
                             )}
                           </TableCell>
                           <TableCell align="left"> {paymentMethod}</TableCell>
@@ -216,7 +200,7 @@ export default function UserOrders() {
                             <RemoveRedEyeOutlinedIcon
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/app/orders/details/${_id}`
+                                  `/dashboard/app/orders/details/${_id}`,
                                 )
                               }
                               className="cursor-pointer"

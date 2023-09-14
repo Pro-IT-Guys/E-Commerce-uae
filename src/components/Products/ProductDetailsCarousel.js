@@ -1,26 +1,23 @@
-import Slider from 'react-slick';
-import { findIndex } from 'lodash';
-import PropTypes from 'prop-types';
-import { useState, useRef, useEffect } from 'react';
+import Slider from 'react-slick'
+import PropTypes from 'prop-types'
+import { useState, useRef, useEffect } from 'react'
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles'
+import { Box } from '@mui/material'
 //
-import LightboxModal from '../common/LightboxModal';
-import { CarouselControlsArrowsIndex } from '../carousel';
-
+import { CarouselControlsArrowsIndex } from '../carousel'
+import ReactImageMagnify from 'react-image-magnify'
 
 // ----------------------------------------------------------------------
 
-
-const THUMB_SIZE = 64;
+const THUMB_SIZE = 64
 
 const RootStyle = styled('div')(({ theme }) => ({
   '& .slick-slide': {
     float: theme.direction === 'rtl' ? 'right' : 'left',
-    '&:focus': { outline: 'none' }
-  }
-}));
+    '&:focus': { outline: 'none' },
+  },
+}))
 
 const ThumbWrapperStyle = styled('div')(({ theme }) => ({
   cursor: 'pointer',
@@ -32,7 +29,7 @@ const ThumbWrapperStyle = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadiusSm,
   '&:hover': {
     opacity: 0.72,
-    transition: theme.transitions.create('opacity')
+    transition: theme.transitions.create('opacity'),
   },
   '& .isActive': {
     top: 0,
@@ -43,42 +40,48 @@ const ThumbWrapperStyle = styled('div')(({ theme }) => ({
     position: 'absolute',
     borderRadius: theme.shape.borderRadiusSm,
     border: `solid 3px ${theme.palette.primary.main}`,
-    backgroundColor: alpha(theme.palette.grey[900], 0.48)
-  }
-}));
-
-const LargeImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute'
-});
+    backgroundColor: alpha(theme.palette.grey[900], 0.48),
+  },
+}))
 
 const ThumbImgStyle = styled('img')({
   width: '100%',
   height: '100%',
-  objectFit: 'cover'
-});
+  objectFit: 'cover',
+})
 
 // ----------------------------------------------------------------------
 
 LargeItem.propTypes = {
   item: PropTypes.string,
-  onOpenLightbox: PropTypes.func
-};
+}
 
-function LargeItem({ item, onOpenLightbox }) {
+function LargeItem({ item }) {
   return (
-    <Box sx={{ cursor: 'zoom-in', paddingTop: '100%', position: 'relative' }}>
-      <LargeImgStyle alt="large image" src={item} onClick={() => onOpenLightbox(item)} />
+    <Box>
+      <ReactImageMagnify
+        {...{
+          smallImage: {
+            alt: 'Product Image',
+            isFluidWidth: true,
+            src: item,
+          },
+          largeImage: {
+            src: item,
+            width: 3000,
+            height: 2000,
+          },
+          enlargedImagePosition: 'over',
+          shouldUsePositiveSpaceLens: true,
+        }}
+      />
     </Box>
-  );
+  )
 }
 
 ThumbnailItem.propTypes = {
-  item: PropTypes.string
-};
+  item: PropTypes.string,
+}
 
 function ThumbnailItem({ item }) {
   return (
@@ -86,26 +89,15 @@ function ThumbnailItem({ item }) {
       <Box className="isActive" />
       <ThumbImgStyle alt="thumb image" src={item} />
     </ThumbWrapperStyle>
-  );
+  )
 }
 
-export default function ProductDetailsCarousel({product}) {
-  const [openLightbox, setOpenLightbox] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nav1, setNav1] = useState(null);
-  const [nav2, setNav2] = useState(null);
-  const slider1 = useRef(null);
-  const slider2 = useRef(null);
-
-  const imagesLightbox = product?.restImage?.map((_image) => _image);
-
-  const handleOpenLightbox = (url) => {
-    const selectedImage = findIndex(imagesLightbox, (index) => index === url);
-    setOpenLightbox(true);
-    setSelectedImage(selectedImage);
-  };
-
+export default function ProductDetailsCarousel({ product, imagesArray }) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [nav1, setNav1] = useState(null)
+  const [nav2, setNav2] = useState(null)
+  const slider1 = useRef(null)
+  const slider2 = useRef(null)
 
   const settings1 = {
     dots: false,
@@ -114,8 +106,8 @@ export default function ProductDetailsCarousel({product}) {
     draggable: false,
     slidesToScroll: 1,
     adaptiveHeight: true,
-    beforeChange: (current, next) => setCurrentIndex(next)
-  };
+    beforeChange: (current, next) => setCurrentIndex(next),
+  }
 
   const settings2 = {
     dots: false,
@@ -125,41 +117,43 @@ export default function ProductDetailsCarousel({product}) {
     focusOnSelect: true,
     variableWidth: true,
     centerPadding: '0px',
-    slidesToShow: product?.restImage?.length > 3 ? 3 : product?.restImage?.length
-  };
+    slidesToShow: imagesArray?.length > 3 ? 3 : imagesArray?.length,
+  }
 
   useEffect(() => {
-    setNav1(slider1.current);
-    setNav2(slider2.current);
-  }, [currentIndex]);
+    setNav1(slider1.current)
+    setNav2(slider2.current)
+  }, [currentIndex])
 
   const handlePrevious = () => {
-    slider2.current.slickPrev();
-  };
+    slider2.current.slickPrev()
+  }
 
   const handleNext = () => {
-    slider2.current.slickNext();
-  };
+    slider2.current.slickNext()
+  }
 
   return (
     <RootStyle>
       <Box sx={{ p: 1 }}>
         <Box
-          sx={{
-            zIndex: 0,
-            borderRadius: 2,
-            overflow: 'hidden',
-            position: 'relative'
-          }}
+          sx={
+            {
+              zIndex: 0,
+              borderRadius: 2,
+              overflow: 'hidden',
+              position: 'relative',
+            }
+          }
         >
           <Slider {...settings1} asNavFor={nav2} ref={slider1}>
-            {product?.restImage?.map((item, index) => (
-              <LargeItem key={index} item={item} onOpenLightbox={handleOpenLightbox} />
-            ))}
+          {imagesArray?.map((item, index) => (
+            <LargeItem key={index} item={item} />
+          ))}
           </Slider>
           <CarouselControlsArrowsIndex
             index={currentIndex}
-            total={product?.restImage?.length}
+            total={imagesArray?.length}
             onNext={handleNext}
             onPrevious={handlePrevious}
           />
@@ -171,12 +165,12 @@ export default function ProductDetailsCarousel({product}) {
           my: 3,
           mx: 'auto',
           '& .slick-current .isActive': { opacity: 1 },
-          ...(product?.restImage?.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
-          ...(product?.restImage?.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
-          ...(product?.restImage?.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
-          ...(product?.restImage?.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
-          ...(product?.restImage?.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
-          ...(product?.restImage?.length > 2 && {
+          ...(imagesArray?.length === 1 && { maxWidth: THUMB_SIZE * 1 + 16 }),
+          ...(imagesArray?.length === 2 && { maxWidth: THUMB_SIZE * 2 + 32 }),
+          ...(imagesArray?.length === 3 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(imagesArray?.length === 4 && { maxWidth: THUMB_SIZE * 3 + 48 }),
+          ...(imagesArray?.length >= 5 && { maxWidth: THUMB_SIZE * 6 }),
+          ...(imagesArray?.length > 2 && {
             position: 'relative',
             '&:before, &:after': {
               top: 0,
@@ -185,29 +179,22 @@ export default function ProductDetailsCarousel({product}) {
               height: '100%',
               position: 'absolute',
               width: (THUMB_SIZE * 2) / 3,
-              backgroundImage: (theme) =>
-                `linear-gradient(to left, ${alpha(theme.palette.background.paper, 0)} 0%, ${
-                  theme.palette.background.paper
-                } 100%)`
+              backgroundImage: theme =>
+                `linear-gradient(to left, ${alpha(
+                  theme.palette.background.paper,
+                  0,
+                )} 0%, ${theme.palette.background.paper} 100%)`,
             },
-            '&:after': { right: 0, transform: 'scaleX(-1)' }
-          })
+            '&:after': { right: 0, transform: 'scaleX(-1)' },
+          }),
         }}
       >
         <Slider {...settings2} asNavFor={nav1} ref={slider2}>
-          {product?.restImage?.map((item) => (
+          {imagesArray?.map(item => (
             <ThumbnailItem key={item} item={item} />
           ))}
         </Slider>
       </Box>
-
-      <LightboxModal
-        images={imagesLightbox}
-        photoIndex={selectedImage}
-        setPhotoIndex={setSelectedImage}
-        isOpen={openLightbox}
-        onClose={() => setOpenLightbox(false)}
-      />
     </RootStyle>
-  );
+  )
 }

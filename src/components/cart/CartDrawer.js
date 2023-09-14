@@ -2,11 +2,16 @@ import { useContext, useState } from 'react'
 import Button from '@mui/material/Button'
 import { Badge, Box, Drawer, Typography } from '@mui/material'
 import Scrollbar from '../Scrollbar'
-import { CustomIcons } from 'public/static/mui-icons'
-import { ContextData } from 'context/dataProviderContext'
-import { bulkUpdateCart } from 'apis/cart.api'
+import { CustomIcons } from '../../../public/static/mui-icons'
+import { ContextData } from '../../../context/dataProviderContext'
+import {
+  bulkUpdateCart,
+  deleteAProductFromCart,
+  updateCartProductQuantity,
+} from '../../../apis/cart.api'
 import { useRouter } from 'next/router'
-import { convertCurrency } from 'helpers/currencyHandler'
+import { convertCurrency } from '../../../helpers/currencyHandler'
+import CloseIcon from '@mui/icons-material/Close'
 
 export default function CartDrawer() {
   const router = useRouter()
@@ -18,6 +23,7 @@ export default function CartDrawer() {
     token,
     fromCurrency,
     toCurrency,
+    rateAEDtoUSD,
   } = useContext(ContextData)
 
   const handleDrawerOpen = () => {
@@ -28,44 +34,51 @@ export default function CartDrawer() {
     setDrawerOpen(false)
   }
 
-  const handleIncreaseQuantity = productId => {
+  const handleIncreaseQuantity = async productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
-      item => item.productId._id === productId
+      item => item.productId._id === productId,
     )
 
     if (productIndex !== -1) {
       updatedCart[productIndex].quantity += 1
       setCartSimplified(updatedCart)
+      await updateCartProductQuantity({
+        token,
+        cartId: usersCart?._id,
+        productId,
+        quantity: updatedCart[productIndex].quantity,
+      })
     }
   }
 
-  const handleDecreaseQuantity = productId => {
+  const handleDecreaseQuantity = async productId => {
     const updatedCart = [...cartSimplified]
     const productIndex = updatedCart.findIndex(
-      item => item.productId._id === productId
+      item => item.productId._id === productId,
     )
 
     if (productIndex !== -1) {
       if (updatedCart[productIndex].quantity > 1) {
         updatedCart[productIndex].quantity -= 1
-
         setCartSimplified(updatedCart)
+
+        await updateCartProductQuantity({
+          token,
+          cartId: usersCart?._id,
+          productId,
+          quantity: updatedCart[productIndex].quantity,
+        })
+      } else {
+        updatedCart.splice(productIndex, 1)
+        setCartSimplified(updatedCart)
+        await deleteAProductFromCart({
+          token,
+          cartId: usersCart?._id,
+          productId,
+        })
       }
     }
-  }
-
-  const handleViewCart = async id => {
-    // First update the updated cart in the database
-    // Then redirect to the cart page
-    const dataToUpdate = {
-      token,
-      cartId: usersCart?._id,
-      product: cartSimplified,
-    }
-    const updateCart = await bulkUpdateCart(dataToUpdate)
-
-    router.push('/cart')
   }
 
   const handleCheckout = async () => {
@@ -74,7 +87,7 @@ export default function CartDrawer() {
       cartId: usersCart?._id,
       product: cartSimplified,
     }
-    const updateCart = await bulkUpdateCart(dataToUpdate)
+    await bulkUpdateCart(dataToUpdate)
     router.push(`/checkout/product/cart=${usersCart?._id}`)
   }
 
@@ -100,7 +113,7 @@ export default function CartDrawer() {
           </h1>
           <div className="text-[10px] flex gap-1">
             <p className="hover:text-secondary duration-200">
-              ({cartSimplified ? cartSimplified.length : 0}) items
+              ({cartSimplified ? cartSimplified.length : 0}) Items
             </p>
           </div>
         </div>
@@ -112,7 +125,13 @@ export default function CartDrawer() {
         anchor="right"
         ModalProps={{ keepMounted: true }}
         PaperProps={{ sx: { pb: 5, width: 260 } }}
+        className="relative"
       >
+        <CloseIcon
+          className="absolute top-2 left-2 cursor-pointer"
+          onClick={handleDrawerClose}
+          fontSize="medium"
+        />
         <Scrollbar>
           <Typography
             variant="h5"
@@ -129,7 +148,7 @@ export default function CartDrawer() {
           </Typography>
 
           <Box sx={{ marginTop: 2 }}>
-            {cartSimplified ? (
+            {cartSimplified?.length > 0 ? (
               cartSimplified.map((product, index) => (
                 <div
                   key={index}
@@ -142,11 +161,8 @@ export default function CartDrawer() {
                   <img
                     src={product?.productId?.frontImage}
                     alt={product?.productId?.metaDescription}
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      marginRight: '10px',
-                    }}
+                   
+                    className='object-cover h-12 w-12 mr-3'
                   />
                   <div>
                     <Typography sx={{ fontSize: 13 }}>
@@ -161,7 +177,8 @@ export default function CartDrawer() {
                           {convertCurrency(
                             fromCurrency,
                             toCurrency,
-                            product?.subtotal
+                            product?.subtotal,
+                            rateAEDtoUSD,
                           )}
                         </>
                       ) : (
@@ -170,7 +187,8 @@ export default function CartDrawer() {
                             fromCurrency,
                             toCurrency,
                             Number(product?.productId?.sellingPrice) *
-                              Number(product?.quantity)
+                              Number(product?.quantity),
+                            rateAEDtoUSD,
                           )}
                         </>
                       )}
@@ -226,20 +244,14 @@ export default function CartDrawer() {
 
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
               padding: '10px',
             }}
           >
-            <Button
-              variant="contained"
-              onClick={() => handleViewCart(usersCart?._id)}
-            >
-              View Cart
-            </Button>
-            <Button variant="contained" onClick={handleCheckout}>
-              Checkout
-            </Button>
+            {cartSimplified?.length > 0 && (
+              <Button sx={{width: '100%'}} variant="contained" onClick={handleCheckout}>
+                Checkout
+              </Button>
+            )}
           </div>
         </Scrollbar>
       </Drawer>

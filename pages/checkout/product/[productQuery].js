@@ -8,7 +8,6 @@ import {
   Container,
   Divider,
   Grid,
-  Icon,
   Stack,
   Table,
   TableBody,
@@ -19,26 +18,26 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { deleteAProductFromCart, getCartByCartId } from '../../../apis/cart.api'
+import { verifyCupon } from '../../../apis/cupon.api'
 import {
-  deleteAProductFromCart,
-  getCartByCartId,
-  getCartByUserId,
-} from 'apis/cart.api'
-import { verifyCupon } from 'apis/cupon.api'
-import { getAllCountriesWithFees, getFeeOfLocation } from 'apis/fee.api'
-import { placeOrder } from 'apis/order.api'
-import { getProductBySku } from 'apis/product.api'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrencyForCalculation } from 'helpers/currencyHandler'
+  getAllCountriesWithFees,
+  getFeeOfLocation,
+} from '../../../apis/fee.api'
+import { placeOrder } from '../../../apis/order.api'
+import { getProductBySku } from '../../../apis/product.api'
+import { ContextData } from '../../../context/dataProviderContext'
+import { convertCurrencyForCalculation } from '../../../helpers/currencyHandler'
 import { useRouter } from 'next/router'
 import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import Loader from 'src/components/Loader/Loader'
-import Page from 'src/components/Page'
-import Scrollbar from 'src/components/Scrollbar'
-import ProductList from 'src/components/checkout/CheckoutProductList'
-import ShippingAddressPopup from 'src/components/checkout/ShippingAddressPopup'
-import MainLayout from 'src/layouts/main'
+import Loader from '../../../src/components/Loader/Loader'
+import Page from '../../../src/components/Page'
+import Scrollbar from '../../../src/components/Scrollbar'
+import ProductList from '../../../src/components/checkout/CheckoutProductList'
+import ShippingAddressPopup from '../../../src/components/checkout/ShippingAddressPopup'
+import MainLayout from '../../../src/layouts/main'
+import LoginFormModal from '../../../src/components/AuthModal/LoginModal'
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(20),
@@ -48,8 +47,14 @@ const RootStyle = styled('div')(({ theme }) => ({
 }))
 
 export default function Checkout() {
-  const { token, toCurrency, currentlyLoggedIn, fromCurrency } =
-    useContext(ContextData)
+  const {
+    token,
+    toCurrency,
+    currentlyLoggedIn,
+    fromCurrency,
+    rateAEDtoUSD,
+    setCartSimplified,
+  } = useContext(ContextData)
   const [addressPopup, setAddressPopup] = useState(false)
   const router = useRouter()
   const query = router.query.productQuery
@@ -57,10 +62,12 @@ export default function Checkout() {
   const [loader, setLoader] = useState(false)
   const [muiLoader, setMuiLoader] = useState(false)
   const [orderItem, setOrderItem] = useState([])
+  const [loginPopup, setLoginPopup] = useState(false)
 
   const [totalPrice, setTotalPrice] = useState(0)
   const [feeOfLocation, setFeeOfLocation] = useState(0)
   const [totalDeliveryFee, setTotalDeliveryFee] = useState(0)
+  const [offerDiscountPrice, setOfferDiscountPrice] = useState(0)
 
   const [country, setCountry] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -76,6 +83,10 @@ export default function Checkout() {
 
   const [cupon, setCupon] = useState('')
   const [discountByCupon, setDiscountByCupon] = useState(0)
+
+  const handleClose = () => {
+    setLoginPopup(false)
+  }
 
   const handleAdditionalInfo = e => {
     const { name, value } = e.target
@@ -150,13 +161,19 @@ export default function Checkout() {
     if (product && product.length > 0) {
       let totalPrice = 0
       let calculatedDeliveryFee = 0
+      let totalOfferDiscountPrice = 0
       product.forEach(item => {
         totalPrice +=
           Number(item.quantity) * Number(item.productId.sellingPrice)
         calculatedDeliveryFee += Number(item.quantity) * Number(feeOfLocation)
+
+        if (item?.productId?.isVisibleOffer) {
+          totalOfferDiscountPrice += Number(item?.productId?.discountPrice)
+        }
       })
       setTotalPrice(totalPrice)
       setTotalDeliveryFee(calculatedDeliveryFee)
+      setOfferDiscountPrice(totalOfferDiscountPrice)
     }
   }, [product, feeOfLocation])
 
@@ -175,22 +192,23 @@ export default function Checkout() {
   const handleProductRemove = async id => {
     if (id) {
       const newProductList = product.filter(item => {
-        return item._id !== id
+        return item.productId._id !== id
       })
-      setProduct(newProductList)
-      if (newProductList.length === 0) {
-        setTotalPrice(0)
-        setTotalDeliveryFee(0)
-      }
 
       product.forEach(async item => {
-        if (item._id === id) {
+        if (item.productId._id === id) {
           const res = await deleteAProductFromCart({
             token,
             cartId: query?.split('=')[1],
             productId: item.productId._id,
           })
           if (res?.statusCode === 200) {
+            setCartSimplified(newProductList)
+            setProduct(newProductList)
+            if (newProductList.length === 0) {
+              setTotalPrice(0)
+              setTotalDeliveryFee(0)
+            }
             toast.success('Product removed successfully.')
           } else {
             toast.error('Something went wrong.')
@@ -201,6 +219,11 @@ export default function Checkout() {
   }
 
   const handleConfirmAddress = async () => {
+    if (!currentlyLoggedIn) {
+      setLoginPopup(true)
+      return toast.error('Please login to continue.')
+    }
+
     const shippingFee = await getFeeOfLocation({
       countryId: selectedCountry,
       stateCode: selectedState,
@@ -230,16 +253,17 @@ export default function Checkout() {
       subTotal: convertCurrencyForCalculation(
         fromCurrency,
         toCurrency,
-        totalPrice
+        Number(totalPrice) - Number(offerDiscountPrice),
+        rateAEDtoUSD,
       ),
       deliveryFee: convertCurrencyForCalculation(
         fromCurrency,
         toCurrency,
-        calculatedDeliveryFee
+        calculatedDeliveryFee,
+        rateAEDtoUSD,
       ),
     }
 
-    if (!currentlyLoggedIn) return toast.error('Please login to continue.')
     if (!selectedCountry) return toast.error('Please select a country.')
     if (!selectedState) return toast.error('Please select a state.')
     if (city?.length > 0 && !selectedCity)
@@ -260,7 +284,10 @@ export default function Checkout() {
 
   const handleApplyCupon = async () => {
     if (!cupon) return toast.error('Please enter a cupon code.')
-    if (!currentlyLoggedIn) return toast.error('Please login to continue.')
+    if (!currentlyLoggedIn) {
+      setLoginPopup(true)
+      return toast.error('Please login to continue.')
+    }
 
     const data = {
       cuponCode: cupon,
@@ -273,12 +300,11 @@ export default function Checkout() {
       // Calculate discount
       const parcentage = res?.data?.discount
       const discount = (Number(totalPrice) * Number(parcentage)) / 100
-      console.log(discount)
       setDiscountByCupon(discount)
       setTotalPrice(Number(totalPrice) - Number(discount))
       toast.success(`You got ${parcentage}% discount.`)
     } else {
-      toast.error('Invalid cupon code.')
+      toast.error('Invalid coupon code.')
     }
   }
 
@@ -392,7 +418,8 @@ export default function Checkout() {
                             {convertCurrencyForCalculation(
                               fromCurrency,
                               toCurrency,
-                              totalPrice
+                              totalPrice,
+                              rateAEDtoUSD,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -405,7 +432,17 @@ export default function Checkout() {
                           >
                             Discount
                           </Typography>
-                          <Typography variant="subtitle2">0</Typography>
+                          <Typography variant="subtitle2">
+                            {toCurrency === 'USD' && '$ '}
+                            {convertCurrencyForCalculation(
+                              fromCurrency,
+                              toCurrency,
+                              offerDiscountPrice,
+                              rateAEDtoUSD,
+                            )}
+                            {toCurrency === 'AED' && 'AED'}
+                          </Typography>
+                          { }
                         </Stack>
 
                         {discountByCupon > 0 && (
@@ -421,7 +458,8 @@ export default function Checkout() {
                               {convertCurrencyForCalculation(
                                 fromCurrency,
                                 toCurrency,
-                                discountByCupon
+                                discountByCupon,
+                                rateAEDtoUSD,
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>
@@ -440,7 +478,8 @@ export default function Checkout() {
                             {convertCurrencyForCalculation(
                               fromCurrency,
                               toCurrency,
-                              totalDeliveryFee
+                              totalDeliveryFee,
+                              rateAEDtoUSD,
                             )}
                             {toCurrency === 'AED' && 'AED'}
                           </Typography>
@@ -459,7 +498,11 @@ export default function Checkout() {
                               {convertCurrencyForCalculation(
                                 fromCurrency,
                                 toCurrency,
-                                Number(totalPrice) + Number(totalDeliveryFee)
+                                Number(totalPrice) +
+                                Number(totalDeliveryFee) -
+                                Number(offerDiscountPrice) -
+                                Number(discountByCupon),
+                                rateAEDtoUSD,
                               )}
                               {toCurrency === 'AED' && 'AED'}
                             </Typography>
@@ -474,21 +517,37 @@ export default function Checkout() {
                       </Stack>
                     </CardContent>
                   </Card>
-                  <Button
-                    onClick={() => setAddressPopup(true)}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Check Out
-                  </Button>
+                  {
+                    currentlyLoggedIn ? (
+                      <>
+                        <Button
+                          onClick={() => setAddressPopup(true)}
+                          fullWidth
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                        >
+                          Check Out
+                        </Button></>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => setLoginPopup(true)}
+                          fullWidth
+                          size="large"
+                          type="submit"
+                          variant="contained"
+                        > Check Out</Button>
+                      </>
+                    )
+                  }
                 </Grid>
               </Grid>
             </Container>
           </RootStyle>
         </MainLayout>
       </Page>
+      {loginPopup && <LoginFormModal open={loginPopup} onClose={handleClose} />}
       {addressPopup && (
         <ShippingAddressPopup
           handleCountryChange={handleCountryChange}

@@ -5,32 +5,29 @@ import { Icon } from '@iconify/react'
 import { styled } from '@mui/material/styles'
 import {
   Box,
-  Button,
   AppBar,
   Toolbar,
   Container,
-  FormControl,
-  Select,
-  MenuItem,
   Input,
   InputAdornment,
-  alpha,
 } from '@mui/material'
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop'
-import { MHidden } from '../../components/@material-extend'
 
-import logo from '../../assets/logo/aymi-logo.png'
+import logo from '../../assets/logo/aymi-logo2.jpg'
 import Image from 'next/image'
-import LoginFormModal from 'src/components/AuthModal/LoginModal'
 import { useContext, useState } from 'react'
-import { HiOutlineUser } from 'react-icons/hi'
-import SignUpModal from 'src/components/AuthModal/SignUpModal'
-import CartDrawer from '../../components/cart/CartDrawer'
 import TopNavbar from './TopNavbar'
-import { ContextData } from 'context/dataProviderContext'
-import AccountPopover from '../dashboard/AccountPopover'
 import CategoryNav from './CategoryNav'
+import dynamic from 'next/dynamic'
+import { ContextData } from '../../../context/dataProviderContext'
+const LoginFormModal = dynamic(() =>
+  import('../../components/AuthModal/LoginModal'),
+)
+const SignUpModal = dynamic(() =>
+  import('../../components/AuthModal/SignUpModal'),
+)
+const CartDrawer = dynamic(() => import('../../components/cart/CartDrawer'))
 
 // ----------------------------------------------------------------------
 
@@ -49,23 +46,9 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   },
 }))
 
-const ToolbarShadowStyle = styled('div')(({ theme }) => ({
-  left: 0,
-  right: 0,
-  bottom: 0,
-  height: 24,
-  zIndex: -1,
-  margin: 'auto',
-  borderRadius: '50%',
-  position: 'absolute',
-  width: `calc(100% - 48px)`,
-  boxShadow: theme.customShadows.z8,
-}))
-
 // ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 0
-const APPBAR_DESKTOP = 92
 
 const SearchbarStyle = styled('div')(({ theme }) => ({
   top: 0,
@@ -75,14 +58,12 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   borderRadius: '10px',
   padding: '0px ',
-  // position: 'absolute',
   alignItems: 'center',
   height: APPBAR_MOBILE,
   backdropFilter: 'blur(6px)',
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   padding: theme.spacing(0, 3),
   boxShadow: theme.customShadows.z8,
-  // backgroundColor: `${alpha(theme.palette.background.default, 0.72)}`,
   [theme.breakpoints.down('md')]: {
     visibility: 'hidden',
   },
@@ -92,11 +73,8 @@ export default function MainNavbar() {
   const [open, setOpen] = useState(false)
   const [signupOpen, setSignupOpen] = useState(false)
   const isOffset = useOffSetTop(100)
-  const { pathname } = useRouter()
   const { currentlyLoggedIn, setSearchTerm, setUpdate } =
     useContext(ContextData)
-  const { role, name, image } = currentlyLoggedIn || {}
-  const isHome = pathname === '/'
   const router = useRouter()
 
   const handleClickOpen = () => {
@@ -133,8 +111,6 @@ export default function MainNavbar() {
           sx={{
             ...(isOffset && {
               bgcolor: 'background.default',
-              // borderBottom: '1px solid #ddd',
-              // height: { md: APP_BAR_DESKTOP - 16 },
             }),
           }}
         >
@@ -148,12 +124,12 @@ export default function MainNavbar() {
           >
             <div className="md:w-[15%] w-[25%]">
               <NextLink href="/">
-                {/* <Logo /> */}
                 <Image
                   src={logo}
                   alt="Picture of the logo"
                   width={150}
                   height={50}
+                  loading="lazy"
                   className="cursor-pointer object-cover w-full"
                 />
               </NextLink>
@@ -187,7 +163,10 @@ export default function MainNavbar() {
 
               <div className="flex md:gap-0 gap-1 items-center md:ml-0 ml-1">
                 <div>
-                  <HiOutlineUser className="text-black md:text-3xl text-2xl" />
+                  <Icon
+                    icon="eva:people-outline"
+                    className="text-gray-600 md:text-3xl text-2xl"
+                  />
                 </div>
                 <div className="text-black ">
                   <h1
@@ -241,7 +220,6 @@ export default function MainNavbar() {
           </Container>
         </ToolbarStyle>
         <CategoryNav />
-        {/* {isOffset && <ToolbarShadowStyle />} */}
       </AppBar>
     </>
   )

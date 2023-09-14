@@ -7,20 +7,16 @@ import trash2Fill from '@iconify/icons-eva/trash-2-fill'
 import { styled } from '@mui/material/styles'
 import {
   Box,
-  Table,
   Stack,
   Divider,
   TableRow,
-  TableBody,
   TableCell,
-  TableHead,
   Typography,
-  TableContainer,
 } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { MIconButton } from '../@material-extend'
-import { convertCurrencyForCalculation } from 'helpers/currencyHandler'
-import { ContextData } from 'context/dataProviderContext'
+import { convertCurrencyForCalculation } from '../../../helpers/currencyHandler'
+import { ContextData } from '../../../context/dataProviderContext'
 //
 
 // ----------------------------------------------------------------------
@@ -117,7 +113,7 @@ export default function ProductList({
   setSelectedProductIdForDelete,
   handleProductRemove,
 }) {
-  const { toCurrency, fromCurrency } = useContext(ContextData)
+  const { toCurrency, fromCurrency, rateAEDtoUSD } = useContext(ContextData)
   const [quantity, setQuantity] = useState(item.quantity)
   const [available, setAvailable] = useState(item.productId.quantity)
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -143,8 +139,6 @@ export default function ProductList({
       setProduct(newProduct)
     }
   }, [quantity, selectedProduct])
-
-  // console.log(sellingPrice, quantity)
 
   return (
     <TableRow>
@@ -206,7 +200,12 @@ export default function ProductList({
 
       <TableCell align="left">
         {toCurrency === 'USD' && '$ '}
-        {convertCurrencyForCalculation(fromCurrency, toCurrency, sellingPrice)}
+        {convertCurrencyForCalculation(
+          fromCurrency,
+          toCurrency,
+          sellingPrice,
+          rateAEDtoUSD,
+        )}
         {toCurrency === 'AED' && ' AED'}
       </TableCell>
 
@@ -226,7 +225,8 @@ export default function ProductList({
         {convertCurrencyForCalculation(
           fromCurrency,
           toCurrency,
-          Number(sellingPrice) * Number(quantity)
+          Number(sellingPrice) * Number(quantity),
+          rateAEDtoUSD,
         )}{' '}
         {toCurrency === 'AED' && 'AED'}
       </TableCell>
@@ -235,7 +235,7 @@ export default function ProductList({
         <MIconButton>
           <Icon
             onClick={() => {
-              handleProductRemove(item._id)
+              handleProductRemove(item.productId._id)
             }}
             icon={trash2Fill}
             width={20}

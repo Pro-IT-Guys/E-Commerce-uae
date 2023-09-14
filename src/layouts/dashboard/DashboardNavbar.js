@@ -19,10 +19,10 @@ const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
 
 const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
+const APPBAR_DESKTOP = 65;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: 'none',
+  // boxShadow: 'none',
   backdropFilter: 'blur(6px)',
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   backgroundColor: alpha(theme.palette.background.default, 0.72),
@@ -66,7 +66,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
           </IconButton>
         </MHidden>
 
-        <Searchbar />
+        {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack

@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
-import { ImCross } from 'react-icons/im'
-import { ContextData } from 'context/dataProviderContext'
+import React from 'react'
+import { Icon } from '@iconify/react'
 import {
   Button,
   CircularProgress,
@@ -34,10 +33,12 @@ const ShippingAddressPopup = ({
   return (
     <div className="popup_wrapper">
       <div className="popup_content relative">
-        <ImCross
+        <Icon
           onClick={() => setOpenPopup(false)}
           className="absolute right-0 top-0 mr-4 mt-4 h-4 w-4 cursor-pointer"
+          icon="maki:cross"
         />
+
         <div>
           <div className="w-full mt-[-50px]">
             <Typography variant="h6" sx={{ mt: 8, mb: 2 }}>

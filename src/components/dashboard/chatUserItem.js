@@ -1,9 +1,7 @@
-import { getMessageOfChatId } from 'apis/chat.api'
+import { getMessageOfChatId } from '../../../apis/chat.api'
 import React, { useEffect, useState } from 'react'
-import { Image } from 'next/image'
-import imgs from '../../assets/banner/banner1.jpg'
 
-const ChatUserItem = ({user, setSelectedChatId, setChat}) => {
+const ChatUserItem = ({ user, setSelectedChatId, setChat }) => {
   const [userMessage, setUserMessage] = useState([])
 
   const { name, image, chatId } = user
@@ -18,7 +16,9 @@ const ChatUserItem = ({user, setSelectedChatId, setChat}) => {
 
   return (
     <div
-      onClick={() => {setSelectedChatId(user?.chatId), setChat(user)}}
+      onClick={() => {
+        setSelectedChatId(user?.chatId), setChat(user)
+      }}
       className="hover:bg-[#f0f0f086] cursor-pointer duration-200 "
     >
       <div className="flex items-center gap-2 shadow p-1 rounded">

@@ -311,3 +311,91 @@
 .margin_bottom_16px {
   margin-bottom: 16px;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(transparent, #00ab55);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(transparent, #fac100);
+}
+
+.simplebar-placeholder {
+  height: 0 !important;
+}
+
+/* Loading bar for contact page*/
+.loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 999999999;
+  background: var(--text-color);
+  transform: translateX(100%);
+  animation: shift-rightwards 1s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@keyframes shift-rightwards {
+  0% {
+    transform: translateX(-100%);
+  }
+  40% {
+    transform: translateX(0%);
+  }
+  60% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ================ About Us================= */
+
+.about-img {
+  position: relative;
+  height: 40vh;
+  width: 100%;
+  margin-top: 150px;
+  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.about-img::before {
+  content: '';
+  background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  filter: brightness(0.4);
+  border-radius: 5px;
+}
+
+/* Add space between slides */
+.slick-slide {
+  /* margin: 0 10px !important; */
+}
+
+/* Adjust center mode padding */
+.slick-center {
+  z-index: 1;
+}
+
+/* Hide overflow to prevent extra space on sides */
+.slick-list {
+  overflow: hidden;
+}

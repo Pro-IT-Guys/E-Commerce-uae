@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 // components
 import { MIconButton } from '../../components/@material-extend'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +44,7 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
+  const [search, setSearch] = useState('')
   const { setSearchTerm } = useContext(ContextData)
   const [isOpen, setOpen] = useState(false)
 
@@ -52,7 +53,7 @@ export default function Searchbar() {
   }
 
   const handleClose = () => {
-    setOpen(false)
+    setSearchTerm(search)
   }
 
   return (
@@ -70,7 +71,7 @@ export default function Searchbar() {
         <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
           <SearchbarStyle>
             <Input
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={e => setSearch(e.target.value)}
               autoFocus
               fullWidth
               disableUnderline

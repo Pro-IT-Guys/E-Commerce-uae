@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { BASE_URL } from './url'
+import { toast } from 'react-hot-toast'
 
 export const createProduct = async data => {
   try {
@@ -28,9 +29,20 @@ export const getProductBySku = async sku => {
     console.log(error)
   }
 }
+export const getProductByPath = async path => {
+  try {
+    const res = await axios.get(`${BASE_URL}/product/path/${path}`)
+    if (res?.status === 'false') {
+      toast.error(res?.data?.message)
+    }
+    return res?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export const multiFilterProduct = async data => {
-  const { searchTerm, category, maxPrice, minPrice, type, style, fabric } = data
+  const { searchTerm, category, maxPrice, minPrice, type, style, fabric, limit } = data
 
   const queryParams = {
     searchTerm,
@@ -40,12 +52,13 @@ export const multiFilterProduct = async data => {
     type: Array.isArray(type) ? type.join(',') : type,
     style: Array.isArray(style) ? style.join(',') : style,
     fabric: Array.isArray(fabric) ? fabric.join(',') : fabric,
+    limit,
   }
 
   const filteredParams = Object.fromEntries(
     Object.entries(queryParams).filter(
-      ([_, value]) => value !== undefined && value !== ''
-    )
+      ([_, value]) => value !== undefined && value !== '',
+    ),
   )
 
   try {

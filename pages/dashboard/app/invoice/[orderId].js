@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import { getOrderById } from 'apis/order.api'
-import PrintableTable from 'src/components/dashboard/table/PrintableTable'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
+import { getOrderById } from '../../../../apis/order.api'
+import PrintableTable from '../../../../src/components/dashboard/table/PrintableTable'
+import CustomLoadingScreen from '../../../../src/components/CustomLoadingScreen'
 
 const OrderId = () => {
   const [orderId, setOrderId] = useState('')

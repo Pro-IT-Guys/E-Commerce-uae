@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductCardLoader from 'src/components/common/ProductCardLoader'
+import ProductCardLoader from '../../common/ProductCardLoader'
 
 export default function ProductLoader() {
   return (

@@ -1,37 +1,16 @@
-import styled from "@emotion/styled";
-import { Container, Grid } from "@mui/material";
-import React from "react";
-import Login from "src/components/Auth/Login";
-import LoginForm from "src/components/Auth/LoginForm";
-import Page from "src/components/Page";
-import MainLayout from "src/layouts/main";
-
-const RootStyle = styled(Page)({
-  height: "100%",
-});
-
-const ContentStyle = styled("div")(({ theme }) => ({
-  overflow: "hidden",
-  position: "relative",
-  backgroundColor: theme.palette.background.default,
-}));
-
+import { Container } from '@mui/material'
+import React from 'react'
+import LoginForm from '../../src/components/Auth/LoginForm'
+import MainLayout from '../../src/layouts/main'
 
 export default function login() {
-
   return (
-    // <MainLayout>
-      <RootStyle
-        title="The starting point for your next project | Minimal-UI"
-        id="move_top"
-      >
-        <ContentStyle>
-          <Login/>
-          {/* <LoginForm/> */}
-        </ContentStyle>
-      </RootStyle>
-    // </MainLayout>
-  );
-};
-
-
+    <MainLayout>
+      <Container maxWidth="md">
+        <div className="pt-40 mb-10">
+          <LoginForm />
+        </div>
+      </Container>
+    </MainLayout>
+  )
+}

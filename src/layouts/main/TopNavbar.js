@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react'
-import { FaFacebookF } from 'react-icons/fa'
-import { IoLogoYoutube } from 'react-icons/io'
-import { BsTwitter } from 'react-icons/bs'
-import { MdEmail } from 'react-icons/md'
-import { BsTelephoneOutboundFill } from 'react-icons/bs'
+import React, { useContext } from 'react'
+import { Icon } from '@iconify/react'
 import MenuItem from '@mui/material/MenuItem'
-import { Container, FormControl, InputLabel, Select } from '@mui/material'
-import { ContextData } from 'context/dataProviderContext'
+import { Container, FormControl, Select } from '@mui/material'
+import { ContextData } from '../../../context/dataProviderContext'
+import Link from 'next/link'
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 export default function TopNavbar() {
   const { toCurrency, setToCurrency } = useContext(ContextData)
@@ -19,31 +19,33 @@ export default function TopNavbar() {
             <div>
               <h1 className="sm:text-xs text-xs  flex items-center gap-2">
                 Follow us
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <FaFacebookF />
-                </span>
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <IoLogoYoutube />
-                </span>
-                <span className="cursor-pointer hover:text-accent duration-300">
-                  <BsTwitter />
-                </span>
+                <Link href={'https://www.facebook.com/aymifashionofficial/'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <FacebookIcon fontSize='small' />
+                </Link>
+                <Link href={'https://www.instagram.com/aymi_fashions/'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <InstagramIcon fontSize='small' />
+                </Link>
+                <Link href={'https://twitter.com/AymiFashion'} target='_black' className="cursor-pointer hover:text-primary duration-300">
+                  <TwitterIcon fontSize='small' />
+                </Link>
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              <h1 className="sm:text-xs text-xs flex items-center gap-1 font-normal">
-                {' '}
-                <span>
-                  <MdEmail />
-                </span>
-                support@aymifashion.com
-              </h1>
+              <div className='sm:block hidden'>
+                <div className="sm:text-xs text-xs flex items-center gap-1 font-normal ">
+                  {' '}
+                  <span>
+                    <Icon icon="ic:baseline-email" />
+                  </span>
+                  support@aymifashion.com
+                </div>
+              </div>
               <div className="sm:text-xs text-xs flex items-center gap-1 font-normal">
                 {' '}
                 <span>
-                  <BsTelephoneOutboundFill />
+                  <Icon icon="solar:phone-bold" />
                 </span>
-                +971507778764
+                +971566535046
               </div>
               <div className=" z-50">
                 <FormControl variant="standard">

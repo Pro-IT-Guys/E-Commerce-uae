@@ -1,21 +1,17 @@
-import styled from '@emotion/styled'
 import {
   Autocomplete,
-  Card,
+  Button,
   Chip,
+  CircularProgress,
   FormControl,
   InputAdornment,
   InputLabel,
   Select,
-  Stack,
   TextField,
-  TextareaAutosize,
-  Typography,
 } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
-  BRAND_OPTION,
   CATEGORY_OPTION,
   STYLE_OPTION,
   FABRIC_OPTION,
@@ -24,11 +20,13 @@ import {
   COLOR_OPTION,
   SIZE_OPTION,
 } from '../../../../constant/product'
-import { QuillEditor } from 'src/components/editor'
-import { UploadMultiFile } from 'src/components/upload'
-import { BASE_URL } from 'apis/url'
+import { QuillEditor } from '../../../../src/components/editor'
+import { UploadMultiFile } from '../../../../src/components/upload'
+import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
+import { toast } from 'react-hot-toast'
 
 export default function AddProductForm() {
   const [typeValue, setTypeValue] = useState([])
@@ -36,34 +34,23 @@ export default function AddProductForm() {
   const [colorValue, setColorValue] = useState([])
   const [sizeValue, setSizeValue] = useState([])
   const [description, setDescription] = useState('')
-  const [imagesArray, setImagesArray] = useState([])
   const [values, setFieldValue] = useState([])
   const router = useRouter()
   const [imagesUrl, setImagesUrl] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  console.log(imagesUrl, 'imagesUrl')
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm()
-
-  const handleAdd = files => {
-    setImagesArray([...imagesArray, ...files])
-    setFieldValue('images', [...values?.images, ...files])
-  }
-
   const handleDrop = useCallback(async acceptedFiles => {
-    // console.log(acceptedFiles, 'acceptedFiles')
-
     const formData = new FormData()
     acceptedFiles.forEach(file => {
-      console.log(file, 'files')
       formData.append('image', file)
     })
 
-    // console.log(img, 'img')
     try {
       const response = await fetch(`${BASE_URL}/image/multi-image-upload`, {
         method: 'POST',
@@ -72,30 +59,16 @@ export default function AddProductForm() {
 
       if (response.ok) {
         const data = await response.json()
-        console.log(data)
         if (data?.status === 'success') {
           setImagesUrl(data?.imageURLs)
         }
       } else {
-        console.error('Image upload failed.')
+        toast.error('Image upload failed.')
       }
     } catch (error) {
-      console.error('Error occurred while uploading images:', error)
+      toast.error('Error occurred while uploading images:')
     }
   }, [])
-
-  console.log(imagesUrl, 'imagesUrl');
-  //     setImagesArray([...imagesArray, ...acceptedFiles])
-  //     setFieldValue(
-  //       acceptedFiles.map(file =>
-  //         Object.assign(file, {
-  //           preview: URL.createObjectURL(file),
-  //         })
-  //       )
-  //     )
-  //   },
-  //   [setFieldValue]
-  // )
 
   const handleRemoveAll = () => {
     setFieldValue('images', [])
@@ -109,35 +82,11 @@ export default function AddProductForm() {
   }
 
   const onSubmit = data => {
-
-    const updatedRestImage = imagesArray.map(file => {
-      const { name, lastModified, lastModifiedDate, size, type } = file
-      return {
-        name,
-        lastModified,
-        lastModifiedDate,
-        size,
-        type,
-        webkitRelativePath: '',
-      }
-    })
-
-    const convertedRestImages = updatedRestImage.map(image => {
-      const { name, type, lastModified, size } = image
-      const blob = image instanceof Blob ? image : new Blob([image], { type })
-      const file = new File([blob], name, {
-        type,
-        lastModified,
-        lastModifiedDate: new Date(lastModified),
-        size,
-      })
-      return file
-    })
-
     const formData = new FormData()
-    // const boundary = formData.getBoundary();
+    setLoading(true)
+
     formData.append('name', data.name)
-    formData.append('path', data?.name?.replace(/\s+/g, '-').toLowerCase())
+    formData.append('path', data?.name?.replace(/[&\/@#!$%\^?]/g, "").split(" ").join("-").toLowerCase())
     formData.append('frontImage', data.frontImage[0])
     formData.append('backImage', data.backImage[0])
     formData.append('restImage', imagesUrl)
@@ -150,7 +99,6 @@ export default function AddProductForm() {
     formData.append('color', colorValue)
     formData.append('size', sizeValue)
     formData.append('tag', tagValue)
-    formData.append('brand', data.brand)
     formData.append('type', typeValue)
     formData.append('style', data.style)
     formData.append('fabric', data.fabric)
@@ -170,9 +118,11 @@ export default function AddProductForm() {
             title: 'Product Created Successfully',
           })
         }
+        setLoading(false)
       })
       .catch(err => {
-        console.log(err)
+        toast.error('Error occurred while creating product.')
+        setLoading(false)
       })
   }
 
@@ -227,38 +177,7 @@ export default function AddProductForm() {
                     </Select>
                   </FormControl>
                 </div>
-                <div className="flex flex-col items-start">
-                  <FormControl fullWidth>
-                    <InputLabel>Brand</InputLabel>
-                    <Select
-                      label="Brand"
-                      native
-                      {...register('brand', {
-                        required: {
-                          value: true,
-                          message: 'Brand is Required',
-                        },
-                      })}
-                    >
-                      {BRAND_OPTION.map(brand => (
-                        <optgroup key={brand.group} label={brand.group}>
-                          {brand.classify.map(classify => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                    <label className="label">
-                      {errors.brand?.type === 'required' && (
-                        <span className="pl-2 text-xs mt-1 text-red-500">
-                          {errors.brand.message}
-                        </span>
-                      )}
-                    </label>
-                  </FormControl>
-                </div>
+
                 <div className="flex flex-col items-start">
                   <FormControl fullWidth>
                     <InputLabel>Style</InputLabel>
@@ -569,7 +488,7 @@ export default function AddProductForm() {
                 <h1 className="ml-1 text-sm mb-1 mt-5">All Images</h1>
                 <UploadMultiFile
                   showPreview
-                  maxSize={3145728}
+                  // maxSize={3145728}
                   accept="image/*"
                   files={values}
                   onDrop={handleDrop}
@@ -577,22 +496,32 @@ export default function AddProductForm() {
                   onRemoveAll={handleRemoveAll}
                 />
 
-                {/* {imagesArray?.map((image, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="ml-2 mt-5 text-sm text-gray-500">
-                      {++index}. {image?.name}
-                    </span>
-                  </div>
-                ))} */}
+                <div className="flex items-center mt-5 gap-4">
+                  {imagesUrl?.map((image, index) => (
+                    <div key={index}>
+                      {/* <span className="ml-2 mt-5 text-sm text-gray-500">
+                      {++index}. {image}
+                    </span> */}
+
+                      <Image
+                        src={image}
+                        width={100}
+                        height={100}
+                        className="h-32 w-28 object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="relative mt-2">
-                <button
-                  type="submit"
-                  className=" py-2 px-5 rounded bg-primary text-white "
-                >
-                  Publish Product
-                </button>
+                <Button sx={{width: '150px'}} type="submit" variant="contained" color="primary">
+                  {loading ? (
+                    <CircularProgress color="inherit" size={24} />
+                  ) : (
+                    'Publish Product'
+                  )}
+                </Button>
               </div>
             </div>
           </form>

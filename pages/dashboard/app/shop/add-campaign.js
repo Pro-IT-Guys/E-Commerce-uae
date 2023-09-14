@@ -1,13 +1,18 @@
 import { Container, InputAdornment, TextField } from '@mui/material'
-import { BASE_URL } from 'apis/url'
+import { BASE_URL } from '../../../../apis/url'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import CampaignList from 'src/components/CampaignProducts/CampaignList'
-import CampaignProducts from 'src/components/CampaignProducts/CampaignProducts'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import DashboardLayout from 'src/layouts/dashboard'
+import CampaignList from '../../../../src/components/CampaignProducts/CampaignList'
+// import CampaignProducts from '../../../../src/components/CampaignProducts/CampaignProducts'
+import CustomLoadingScreen from '../../../../src/components/CustomLoadingScreen'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 import Swal from 'sweetalert2'
+import dynamic from 'next/dynamic'
+
+const CampaignProducts = dynamic(() =>
+  import('../../../../src/components/CampaignProducts/CampaignProducts'),
+)
 
 export default function AddCampaign() {
   const [imageUrl, setImageUrl] = useState('')

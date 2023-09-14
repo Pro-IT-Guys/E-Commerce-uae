@@ -3,11 +3,11 @@ import StarIcon from '@mui/icons-material/Star'
 import { Box, Divider, Rating, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import dynamic from 'next/dynamic'
-import { getReviews, leaveReview } from 'apis/review.api'
+import { getReviews, leaveReview } from '../../../apis/review.api'
 import { toast } from 'react-hot-toast'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
 import CustomLoadingScreen from '../CustomLoadingScreen'
-import { reviewCount } from 'helpers/reviewCount'
+import { reviewCount } from '../../../helpers/reviewCount'
 const DynamicRating = dynamic(() => import('@mui/material/Rating'), {
   ssr: false,
 })
@@ -37,8 +37,6 @@ export default function ProductReview({ product }) {
     _retriveReviews()
   }, [product])
 
-  console.log(reviewList, 'reviewList')
-
   const handleRatingChange = (event, newValue) => {
     setRating(newValue)
   }
@@ -55,6 +53,7 @@ export default function ProductReview({ product }) {
     const response = await leaveReview(dataToSubmit)
     if (response?.statusCode === 200) {
       toast.success('Review submitted successfully')
+      window.location.reload()
       setRating(0)
     }
     reset()
@@ -97,7 +96,7 @@ export default function ProductReview({ product }) {
                   style={{
                     width: `${reviewCount(
                       reviewList?.review?.length,
-                      reviewList?.fiveStar
+                      reviewList?.fiveStar,
                     )}%`,
                   }}
                 ></div>
@@ -108,7 +107,7 @@ export default function ProductReview({ product }) {
                       100 -
                       reviewCount(
                         reviewList?.review?.length,
-                        reviewList?.fiveStar
+                        reviewList?.fiveStar,
                       )
                     }%`,
                   }}
@@ -124,7 +123,7 @@ export default function ProductReview({ product }) {
                   style={{
                     width: `${reviewCount(
                       reviewList?.review?.length,
-                      reviewList?.fourStar
+                      reviewList?.fourStar,
                     )}%`,
                   }}
                 ></div>
@@ -135,7 +134,7 @@ export default function ProductReview({ product }) {
                       100 -
                       reviewCount(
                         reviewList?.review?.length,
-                        reviewList?.fourStar
+                        reviewList?.fourStar,
                       )
                     }%`,
                   }}
@@ -151,7 +150,7 @@ export default function ProductReview({ product }) {
                   style={{
                     width: `${reviewCount(
                       reviewList?.review?.length,
-                      reviewList?.threeStar
+                      reviewList?.threeStar,
                     )}%`,
                   }}
                 ></div>
@@ -162,7 +161,7 @@ export default function ProductReview({ product }) {
                       100 -
                       reviewCount(
                         reviewList?.review?.length,
-                        reviewList?.threeStar
+                        reviewList?.threeStar,
                       )
                     }%`,
                   }}
@@ -178,7 +177,7 @@ export default function ProductReview({ product }) {
                   style={{
                     width: `${reviewCount(
                       reviewList?.review?.length,
-                      reviewList?.twoStar
+                      reviewList?.twoStar,
                     )}%`,
                   }}
                 ></div>
@@ -189,7 +188,7 @@ export default function ProductReview({ product }) {
                       100 -
                       reviewCount(
                         reviewList?.review?.length,
-                        reviewList?.twoStar
+                        reviewList?.twoStar,
                       )
                     }%`,
                   }}
@@ -205,7 +204,7 @@ export default function ProductReview({ product }) {
                   style={{
                     width: `${reviewCount(
                       reviewList?.review?.length,
-                      reviewList?.oneStar
+                      reviewList?.oneStar,
                     )}%`,
                   }}
                 ></div>
@@ -216,7 +215,7 @@ export default function ProductReview({ product }) {
                       100 -
                       reviewCount(
                         reviewList?.review?.length,
-                        reviewList?.oneStar
+                        reviewList?.oneStar,
                       )
                     }%`,
                   }}

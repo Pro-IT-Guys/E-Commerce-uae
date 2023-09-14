@@ -1,22 +1,9 @@
-import { Label } from '@mui/icons-material'
-import { Box, Card, Stack, Typography } from '@mui/material'
 import React, { useContext, useState } from 'react'
-import Link from 'next/link'
-import styled from '@emotion/styled'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import img1 from '../../../assets/product/Borka-2-Part-07-fc-01.jpg'
 import { useRouter } from 'next/router'
-import { ContextData } from 'context/dataProviderContext'
-import { convertCurrency } from 'helpers/currencyHandler'
-
-const ProductImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-})
+import { ContextData } from '../../../../context/dataProviderContext'
+import { convertCurrency } from '../../../../helpers/currencyHandler'
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +12,7 @@ ProductCard.propTypes = {
 }
 
 export default function ProductCard({ product }) {
-  const { fromCurrency, toCurrency } = useContext(ContextData)
+  const { fromCurrency, toCurrency, rateAEDtoUSD } = useContext(ContextData)
   const { name, sellingPrice, frontImage, backImage, path } = product || {}
   const router = useRouter()
   const [hovering, setHovering] = useState(false)
@@ -39,12 +26,13 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <div className="shadow hover:shadow-md rounded overflow-hidden h-full">
+    <div className="shadow hover:shadow-md rounded overflow-hidden h-full mx-2">
       <div className="bg-white h-full">
         <div
-          className="h-80 w-full relative overflow-hidden"
+          className="h-80 w-full relative overflow-hidden cursor-pointer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onClick={() => router.push(`/products/${path}`)}
         >
           <div
             className={`absolute inset-0 transition-opacity duration-300 ${
@@ -81,7 +69,12 @@ export default function ProductCard({ product }) {
             </h1>
           </div>
           <p className="text-error mt-2 mb-0">
-            {convertCurrency(fromCurrency, toCurrency, sellingPrice)}
+            {convertCurrency(
+              fromCurrency,
+              toCurrency,
+              sellingPrice,
+              rateAEDtoUSD,
+            )}
           </p>
         </div>
       </div>

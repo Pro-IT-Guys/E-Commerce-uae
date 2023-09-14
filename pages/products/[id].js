@@ -6,12 +6,9 @@ import {
   Divider,
   Grid,
   Fab,
-  Icon,
   Rating,
   Stack,
   Typography,
-  alpha,
-  Box,
   FormControl,
   InputLabel,
   Select,
@@ -20,36 +17,34 @@ import {
 } from '@mui/material'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import Banner from 'src/components/Home/Banner/Banner'
-import Page from 'src/components/Page'
-import ProductDetailsCarousel from 'src/components/Products/ProductDetailsCarousel'
-import MainLayout from 'src/layouts/main'
+import Page from '../../src/components/Page'
+import ProductDetailsCarousel from '../../src/components/Products/ProductDetailsCarousel'
+import MainLayout from '../../src/layouts/main'
 import { useRouter } from 'next/router'
-import Label from 'src/components/Label'
-import { useField } from 'formik'
-import roundAddShoppingCart from '@iconify/icons-ic/round-add-shopping-cart'
-import ChatPopup from 'src/components/chat/ChatPopup'
-import { MIconButton } from 'src/components/@material-extend'
-import MenuPopover from 'src/components/MenuPopover'
+import Label from '../../src/components/Label'
+import ChatPopup from '../../src/components/chat/ChatPopup'
 import {
   createChat,
   getChatOfSenderAndReceiver,
   getMessageOfChatId,
-} from 'apis/chat.api'
-import { adminId } from 'constant/constant'
-import { ContextData } from 'context/dataProviderContext'
+} from '../../apis/chat.api'
+import { adminId } from '../../constant/constant'
+import { ContextData } from '../../context/dataProviderContext'
 import { io } from 'socket.io-client'
-import { getStorage } from 'apis/loadStorage'
-import { addToCart, updateCart } from 'apis/cart.api'
-import { convertCurrency } from 'helpers/currencyHandler'
+import { getStorage } from '../../apis/loadStorage'
+import { addToCart, updateCart } from '../../apis/cart.api'
+import { convertCurrency } from '../../helpers/currencyHandler'
 import { toast } from 'react-hot-toast'
-import Loader from 'src/components/Loader/Loader'
-import Swal from 'sweetalert2'
-import ProductDetailsTab from 'src/components/Products/ProductDetailsTab'
-import RelatedProducts from 'src/components/Products/RelatedProducts'
-import { ButtonAnimate, DialogAnimate } from 'src/components/animate'
+import ProductDetailsTab from '../../src/components/Products/ProductDetailsTab'
+import RelatedProducts from '../../src/components/Products/RelatedProducts'
+import { ButtonAnimate, DialogAnimate } from '../../src/components/animate'
 import ClearIcon from '@mui/icons-material/Clear'
-import { BASE_URL } from 'apis/url'
+import { getProductByPath } from '../../apis/product.api'
+import CustomLoadingScreen from '../../src/components/CustomLoadingScreen'
+import { getCurrentOffer } from '../../apis/offer.api'
+import { getReviews } from '../../apis/review.api'
+// import ImageMagnify from 'react-image-magnify'
+// import ImageMagnifySection from '../../src/components/Products/ImageMagnifySection'
 
 const ChatButton = styled(Fab)(({ theme }) => ({
   position: 'fixed',
@@ -64,12 +59,6 @@ export default function ProductDetails() {
   const [chat, setChat] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
 
-  // Base states
-  const /* The code `socket.on('getMessage', data => { ... })` is setting up a listener for the
-  'getMessage' event on the socket object. When the 'getMessage' event is emitted from the
-  server, the callback function will be executed. */
-    [sendMessageBase, setSendMessageBase] = useState(false)
-
   const [openChat, setOpenChat] = useState(false)
   const anchorRef = useRef(null)
   const {
@@ -78,13 +67,14 @@ export default function ProductDetails() {
     setUsersCart,
     setCartSimplified,
     update,
-    cartUpdate,
     setCartUpdate,
     fromCurrency,
     toCurrency,
+    rateAEDtoUSD,
   } = useContext(ContextData)
   const [productSize, setProductSize] = useState('XL')
   const [productDetails, setProductDetails] = useState({})
+  const [offerDetails, setOfferDetails] = useState({})
   const [productQuantity, setProductQuantity] = useState(1)
   const [productColor, setProductColor] = useState('Black')
   const router = useRouter()
@@ -93,6 +83,8 @@ export default function ProductDetails() {
   const [retriveCartState, setRetriveCartState] = useState(false)
   const [productUrl, setProductUrl] = useState('')
   const [openSizeChartPopup, setOpenSizeChartPopup] = useState(false)
+  const [isProductIsInOffer, setIsProductIsInOffer] = useState(undefined)
+  const [reviewList, setReviewList] = useState([])
 
   useEffect(() => {
     setProductUrl(window.location.href)
@@ -160,6 +152,16 @@ export default function ProductDetails() {
     })
   }, [retriveCartState])
 
+  useEffect(() => {
+    const _retriveReviews = async () => {
+      const response = await getReviews(productDetails?._id)
+      if (response?.statusCode === 200) {
+        setReviewList(response?.data)
+      }
+    }
+    _retriveReviews()
+  }, [params, productDetails])
+
   // Create chat with admin / get chat if already exist
   const handleChatClick = async () => {
     if (currentlyLoggedIn?.role === 'admin') return
@@ -169,16 +171,29 @@ export default function ProductDetails() {
 
   useEffect(() => {
     setLoader(false)
-    fetch(`${BASE_URL}/product/path/${params}`)
-      .then(res => res.json())
-      .then(data => setProductDetails(data?.data))
-      .finally(() => setLoader(false))
+    const _retriveData = async () => {
+      const [product, offer] = await Promise.all([
+        getProductByPath(params),
+        getCurrentOffer(),
+      ])
+      setProductDetails(product?.data)
+      setOfferDetails(offer?.data)
+      setLoader(false)
+    }
+    _retriveData()
   }, [params])
 
-  const { name, sellingPrice, quantity, rating, metaDescription, frontImage } =
+  useEffect(() => {
+    const isProductIsInOffer = offerDetails?.product?.find(
+      product => product === productDetails?._id,
+    )
+    setIsProductIsInOffer(isProductIsInOffer)
+  }, [productDetails, offerDetails])
+
+  const { name, sellingPrice, quantity, review, metaDescription, frontImage } =
     productDetails || {}
 
-  if (loader || !productUrl) return <Loader />
+  if (loader || !productUrl) return <CustomLoadingScreen />
 
   // Cart Logics===============>
   const handleAddToCart = async () => {
@@ -221,6 +236,19 @@ export default function ProductDetails() {
     }
   }
 
+  let imagesArray = []
+  if (productDetails?.frontImage) {
+    imagesArray.push(productDetails?.frontImage)
+  }
+  if (productDetails?.backImage) {
+    imagesArray.push(productDetails?.backImage)
+  }
+  if (productDetails?.restImage) {
+    productDetails?.restImage?.forEach(image => {
+      imagesArray.push(image)
+    })
+  }
+
   return (
     <>
       <MainLayout>
@@ -232,6 +260,11 @@ export default function ProductDetails() {
           <div className="bg-[#f7f7ff9c] pb-10  pt-10">
             <Container maxWidth="lg">
               <Card className="mt-28 ">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2"> */}
+                {/* <div>
+                    <ImageMagnifySection loader={loader} images={imagesArray} />
+                  </div> */}
+
                 <Grid container>
                   <Grid
                     item
@@ -241,11 +274,15 @@ export default function ProductDetails() {
                     p={3}
                     className="overflow-hidden"
                   >
-                    <ProductDetailsCarousel product={productDetails} />
+                    <ProductDetailsCarousel
+                      product={productDetails}
+                      imagesArray={imagesArray}
+                    />
+
+                    {/* <div className="px-5"> */}
                   </Grid>
                   <Grid item xs={12} md={6} lg={5} p={3}>
                     <Label
-                      // variant={theme.palette.mode === "light" ? "ghost" : "filled"}
                       color={quantity > 0 ? 'success' : 'error'}
                       sx={{ textTransform: 'uppercase' }}
                     >
@@ -266,24 +303,51 @@ export default function ProductDetails() {
                       alignItems="center"
                       sx={{ mb: 2, mt: 1 }}
                     >
-                      <Rating value={`${rating}.5`} precision={0.1} readOnly />
+                      <Rating value={`${reviewList?.rating}`} readOnly />
                       <Typography
                         variant="body2"
                         sx={{ color: 'text.primary' }}
                       >
-                        {rating} Ratings
+                        ({review?.length}) Ratings
                       </Typography>
                     </Stack>
+                    <p className="text-sm">
+                      Product Code: {productDetails?.sku}
+                    </p>
                     <p className="text-sm">Fabric: {productDetails?.fabric}</p>
 
                     <div className="flex items-center mt-3">
-                      <p className="text-xl font-semibold  text-secondary">
-                        {convertCurrency(
-                          fromCurrency,
-                          toCurrency,
-                          sellingPrice
-                        )}
-                      </p>
+                      {isProductIsInOffer ? (
+                        <div className="flex flex-col items-start">
+                          <strike className="text-sm font-semibold  text-gray-600">
+                            {convertCurrency(
+                              fromCurrency,
+                              toCurrency,
+                              sellingPrice,
+                              rateAEDtoUSD,
+                            )}
+                          </strike>
+                          <p className="text-xl font-semibold  text-secondary">
+                            {convertCurrency(
+                              fromCurrency,
+                              toCurrency,
+                              Number(sellingPrice) -
+                                Number(offerDetails?.discountPrice || 0),
+                              rateAEDtoUSD,
+                            )}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-xl font-semibold  text-secondary">
+                          {convertCurrency(
+                            fromCurrency,
+                            toCurrency,
+                            sellingPrice,
+                            rateAEDtoUSD,
+                          )}
+                        </p>
+                      )}
+
                       <ButtonAnimate mediumClick>
                         <small
                           onClick={() => setOpenSizeChartPopup(true)}
@@ -293,25 +357,6 @@ export default function ProductDetails() {
                         </small>
                       </ButtonAnimate>
                     </div>
-                    {/* <strike className="text-[#7a7a7a] text-xs">
-                    ৳ {sellingPrice}
-                  </strike> */}
-
-                    {/* <div className="mt-4">
-                    <div className="flex items-center gap-5">
-                      <p className="text-sm">Size</p>
-                      <div className="flex items-center ">
-                        {productDetails?.size?.map(size => (
-                          <div
-                            onClick={() => setProductSize(size)}
-                            className="border border-[#7a7a7a] px-3 py-1 mx-1 cursor-pointer text-xs rounded"
-                          >
-                            {size}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
 
                     <Grid container spacing={2} sx={{ mt: 1 }}>
                       <Grid item xs={6}>
@@ -354,23 +399,6 @@ export default function ProductDetails() {
                         </FormControl>
                       </Grid>
                     </Grid>
-
-                    {/* <div className="mt-4">
-                    <div className="flex items-center gap-5">
-                      <p className="text-sm">Color</p>
-                      <div className="flex items-center ">
-                        {productDetails?.size?.map(size => (
-                          <div
-                            onClick={() => setProductSize(size)}
-                            className="border border-[#7a7a7a] px-3 py-1 mx-1 cursor-pointer text-xs rounded"
-                          >
-                            {size}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div> */}
-
                     <div className="mt-10 md:pb-20 pb-10 gap-4 relative items-center flex">
                       <p className="text-sm">Quantity :</p>
 
@@ -379,7 +407,7 @@ export default function ProductDetails() {
                           className="cursor-pointer select-none rounded text-center flex items-center justify-center bg-[#ecebff] h-8 w-8"
                           onClick={() =>
                             setProductQuantity(
-                              productQuantity > 1 ? productQuantity - 1 : 1
+                              productQuantity > 1 ? productQuantity - 1 : 1,
                             )
                           }
                         >
@@ -394,7 +422,7 @@ export default function ProductDetails() {
                             setProductQuantity(
                               productQuantity < quantity
                                 ? productQuantity + 1
-                                : quantity
+                                : quantity,
                             )
                           }
                         >
@@ -407,7 +435,6 @@ export default function ProductDetails() {
                     <Stack spacing={2} direction={'row'} sx={{ m: 5 }}>
                       <Button
                         fullWidth
-                        // disabled={isMaxQuantity}
                         size="medium"
                         type="button"
                         color="warning"
@@ -420,7 +447,7 @@ export default function ProductDetails() {
                       <Button
                         onClick={() =>
                           router.push(
-                            `/checkout/product/sku=${productDetails.sku}&quantity=${productQuantity}&size=${productSize}&color=${productColor}`
+                            `/checkout/product/sku=${productDetails.sku}&quantity=${productQuantity}&size=${productSize}&color=${productColor}`,
                           )
                         }
                         fullWidth
@@ -450,11 +477,14 @@ export default function ProductDetails() {
                             size="medium"
                             type="submit"
                             variant="contained"
+                            color="info"
                           >
                             Message
                           </Button>
                         )}
                     </Stack>
+                    {/* </div>
+                </div> */}
                   </Grid>
                 </Grid>
               </Card>
@@ -510,7 +540,6 @@ export default function ProductDetails() {
             anchorRef={anchorRef.current}
             message={message}
             setMessage={setMessage}
-            setSendMessageBase={setSendMessageBase}
           />
         </>
       )}

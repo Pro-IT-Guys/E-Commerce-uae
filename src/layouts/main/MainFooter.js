@@ -1,9 +1,6 @@
-import { Icon } from '@iconify/react'
-import googleFill from '@iconify/icons-eva/google-fill'
-import twitterFill from '@iconify/icons-eva/twitter-fill'
-import facebookFill from '@iconify/icons-eva/facebook-fill'
-import linkedinFill from '@iconify/icons-eva/linkedin-fill'
-import { Link as ScrollLink } from 'react-scroll'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import TwitterIcon from '@mui/icons-material/Twitter'
 import logo from '../../assets/logo/aymi-logo.png'
 // next
 import NextLink from 'next/link'
@@ -19,24 +16,33 @@ import {
   IconButton,
 } from '@mui/material'
 import Image from 'next/image'
-//
-// import Logo from '../../components/Logo'
 
 // ----------------------------------------------------------------------
 
 const SOCIALS = [
-  { name: 'FaceBook', icon: facebookFill },
-  { name: 'Google', icon: googleFill },
-  { name: 'Linkedin', icon: linkedinFill },
-  { name: 'Twitter', icon: twitterFill },
+  {
+    name: 'Facebook',
+    icon: <FacebookIcon />,
+    url: 'https://www.facebook.com/aymifashionofficial/',
+  },
+  {
+    name: 'Instagram',
+    icon: <InstagramIcon />,
+    url: 'https://www.instagram.com/aymi_fashions/',
+  },
+  {
+    name: 'Twitter',
+    icon: <TwitterIcon />,
+    url: 'https://twitter.com/AymiFashion',
+  },
 ]
 
 const LINKS = [
   {
     headline: 'Minimal',
     children: [
-      { name: 'About us', href: '#' },
-      { name: 'Contact us', href: '#' },
+      { name: 'About us', href: '/shop/about-us' },
+      { name: 'Contact us', href: '/shop/contact' },
       { name: 'FAQs', href: '#' },
     ],
   },
@@ -51,8 +57,8 @@ const LINKS = [
   {
     headline: 'Contact',
     children: [
-      { name: 'support@minimals.cc', href: '#' },
-      { name: 'Los Angeles, 359  Hidden Valley Road', href: '#' },
+      { name: 'support@aymifashion.com', href: '#' },
+      { name: 'Al Rawda-2, Ajman, UAE', href: '#' },
     ],
   },
 ]
@@ -78,25 +84,23 @@ export default function MainFooter() {
             className="md:pb-20 pb-10 "
           >
             <Grid item xs={12} sx={{ mb: 3 }}>
-              {/* <ScrollLink to="move_top" spy smooth>
-                <Logo sx={{ mx: { xs: 'auto', md: 'inherit' } }} />
-              </ScrollLink> */}
               <NextLink href="/">
-                {/* <Logo /> */}
-                <Image
-                  src={logo}
-                  alt="Picture of the logo"
-                  width={150}
-                  height={50}
-                  className="cursor-pointer object-cover w-full rounded-md"
-                />
+                <div className="w-36 h-16">
+                  <Image
+                    src={logo}
+                    alt="Picture of the logo"
+                    width={150}
+                    height={10}
+                    loading="lazy"
+                    className="cursor-pointer object-cover w-full h-full rounded-md"
+                  />
+                </div>
               </NextLink>
             </Grid>
             <Grid item xs={8} md={3}>
               <Typography variant="body2" sx={{ pr: { md: 5 } }}>
-                The starting point for your next project with Minimal UI Kit,
-                built on the newest version of Material-UI ©, ready to be
-                customized to your style.
+                Buy Luxurious Abaya Online and Discover the Wide Range of Design
+                with AYMI Fashion
               </Typography>
 
               <Stack
@@ -106,25 +110,17 @@ export default function MainFooter() {
                 sx={{ mt: 2, color: 'whitespace', mb: { xs: 4, md: 0 } }}
               >
                 {SOCIALS.map(social => (
-                  <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
-                    <Icon
-                      className="text-white"
-                      icon={social.icon}
-                      width={16}
-                      height={16}
-                    />
-                  </IconButton>
+                  <Link href={social?.url} target="_blank">
+                    <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
+                      {social?.icon}
+                    </IconButton>
+                  </Link>
                 ))}
               </Stack>
             </Grid>
 
             <Grid item xs={12} md={7}>
-              <div
-                // spacing={5}
-                // direction={{ xs: "column", md: "row" }}
-                // justifyContent="space-between"
-                className="flex-none grid md:grid-cols-3 grid-cols-2 text-start gap-x-5  gap-y-10 text-sm "
-              >
+              <div className="flex-none grid md:grid-cols-3 grid-cols-2 text-start gap-x-5  gap-y-10 text-sm ">
                 {LINKS.map(list => {
                   const { headline, children } = list
                   return (
@@ -164,7 +160,7 @@ export default function MainFooter() {
             <div className="flex items-center  gap-2">
               <h1 className="text-xs">Design & Developed By ~ </h1>
               <Link
-                href="https://www.facebook.com/ImRanKhan81m/"
+                href="https://www.facebook.com/ayon.jodder.75/"
                 target="blank"
               >
                 <span className="uppercase text-xs text-warning font-semibold">

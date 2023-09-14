@@ -1,17 +1,15 @@
 import { useState } from 'react'
-import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
-import FetchUrls from 'src/utils/FetchUrls'
+import FetchUrls from '../../utils/FetchUrls'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
+import CloseIcon from '@mui/icons-material/Close'
 
 // ----------------------------------------------------------------------
 
-export default function SignUpForm({onClose}) {
+export default function SignUpForm({ onClose }) {
   const [otpModal, setOtpModal] = useState(false)
   const [otpEmail, setOtpEmail] = useState('')
-  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -28,7 +26,7 @@ export default function SignUpForm({onClose}) {
       password,
       role: 'user',
     }
-    console.log(body)
+
     axios
       .post(FetchUrls('auth'), body)
       .then(res => {
@@ -36,24 +34,24 @@ export default function SignUpForm({onClose}) {
           setOtpModal(true)
           setOtpEmail(email)
           toast.success('Otp sent Successfully! Please Verify Your Email')
-          localStorage.setItem('user', JSON.stringify(res.headers.authorization.split(' ')[1]))
+          localStorage.setItem(
+            'user',
+            JSON.stringify(res.headers.authorization.split(' ')[1]),
+          )
         } else {
-          toast.error('User Already Exist!')
+          toast.error('User Already Exist! ')
         }
       })
       .catch(err => {
-        console.log(err.response)
-        toast.error('User Already Exist!')
       })
   }
-
 
   const submitOtp = async data => {
     const { otp } = data
 
     const body = {
       email: otpEmail,
-      verificationCode: otp
+      verificationCode: otp,
     }
     console.log(body)
     axios
@@ -65,13 +63,12 @@ export default function SignUpForm({onClose}) {
           onClose()
           toast.success('Email Verified Successfully! Please Login')
           setUpdate(Math.random())
-          localStorage.setItem('token', (res.headers.authorization.split(' ')[1]))
+          localStorage.setItem('token', res.headers.authorization.split(' ')[1])
         } else {
-          toast.error('User Already Exist!')
+          toast.error('Otp does not match! Please Try Again')
         }
       })
       .catch(err => {
-        console.log(err.response)
         // toast.error('User Already Exist!')
       })
   }
@@ -80,7 +77,7 @@ export default function SignUpForm({onClose}) {
     <>
       {otpModal && otpEmail ? (
         <>
-          <div className="px-10 pb-16 pt-10">
+          <div className="px-10 pb-16 pt-10 border">
             <h1 className="text-xl font-semibold text-center mb-7">
               Otp input Form
             </h1>
@@ -97,7 +94,7 @@ export default function SignUpForm({onClose}) {
                   {...register('otp', {
                     required: {
                       value: true,
-                      message: 'First Name is Required',
+                      message: 'Otp is Required',
                     },
                   })}
                 />
@@ -112,7 +109,7 @@ export default function SignUpForm({onClose}) {
               <div className="mt-5">
                 <button
                   type="submit"
-                  className="font-bold  py-3 rounded-full bg-primary text-white w-full"
+                  className="font-bold  py-3 rounded bg-primary text-white w-full"
                 >
                   Verify OTP
                 </button>
@@ -122,142 +119,148 @@ export default function SignUpForm({onClose}) {
         </>
       ) : (
         <>
-          <h1 className="text-xl font-semibold text-center mt-5">
-            Sign up Now
-          </h1>
-          <div className="flex justify-center">
-            <div className="w-full  p-10">
-              <div className=" rounded-lg w-full">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="space-y-5">
-                    <div className="flex gap-5 w-full">
-                      <div className="flex flex-col items-start w-[50%]">
-                        <label htmlFor="firstName" className="">
-                          First Name
+          <div className="shadow border">
+            <CloseIcon
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={onClose}
+              fontSize="medium"
+            />
+            <h1 className="text-xl font-bold text-center mt-8">
+              Join AYMi Fashion
+            </h1>
+            <div className="flex justify-center ">
+              <div className="w-full  md:px-10 px-5 py-5">
+                <div className=" rounded-lg w-full">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="space-y-5">
+                      <div className="sm:flex gap-5 w-full">
+                        <div className="flex flex-col items-start sm:w-[50%]">
+                          <label htmlFor="firstName" className="">
+                            First Name
+                          </label>
+                          <input
+                            className="py-3 px-2 text-gray-500 rounded w-full  border-[1px]"
+                            type="firstName"
+                            id="firstName"
+                            {...register('firstName', {
+                              required: {
+                                value: true,
+                                message: 'First Name is Required',
+                              },
+                            })}
+                          />
+                          <label className="label">
+                            {errors.firstName?.type === 'required' && (
+                              <span className="pl-3 text-sm mt-1 text-red-500">
+                                {errors.firstName.message}
+                              </span>
+                            )}
+                          </label>
+                        </div>
+                        <div className="flex flex-col items-start sm:w-[50%] mt-5 sm:mt-0">
+                          <label htmlFor="lastName" className="">
+                            Last Name
+                          </label>
+                          <input
+                            className="py-3 px-2 text-gray-500 rounded w-full  border-[1px]"
+                            type="lastName"
+                            id="lastName"
+                            {...register('lastName', {
+                              required: {
+                                value: true,
+                                message: 'Last Name is Required',
+                              },
+                            })}
+                          />
+                          <label className="lastName">
+                            {errors.lastName?.type === 'required' && (
+                              <span className="pl-3 text-sm mt-1 text-red-500">
+                                {errors.lastName.message}
+                              </span>
+                            )}
+                          </label>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <label htmlFor="email" className="">
+                          Email
                         </label>
                         <input
-                          className="py-3 px-2 text-gray-500 rounded w-full  border-[1px]"
-                          type="firstName"
-                          id="firstName"
-                          {...register('firstName', {
+                          className="py-3 px-3 text-gray-500 rounded w-full  border-[1px]"
+                          type="email"
+                          id="email"
+                          {...register('email', {
                             required: {
                               value: true,
-                              message: 'First Name is Required',
+                              message: 'Email is Required',
+                            },
+                            pattern: {
+                              value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                              message: 'Provide a valid Email',
                             },
                           })}
                         />
                         <label className="label">
-                          {errors.firstName?.type === 'required' && (
+                          {errors.email?.type === 'required' && (
                             <span className="pl-3 text-sm mt-1 text-red-500">
-                              {errors.firstName.message}
+                              {errors.email.message}
+                            </span>
+                          )}
+                          {errors.email?.type === 'pattern' && (
+                            <span className="pl-3 text-sm mt-1 text-red-500">
+                              {errors.email.message}
                             </span>
                           )}
                         </label>
                       </div>
-                      <div className="flex flex-col items-start w-[50%]">
-                        <label htmlFor="lastName" className="">
-                          Last Name
+                      <div className="flex flex-col items-start ">
+                        <label htmlFor="password" className="">
+                          Password
                         </label>
                         <input
-                          className="py-3 px-2 text-gray-500 rounded w-full  border-[1px]"
-                          type="lastName"
-                          id="lastName"
-                          {...register('lastName', {
+                          type="password"
+                          className="py-3 px-3 rounded w-full  border-[1px]"
+                          id="password"
+                          {...register('password', {
                             required: {
                               value: true,
-                              message: 'Last Name is Required',
+                              message: 'Password is Required',
+                            },
+                            minLength: {
+                              value: 6,
+                              message: 'Must be 6 characters or longer',
                             },
                           })}
                         />
-                        <label className="lastName">
-                          {errors.lastName?.type === 'required' && (
-                            <span className="pl-3 text-sm mt-1 text-red-500">
-                              {errors.lastName.message}
+                        <label className="label">
+                          {errors.password?.type === 'required' && (
+                            <span className="pl-5 text-sm mt-1 text-red-500">
+                              {errors.password.message}
                             </span>
                           )}
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <label htmlFor="email" className="">
-                        Email
-                      </label>
-                      <input
-                        className="py-3 px-3 text-gray-500 rounded w-full  border-[1px]"
-                        type="email"
-                        id="email"
-                        {...register('email', {
-                          required: {
-                            value: true,
-                            message: 'Email is Required',
-                          },
-                          pattern: {
-                            value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                            message: 'Provide a valid Email',
-                          },
-                        })}
-                      />
-                      <label className="label">
-                        {errors.email?.type === 'required' && (
-                          <span className="pl-3 text-sm mt-1 text-red-500">
-                            {errors.email.message}
-                          </span>
-                        )}
-                        {errors.email?.type === 'pattern' && (
-                          <span className="pl-3 text-sm mt-1 text-red-500">
-                            {errors.email.message}
-                          </span>
-                        )}
-                      </label>
-                    </div>
-                    <div className="flex flex-col items-start ">
-                      <label htmlFor="password" className="">
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        className="py-3 px-3 rounded w-full  border-[1px]"
-                        id="password"
-                        {...register('password', {
-                          required: {
-                            value: true,
-                            message: 'Password is Required',
-                          },
-                          minLength: {
-                            value: 6,
-                            message: 'Must be 6 characters or longer',
-                          },
-                        })}
-                      />
-                      <label className="label">
-                        {errors.password?.type === 'required' && (
-                          <span className="pl-5 text-sm mt-1 text-red-500">
-                            {errors.password.message}
-                          </span>
-                        )}
-                        {errors.password?.type === 'minLength' && (
-                          <span className="pl-3 text-sm mt-1 text-red-500">
-                            {errors.password.message}
-                          </span>
-                        )}
-                        {/* {error && (
+                          {errors.password?.type === 'minLength' && (
+                            <span className="pl-3 text-sm mt-1 text-red-500">
+                              {errors.password.message}
+                            </span>
+                          )}
+                          {/* {error && (
                         <span className="pl-5 label-text-alt text-red-500">
                           {errorMsg}
                         </span>
                       )} */}
-                      </label>
-                    </div>
+                        </label>
+                      </div>
 
-                    <div className="mt-5">
-                      <button
-                        type="submit"
-                        className="font-bold  py-3 rounded-full bg-primary text-white w-full"
-                      >
-                        Sign Up
-                      </button>
-                    </div>
+                      <div className="mt-5">
+                        <button
+                          type="submit"
+                          className="font-bold  py-3 rounded bg-primary text-white w-full"
+                        >
+                          Sign Up
+                        </button>
+                      </div>
 
-                    {/* <div>
+                      {/* <div>
                     <p className="text-sm text-center pt-3 pb-4">
                       Already have an account?{" "}
                       <span
@@ -268,8 +271,9 @@ export default function SignUpForm({onClose}) {
                       </span>
                     </p>
                   </div> */}
-                  </div>
-                </form>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   Container,
   Stack,
@@ -8,21 +7,19 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   Typography,
 } from '@mui/material'
-import { BASE_URL } from 'apis/url'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import DashboardLayout from 'src/layouts/dashboard'
+import DashboardLayout from '../../../../../src/layouts/dashboard'
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined'
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined'
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined'
-import Scrollbar from 'src/components/Scrollbar'
-import { UserListHead } from 'src/components/list'
+import Scrollbar from '../../../../../src/components/Scrollbar'
+import { UserListHead } from '../../../../../src/components/list'
 import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined'
-import { getOrderById } from 'apis/order.api'
+import { getOrderById } from '../../../../../apis/order.api'
 
 const TABLE_HEAD = [
   { id: 'sr', label: 'SR', alignRight: false },
@@ -206,12 +203,16 @@ export default function OrderDetails() {
                 <span className="text-sm "> {orderItems?.length}</span>
               </div>
               <div className="  shadow py-1 px-2 text-sm rounded">
+                <span className="font-semibold">Order Total : </span>
+                <span className="text-sm"> ${subTotal}</span>
+              </div>
+              <div className="  shadow py-1 px-2 text-sm rounded">
                 <span className="font-semibold">Shipping Fee : </span>
                 <span className="text-sm"> ${deliveryFee}</span>
               </div>
               <div className="  shadow py-1 px-2 text-sm rounded">
                 <span className="font-semibold">Subtotal : </span>
-                <span className="text-sm"> ${subTotal}</span>
+                <span className="text-sm"> ${subTotal + deliveryFee}</span>
               </div>
             </div>
           </div>

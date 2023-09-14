@@ -1,13 +1,12 @@
-import { Avatar, Box, Button, Card, Divider, Typography } from '@mui/material'
+import { Box, Button, Divider, Typography } from '@mui/material'
 import MenuPopover from '../MenuPopover'
-import { styled } from '@mui/material/styles'
 import InputEmoji from 'react-input-emoji'
 import MessageItem from './MessageItem'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { CustomIcons } from 'public/static/mui-icons'
+import { CustomIcons } from '../../../public/static/mui-icons'
 import { ButtonAnimate } from '../animate'
-import { getMessageOfChatId, sendMessage } from 'apis/chat.api'
-import { ContextData } from 'context/dataProviderContext'
+import { sendMessage } from '../../../apis/chat.api'
+import { ContextData } from '../../../context/dataProviderContext'
 
 export default function ChatPopup({
   socket,
@@ -17,7 +16,6 @@ export default function ChatPopup({
   chat,
   setMessage,
   message,
-  setSendMessageBase,
   productUrl,
 }) {
   const boxRef = useRef(null)
@@ -25,7 +23,7 @@ export default function ChatPopup({
   const [inputMeassage, setInputMessage] = useState('')
 
   const sender = chat?.members?.find(
-    member => member?._id === currentlyLoggedIn?._id
+    member => member?._id === currentlyLoggedIn?._id,
   )
 
   // Scroll to the last message when the message list updates
@@ -41,7 +39,6 @@ export default function ChatPopup({
       socket.on('getMessage', data => {
         setMessage(prev => [...prev, data])
       })
-      setSendMessageBase(false)
     }
   }, [socket])
 
@@ -58,7 +55,7 @@ export default function ChatPopup({
 
       setMessage([...message, newMessage?.data])
       const receiverId = chat?.members?.find(
-        member => member._id !== senderId
+        member => member._id !== senderId,
       )?._id
       socket.emit('sendMessage', {
         senderId,
@@ -89,7 +86,7 @@ export default function ChatPopup({
 
     setMessage([...message, newMessage?.data])
     const receiverId = chat?.members?.find(
-      member => member._id !== senderId
+      member => member._id !== senderId,
     )?._id
     socket.emit('sendMessage', {
       senderId,

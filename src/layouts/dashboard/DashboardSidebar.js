@@ -17,15 +17,15 @@ import {
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer'
 // components
-import Logo from '../../components/Logo'
 import Scrollbar from '../../components/Scrollbar'
 import NavSection from '../../components/NavSection'
 //
-import { MHidden } from '../../components/@material-extend';
-import sidebarConfig from './SidebarConfig';
+import { MHidden } from '../../components/@material-extend'
+import sidebarConfig from './SidebarConfig'
 import logoImg from '../../assets/logo/aymi-logo.png'
 import Image from 'next/image'
-import { ContextData } from 'context/dataProviderContext'
+import { ContextData } from '../../../context/dataProviderContext'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 // ----------------------------------------------------------------------
 
@@ -143,21 +143,28 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         }}
       >
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
         >
-          <NextLink href="/">
-            <Box sx={{ display: 'inline-flex' }}>
-              <Image
-                src={logoImg}
-                alt="Picture of the logo"
-                width={130}
-                height={60}
-                className="cursor-pointer"
-              />
-            </Box>
-          </NextLink>
+          <div className='flex items-center justify-between w-full'>
+            <NextLink href='/'>
+              <Box sx={{ display: 'inline-flex' }}>
+                <Image
+                  src={logoImg}
+                  alt="Picture of the logo"
+                  width={130}
+                  height={60}
+                  className="cursor-pointer"
+                />
+              </Box>
+            </NextLink>
+            <div
+              onClick={onCloseSidebar}
+              className="mr-2 cursor-pointer text-secondary lg:hidden block">
+              <CancelIcon fontSize="large" />
+            </div>
+          </div>
 
           <MHidden width="lgDown">
             {!isCollapse && (
@@ -172,7 +179,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         {isCollapse ? (
           <Avatar
             alt="My Avatar"
-            src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
+            src={
+              image ? image : '/static/mock-images/avatars/avatar_default.jpg'
+            }
             sx={{ mx: 'auto', mb: 2 }}
           />
         ) : (
@@ -180,7 +189,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <AccountStyle>
               <Avatar
                 alt="My Avatar"
-                src={image ? image : "/static/mock-images/avatars/avatar_default.jpg"}
+                src={
+                  image
+                    ? image
+                    : '/static/mock-images/avatars/avatar_default.jpg'
+                }
               />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

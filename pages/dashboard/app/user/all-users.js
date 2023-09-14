@@ -1,6 +1,4 @@
 import { filter } from 'lodash'
-import { Icon } from '@iconify/react'
-import { sentenceCase } from 'change-case'
 import { useState, useEffect } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 // material
@@ -9,9 +7,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -19,18 +14,13 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  Pagination,
 } from '@mui/material'
 // redux
-import useSettings from 'src/hooks/useSettings'
-import Page from 'src/components/Page'
-import {
-  UserListHead,
-  UserListToolbar,
-  UserMoreMenu,
-} from 'src/components/list'
-import Scrollbar from 'src/components/Scrollbar'
-import Label from 'src/components/Label'
-import DashboardLayout from 'src/layouts/dashboard'
+import Page from '../../../../src/components/Page'
+import { UserListHead, UserListToolbar } from '../../../../src/components/list'
+import Scrollbar from '../../../../src/components/Scrollbar'
+import DashboardLayout from '../../../../src/layouts/dashboard'
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +29,6 @@ const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'action', label: 'Action', alignRight: true },
 ]
 
 // ----------------------------------------------------------------------
@@ -60,52 +49,53 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  if (query) {
-    return filter(
-      array,
-      _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    )
-  }
-  return stabilizedThis.map(el => el[0])
-}
+// function applySortFilter(array, comparator, query) {
+//   const stabilizedThis = array.map((el, index) => [el, index])
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0])
+//     if (order !== 0) return order
+//     return a[1] - b[1]
+//   })
+//   if (query) {
+//     return filter(
+//       array,
+//       _user => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1,
+//     )
+//   }
+//   return stabilizedThis.map(el => el[0])
+// }
 
 export default function UserList() {
-  const theme = useTheme()
   const [page, setPage] = useState(0)
-  const [order, setOrder] = useState('asc')
   const [selected, setSelected] = useState([])
-  const [orderBy, setOrderBy] = useState('name')
   const [filterName, setFilterName] = useState('')
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [userList, setUserList] = useState([])
+  const [productCount, setProductCount] = useState(0)
+  const itemsPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage)
+  }
+
+  useEffect(() => {
+    if (productCount) {
+      setTotalPages(Math.ceil(productCount / itemsPerPage))
+    }
+  }, [productCount, itemsPerPage])
 
   useEffect(() => {
     fetch(
-      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${page}&limit=${rowsPerPage}`
+      `https://server.aymifashion.com/api/v1/users?searchTerm=${filterName}&page=${currentPage}&limit=${itemsPerPage}`,
     )
       .then(res => res.json())
-      .then(data => setUserList(data?.data))
-  }, [filterName, page, rowsPerPage])
-
-  const handleDeleteUser = userId => {
-    console.log('Delete user')
-  }
-
-  const handleSelectAllClick = event => {
-    if (event.target.checked) {
-      const newSelecteds = userList?.map(n => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
+      .then(data => {
+        setUserList(data?.data)
+        setProductCount(data?.meta?.total)
+      })
+  }, [filterName, currentPage, rowsPerPage])
 
   const handleFilterByName = event => {
     setFilterName(event.target.value)
@@ -160,6 +150,7 @@ export default function UserList() {
 
                       return (
                         <TableRow
+                          className="border-b"
                           hover
                           key={id}
                           tabIndex={-1}
@@ -185,13 +176,13 @@ export default function UserList() {
                             {isVerified ? 'Yes' : 'No'}
                           </TableCell>
 
-                          <TableCell align="right">
-                            {/* <UserMoreMenu
+                          {/* <TableCell align="right">
+                            <UserMoreMenu
                               onDelete={() => handleDeleteUser(id)}
-                              // userName={row?.name?.firstName}
-                            /> */}
+                              userName={row?.name?.firstName}
+                            />
                             <MoreVertIcon className="cursor-pointer" />
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       )
                     })}
@@ -200,15 +191,16 @@ export default function UserList() {
               </TableContainer>
             </Scrollbar>
 
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={userList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            <div className="mt-7 flex sm:justify-end justify-center pr-5 pb-5">
+              <Stack spacing={2}>
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Stack>
+            </div>
           </Card>
         </Container>
       </Page>

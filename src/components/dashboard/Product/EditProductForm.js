@@ -1,16 +1,11 @@
-import styled from '@emotion/styled'
 import {
   Autocomplete,
-  Card,
   Chip,
   FormControl,
   InputAdornment,
   InputLabel,
   Select,
-  Stack,
   TextField,
-  TextareaAutosize,
-  Typography,
 } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,16 +19,15 @@ import {
   COLOR_OPTION,
   SIZE_OPTION,
 } from '../../../../constant/product'
-import { QuillEditor } from 'src/components/editor'
-import { UploadMultiFile } from 'src/components/upload'
-import { BASE_URL } from 'apis/url'
+import { QuillEditor } from '../../../../src/components/editor'
+import { UploadMultiFile } from '../../../../src/components/upload'
+import { BASE_URL } from '../../../../apis/url'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-import CustomLoadingScreen from 'src/components/CustomLoadingScreen'
-import { async } from 'react-input-emoji'
 
 export default function EditProductForm({ productId }) {
-  const [typeValue, setTypeValue] = useState([])
+  const [productDetails, setProductDetails] = useState({})
+  const [typeValue, setTypeValue] = useState(productDetails?.type)
   const [tagValue, setTagValue] = useState([])
   const [colorValue, setColorValue] = useState([])
   const [sizeValue, setSizeValue] = useState([])
@@ -42,11 +36,13 @@ export default function EditProductForm({ productId }) {
   const [values, setFieldValue] = useState([])
   const router = useRouter()
   const [imagesUrl, setImagesUrl] = useState([])
-  const [productDetails, setProductDetails] = useState({})
   const [loader, setLoader] = useState(false)
   const [productName, setProductName] = useState('')
   const [buyingPriceValue, setBuyingPriceValue] = useState('')
   const [sellingPriceValue, setSellingPriceValue] = useState('')
+  const [quantityValue, setQuantityValue] = useState('')
+
+  console.log(typeValue, '=============')
 
   useEffect(() => {
     setLoader(true)
@@ -55,6 +51,16 @@ export default function EditProductForm({ productId }) {
       .then(data => setProductDetails(data?.data))
       .finally(() => setLoader(false))
   }, [productId])
+
+  useEffect(() => {
+    setTypeValue(productDetails?.type)
+    const autocompleteInput = document.querySelector(
+      '.MuiAutocomplete-inputRoot',
+    )
+    if (autocompleteInput) {
+      autocompleteInput.focus()
+    }
+  }, [productDetails])
 
   const {
     register,
@@ -139,46 +145,55 @@ export default function EditProductForm({ productId }) {
     formData.append(
       'path',
       productName
-        ? productName.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now()
-        : productDetails?.path.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now()
+        ? productName
+            .replace(/[&\/@#!$%\^?]/g, '')
+            .split(' ')
+            .join('-')
+            .toLowerCase()
+        : productDetails?.path
+            .replace(/[&\/@#!$%\^?]/g, '')
+            .split(' ')
+            .join('-')
+            .toLowerCase() +
+            '-' +
+            Math.floor(Math.random() * 9),
     )
     formData.append(
       'frontImage',
-      data.frontImage[0] || productDetails?.frontImage
+      data.frontImage[0] || productDetails?.frontImage,
     )
     formData.append('backImage', data.backImage[0] || productDetails?.backImage)
     formData.append(
       'restImage',
-      imagesUrl.length > 0 ? imagesUrl : productDetails?.restImage
+      imagesUrl.length > 0 ? imagesUrl : productDetails?.restImage,
     )
     formData.append(
       'buyingPrice',
-      buyingPriceValue || productDetails?.buyingPrice
+      buyingPriceValue || productDetails?.buyingPrice,
     )
     formData.append(
       'sellingPrice',
-      sellingPriceValue || productDetails?.sellingPrice
+      sellingPriceValue || productDetails?.sellingPrice,
     )
     formData.append('description', description || productDetails?.description)
     formData.append(
       'metaDescription',
-      data.metaDescription || productDetails?.metaDescription
+      data.metaDescription || productDetails?.metaDescription,
     )
-    formData.append('quantity', data.quantity || productDetails?.quantity)
+    formData.append('quantity', quantityValue || productDetails?.quantity)
     formData.append('category', data.category || productDetails?.category)
     formData.append(
       'color',
-      colorValue.length > 0 ? colorValue : productDetails?.color
+      colorValue.length > 0 ? colorValue : productDetails?.color,
     )
     formData.append(
       'size',
-      sizeValue.length > 0 ? sizeValue : productDetails?.size
+      sizeValue.length > 0 ? sizeValue : productDetails?.size,
     )
     formData.append('tag', tagValue.length > 0 ? tagValue : productDetails?.tag)
-    formData.append('brand', data.brand || productDetails?.brand)
     formData.append(
       'type',
-      typeValue.length > 0 ? typeValue : productDetails?.type
+      typeValue.length > 0 ? typeValue : productDetails?.type,
     )
     formData.append('style', data.style || productDetails?.style)
     formData.append('fabric', data.fabric || productDetails?.fabric)
@@ -200,10 +215,21 @@ export default function EditProductForm({ productId }) {
             icon: 'success',
             title: 'Product Updated Successfully',
           })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
         }
       })
       .catch(err => {
         console.log(err, 'error')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        })
       })
   }
 
@@ -236,22 +262,6 @@ export default function EditProductForm({ productId }) {
                       {CATEGORY_OPTION.map(category => (
                         <optgroup key={category.group} label={category.group}>
                           {category.classify.map(classify => (
-                            <option key={classify} value={classify}>
-                              {classify}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="flex flex-col items-start">
-                  <FormControl fullWidth>
-                    <InputLabel>Brand</InputLabel>
-                    <Select label="Brand" native {...register('brand')}>
-                      {BRAND_OPTION.map(brand => (
-                        <optgroup key={brand.group} label={brand.group}>
-                          {brand.classify.map(classify => (
                             <option key={classify} value={classify}>
                               {classify}
                             </option>
@@ -301,7 +311,7 @@ export default function EditProductForm({ productId }) {
                       freeSolo
                       value={typeValue}
                       onChange={(event, newValue) => {
-                        setTypeValue(newValue)
+                        setTypeValue([...typeValue, ...newValue])
                       }}
                       options={TYPE_OPTION}
                       getOptionLabel={option => option}
@@ -386,7 +396,7 @@ export default function EditProductForm({ productId }) {
                   </FormControl>
                 </div>
                 <div className="flex flex-col items-start">
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     label=" Stock Quantity"
                     InputProps={{
@@ -397,6 +407,26 @@ export default function EditProductForm({ productId }) {
                       type: 'number',
                     }}
                     {...register('quantity')}
+                  /> */}
+                  <label htmlFor="title" className=" font-semibold ">
+                    Stock Quantity
+                  </label>
+                  <input
+                    onChange={e => {
+                      if (e.target.value < 0) {
+                        toast('Please Select Positive value', { type: 'error' })
+                        e.target.value = 0
+                      } else {
+                        setQuantityValue(e.target.value)
+                      }
+                    }}
+                    type="number"
+                    required
+                    id="quantity"
+                    defaultValue={productDetails?.quantity}
+                    min={0}
+                    name="quantity"
+                    className="border px-2 py-3 w-full rounded input input-bordered focus:border-warning duration-300 ease-in-out focus:outline-none"
                   />
                 </div>
                 <div className="flex flex-col items-start">
@@ -507,7 +537,7 @@ export default function EditProductForm({ productId }) {
                 <h1 className="ml-1 text-sm mb-1 mt-5">All Images</h1>
                 <UploadMultiFile
                   showPreview
-                  maxSize={3145728}
+                  // maxSize={3145728}
                   accept="image/*"
                   files={values}
                   onDrop={handleDrop}
